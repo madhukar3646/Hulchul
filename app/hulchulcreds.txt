@@ -1,0 +1,8 @@
+Hulchul app gmail,facebook,twitter login credentials:
+
+hulchul2019@gmail.com
+password: androidteam
+
+Hulchul app fb integration login creds:
+ Mobile:9908128827
+ password:Postesting
