@@ -211,4 +211,5 @@
         <item>260,ZM</item>
         <item>263,ZW</item>
     </string-array>
+    <string name="app_record">Record Video</string>
 </resources>

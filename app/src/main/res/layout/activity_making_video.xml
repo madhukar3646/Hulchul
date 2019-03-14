@@ -1,16 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MakingVideoActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.app.hulchul.utils.PortraitFrameLayout
+            android:id="@+id/wrap_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Video Screen"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_margin="10dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/circle_bgdarktransparent">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/ic_launcher"
+            android:layout_margin="15dp"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_sidevertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_above="@+id/layout_abuse"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/round_blacktransparent"
+        >
+
+        <ImageView
+            android:id="@+id/iv_switch"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/heart_white"
+            android:layout_margin="10dp"/>
+
+        <ImageView
+            android:id="@+id/iv_1x2x"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/comments"
+            android:layout_margin="10dp"/>
+
+        <ImageView
+            android:id="@+id/iv_timerselection"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/share"
+            android:layout_margin="10dp"/>
+
+        <ImageView
+            android:id="@+id/iv_startshooting"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/share"
+            android:layout_margin="10dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_bottomicons"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:background="@android:drawable/screen_background_dark_transparent"
+        android:weightSum="3"
+        android:paddingBottom="2dp">
+        <LinearLayout
+            android:id="@+id/layout_selectsound"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_gravity="bottom">
+
+            <ImageView
+                android:id="@+id/iv_selectsound"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@mipmap/me_normal"
+                android:layout_gravity="center"
+                android:gravity="center"/>
+            <TextView
+                android:id="@+id/tv_selectsound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select sound"
+                android:textSize="12sp"
+                android:textColor="@android:color/white"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_gravity="center"
+                android:gravity="center"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_upload"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_gravity="bottom">
+
+            <ImageView
+                android:id="@+id/iv_upload"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@mipmap/search_normal"
+                android:layout_gravity="center"
+                android:gravity="center"/>
+            <TextView
+                android:id="@+id/tv_upload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Upload"
+                android:textSize="12sp"
+                android:textColor="@android:color/white"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_gravity="center"
+                android:gravity="center"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_filters"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_gravity="bottom">
+
+            <ImageView
+                android:id="@+id/iv_video"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:src="@mipmap/addvideowhite_icon" />
+            <TextView
+                android:id="@+id/tv_video"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Filters"
+                android:textSize="12sp"
+                android:textColor="@android:color/white"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_gravity="center"
+                android:gravity="center"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:layout_above="@+id/layout_bottomicons"
+        android:layout_centerHorizontal="true"
+        >
+
+        <ImageView
+            android:id="@+id/iv_record"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@mipmap/ic_launcher_round"
+            android:padding="5dp"
+            />
+    </RelativeLayout>
 
 </RelativeLayout>

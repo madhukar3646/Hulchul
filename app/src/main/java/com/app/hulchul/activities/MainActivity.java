@@ -1,9 +1,12 @@
 package com.app.hulchul.activities;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,10 +22,12 @@ import com.app.hulchul.fragments.Home_fragment;
 import com.app.hulchul.fragments.Me_Fragment;
 import com.app.hulchul.fragments.Notification_fragment;
 
-import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.RECORD_AUDIO;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -128,7 +133,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.layout_video:
                 setClickableFocus();
                 tv_video.setTextColor(getResources().getColor(R.color.colorPrimary));
-                startActivity(new Intent(MainActivity.this,MakingVideoActivity.class));
+                if(checkingPermissionAreEnabledOrNot())
+                   startActivity(new Intent(MainActivity.this,MakingVideoActivity.class));
+                else
+                    requestMultiplePermission();
                 break;
             case R.id.layout_notification:
                 changeFragment(new Notification_fragment());
@@ -156,5 +164,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
       tv_notification.setTextColor(Color.WHITE);
       iv_me.setImageResource(R.mipmap.me_normal);
       tv_me.setTextColor(Color.WHITE);
+    }
+
+    public boolean checkingPermissionAreEnabledOrNot() {
+        int camera = ContextCompat.checkSelfPermission(MainActivity.this, CAMERA);
+        int write = ContextCompat.checkSelfPermission(MainActivity.this, WRITE_EXTERNAL_STORAGE);
+        int read = ContextCompat.checkSelfPermission(MainActivity.this, RECORD_AUDIO);
+        return camera == PackageManager.PERMISSION_GRANTED && write == PackageManager.PERMISSION_GRANTED && read==PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestMultiplePermission() {
+
+        ActivityCompat.requestPermissions(MainActivity.this, new String[]
+                {
+                        CAMERA,
+                        WRITE_EXTERNAL_STORAGE,
+                        RECORD_AUDIO
+                }, 100);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case 100:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if(grantResults.length>=3)
+                    {
+                        if(checkingPermissionAreEnabledOrNot())
+                            startActivity(new Intent(MainActivity.this,MakingVideoActivity.class));
+                        else
+                            requestMultiplePermission();
+                    }
+                } else {
+                    requestMultiplePermission();
+                }
+                break;
+        }
     }
 }
