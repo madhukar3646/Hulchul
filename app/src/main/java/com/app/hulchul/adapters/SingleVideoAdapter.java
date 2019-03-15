@@ -28,7 +28,7 @@ public class SingleVideoAdapter extends RecyclerView.Adapter<SingleVideoPlayerVi
     }
 
     @Override public void onBindViewHolder(final SingleVideoPlayerViewHolder holder, final int position) {
-        holder.bind(Uri.parse(modelArrayList.get(position).video_url) /* FIXME use real data */);
+        holder.bind(Uri.parse(modelArrayList.get(position).getVideo()) /* FIXME use real data */);
     }
 
     @Override public int getItemCount() {

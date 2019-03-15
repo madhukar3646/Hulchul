@@ -18,6 +18,10 @@ public class SignupResponse {
     @Expose
     private Integer otp;
 
+    @SerializedName("status")
+    @Expose
+    private Integer status;
+
     public Boolean getSuccess() {
         return success;
     }
@@ -48,5 +52,13 @@ public class SignupResponse {
 
     public void setOtp(Integer otp) {
         this.otp = otp;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

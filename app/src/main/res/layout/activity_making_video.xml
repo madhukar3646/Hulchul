@@ -24,13 +24,13 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:layout_alignParentTop="true"
-        android:background="@drawable/circle_bgdarktransparent">
+        >
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@mipmap/ic_launcher"
-            android:layout_margin="15dp"/>
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@mipmap/close_transparent"
+            />
 
     </RelativeLayout>
 
@@ -52,28 +52,28 @@
             android:id="@+id/iv_switch"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@mipmap/heart_white"
+            android:src="@mipmap/camera_back"
             android:layout_margin="10dp"/>
 
         <ImageView
             android:id="@+id/iv_1x2x"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@mipmap/comments"
+            android:src="@mipmap/timer_off"
             android:layout_margin="10dp"/>
 
         <ImageView
             android:id="@+id/iv_timerselection"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@mipmap/share"
+            android:src="@mipmap/set_seconds"
             android:layout_margin="10dp"/>
 
         <ImageView
             android:id="@+id/iv_startshooting"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@mipmap/share"
+            android:src="@mipmap/start_timer"
             android:layout_margin="10dp"/>
     </LinearLayout>
 
@@ -98,7 +98,7 @@
                 android:id="@+id/iv_selectsound"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@mipmap/me_normal"
+                android:src="@mipmap/select_sound"
                 android:layout_gravity="center"
                 android:gravity="center"/>
             <TextView
@@ -107,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:text="Select sound"
                 android:textSize="12sp"
-                android:textColor="@android:color/white"
+                android:textColor="#19938d"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_gravity="center"
                 android:gravity="center"/>
@@ -124,7 +124,7 @@
                 android:id="@+id/iv_upload"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@mipmap/search_normal"
+                android:src="@mipmap/upload_img"
                 android:layout_gravity="center"
                 android:gravity="center"/>
             <TextView
@@ -133,7 +133,7 @@
                 android:layout_height="wrap_content"
                 android:text="Upload"
                 android:textSize="12sp"
-                android:textColor="@android:color/white"
+                android:textColor="#54588a"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_gravity="center"
                 android:gravity="center"/>
@@ -152,14 +152,14 @@
                 android:layout_height="25dp"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:src="@mipmap/addvideowhite_icon" />
+                android:src="@mipmap/filters" />
             <TextView
                 android:id="@+id/tv_video"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Filters"
                 android:textSize="12sp"
-                android:textColor="@android:color/white"
+                android:textColor="#fed63b"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_gravity="center"
                 android:gravity="center"/>
@@ -177,10 +177,9 @@
 
         <ImageView
             android:id="@+id/iv_record"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@mipmap/ic_launcher_round"
-            android:padding="5dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@mipmap/video"
             />
     </RelativeLayout>
 

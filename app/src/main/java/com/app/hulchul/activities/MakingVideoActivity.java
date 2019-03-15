@@ -1,10 +1,10 @@
 package com.app.hulchul.activities;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +22,7 @@ import com.app.hulchul.R;
 import com.app.hulchul.utils.Filters;
 import com.app.hulchul.utils.SampleGLView;
 import com.app.hulchul.utils.Utils;
+import com.bumptech.glide.Glide;
 import com.daasuu.camerarecorder.CameraRecordListener;
 import com.daasuu.camerarecorder.CameraRecorder;
 import com.daasuu.camerarecorder.CameraRecorderBuilder;
@@ -65,7 +66,12 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
     LinearLayout layout_selectsound;
     @BindView(R.id.layout_upload)
     LinearLayout layout_upload;
+    @BindView(R.id.layout_sidevertical)
+    LinearLayout layout_sidevertical;
+    @BindView(R.id.layout_bottomicons)
+    LinearLayout layout_bottomicons;
     private boolean isRecordStart=true;
+    private Handler handler=new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +85,7 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
     private void init()
     {
         iv_record.setOnClickListener(this);
-        iv_record.setImageResource(R.mipmap.play_video);
+        iv_record.setImageResource(R.mipmap.video);
         layout_filters.setOnClickListener(this);
         iv_switch.setOnClickListener(this);
         layout_close.setOnClickListener(this);
@@ -103,36 +109,47 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.iv_1x2x:
-                Utils.callToast(MakingVideoActivity.this," 1x 2x ");
+                Utils.goToCommonActivity(MakingVideoActivity.this," 1x 2x work in progress");
                 break;
 
             case R.id.iv_timerselection:
-                Utils.callToast(MakingVideoActivity.this," timer selection ");
+                Utils.goToCommonActivity(MakingVideoActivity.this," timer selection work in progress");
                 break;
 
             case R.id.iv_startshooting:
-                Utils.callToast(MakingVideoActivity.this," start shooting ");
+                Utils.goToCommonActivity(MakingVideoActivity.this," start shooting work in progress");
                 break;
 
             case R.id.layout_selectsound:
-                Utils.callToast(MakingVideoActivity.this," select sound ");
+                Utils.goToCommonActivity(MakingVideoActivity.this,"select sound work in progress");
                 break;
 
             case R.id.layout_upload:
-                Utils.callToast(MakingVideoActivity.this," Upload ");
+                Utils.goToCommonActivity(MakingVideoActivity.this,"Upload work in progress");
                 break;
 
             case R.id.iv_record:
                 if (isRecordStart) {
+                    if(filepath!=null)
+                        new File(filepath).delete();
                     filepath = getVideoFilePath();
+                    handler.postDelayed(timethread,15000);
                     cameraRecorder.start(filepath);
-                    iv_record.setImageResource(R.mipmap.tick_purple);
+                    Glide.with(this)
+                            .load(R.drawable.loader)
+                            .placeholder(R.drawable.circle_placeholder)
+                            .into(iv_record);
+                    layout_bottomicons.setVisibility(View.INVISIBLE);
+                    layout_sidevertical.setVisibility(View.INVISIBLE);
                     isRecordStart=false;
                 } else {
                     cameraRecorder.stop();
-                    iv_record.setImageResource(R.mipmap.play_video);
+                    iv_record.setImageResource(R.mipmap.video);
                     isRecordStart=true;
                     goToSinglePlayActivity();
+                    handler.removeCallbacks(timethread);
+                    layout_bottomicons.setVisibility(View.VISIBLE);
+                    layout_sidevertical.setVisibility(View.VISIBLE);
                 }
                 break;
 
@@ -146,7 +163,8 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
                 toggleClick = true;
                 break;
             case R.id.layout_filters:
-                if (filterDialog == null) {
+                Utils.goToCommonActivity(MakingVideoActivity.this,"Filters work in progress");
+               /* if (filterDialog == null) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(MakingVideoActivity.this);
                     builder.setTitle("Choose a filter");
                     builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -169,7 +187,7 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
                     filterDialog = builder.show();
                 } else {
                     filterDialog.dismiss();
-                }
+                }*/
                 break;
         }
     }
@@ -304,5 +322,30 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
         Intent intent=new Intent(MakingVideoActivity.this,SingleVideoPlayActivity.class);
         intent.putExtra("videourl",filepath);
         startActivity(intent);
+    }
+
+    Runnable timethread=new Runnable() {
+        @Override
+        public void run() {
+            cameraRecorder.stop();
+            iv_record.setImageResource(R.mipmap.video);
+            isRecordStart=true;
+            goToSinglePlayActivity();
+            handler.removeCallbacks(timethread);
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacks(timethread);
+    }
+
+    @Override
+    public void onBackPressed() {
+        releaseCamera();
+        if(filepath!=null)
+            new File(filepath).delete();
+        finish();
     }
 }

@@ -1,22 +1,36 @@
 package com.app.hulchul.activities;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
 import com.app.hulchul.R;
 import com.app.hulchul.adapters.SingleVideoAdapter;
+import com.app.hulchul.model.SignupResponse;
 import com.app.hulchul.model.VideoModel;
+import com.app.hulchul.presenter.LoginPresenter;
+import com.app.hulchul.presenter.RetrofitApis;
+import com.app.hulchul.utils.ConnectionDetector;
+import com.app.hulchul.utils.SessionManagement;
 import com.app.hulchul.utils.Utils;
 
+import java.io.File;
 import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import im.ene.toro.widget.Container;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SingleVideoPlayActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -29,6 +43,8 @@ public class SingleVideoPlayActivity extends AppCompatActivity implements View.O
     LinearLayoutManager layoutManager;
     private ArrayList<VideoModel> modelArrayList=new ArrayList<>();
     private String videourl="";
+    private ConnectionDetector connectionDetector;
+    private SessionManagement sessionManagement;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +57,8 @@ public class SingleVideoPlayActivity extends AppCompatActivity implements View.O
 
     private void init()
     {
+        connectionDetector=new ConnectionDetector(SingleVideoPlayActivity.this);
+        sessionManagement=new SessionManagement(SingleVideoPlayActivity.this);
         layout_post.setOnClickListener(this);
         videourl=getIntent().getStringExtra("videourl");
         layoutManager = new LinearLayoutManager(SingleVideoPlayActivity.this);
@@ -54,7 +72,7 @@ public class SingleVideoPlayActivity extends AppCompatActivity implements View.O
     {
         modelArrayList.clear();
         VideoModel model=new VideoModel();
-        model.setVideo_url(videourl);
+        model.setVideo(videourl);
         modelArrayList.add(model);
         adapter.notifyDataSetChanged();
     }
@@ -64,12 +82,58 @@ public class SingleVideoPlayActivity extends AppCompatActivity implements View.O
         switch (view.getId())
         {
             case R.id.layout_post:
-                Utils.callToast(SingleVideoPlayActivity.this,"Post");
+
+                if(connectionDetector.isConnectingToInternet())
+                {
+                   uploadeVideo(sessionManagement.getValueFromPreference(SessionManagement.USERID),videourl);
+                }
+                else
+                    Utils.callToast(SingleVideoPlayActivity.this,getResources().getString(R.string.internet_toast));
+              /* Utils.callToast(SingleVideoPlayActivity.this,"Post");
                 Intent intent=new Intent(SingleVideoPlayActivity.this,MainActivity.class);
                 startActivity(intent);
                 finish();
-                finishAffinity();
+                finishAffinity();*/
                 break;
         }
+    }
+
+    private void uploadeVideo(String userid, String path){
+        Utils.showDialog(SingleVideoPlayActivity.this);
+        MultipartBody.Part fileToUpload=null;
+        if(path!=null&&!path.isEmpty()) {
+            final File file = new File(path);
+            RequestBody mFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+            fileToUpload = MultipartBody.Part.createFormData("video", file.getName(), mFile);
+        }
+        else {
+            return;
+        }
+        RequestBody mid = RequestBody.create(MediaType.parse("text/plain"),userid);
+        Call<SignupResponse> call= RetrofitApis.Factory.createTemp(this).uploadVideo(fileToUpload,mid);
+        call.enqueue(new Callback<SignupResponse>() {
+            @Override
+            public void onResponse(Call<SignupResponse> call, Response<SignupResponse> response) {
+                Utils.dismissDialog();
+                SignupResponse body=response.body();
+                if(body.getStatus()==1){
+                    Utils.callToast(SingleVideoPlayActivity.this,"Posted Successfully");
+                    new File(videourl).delete();
+                    Intent intent=new Intent(SingleVideoPlayActivity.this,MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                    finishAffinity();
+                }
+                else {
+                    Utils.callToast(SingleVideoPlayActivity.this,body.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SignupResponse> call, Throwable t) {
+                Utils.dismissDialog();
+                Log.e("add offer onFailure",""+call.toString());
+            }
+        });
     }
 }

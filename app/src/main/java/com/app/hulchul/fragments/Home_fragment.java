@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.SnapHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +16,23 @@ import android.widget.TextView;
 import com.app.hulchul.R;
 import com.app.hulchul.adapters.SimpleAdapter;
 import com.app.hulchul.model.VideoModel;
+import com.app.hulchul.model.VideosListingResponse;
+import com.app.hulchul.presenter.RetrofitApis;
 import com.app.hulchul.utils.ConnectionDetector;
 import com.app.hulchul.utils.SessionManagement;
 import com.app.hulchul.utils.Utils;
+
+import java.io.File;
 import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import im.ene.toro.widget.Container;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Home_fragment extends Fragment implements View.OnClickListener{
 
@@ -77,7 +88,13 @@ public class Home_fragment extends Fragment implements View.OnClickListener{
 
         adapter = new SimpleAdapter(getActivity(),modelArrayList);
         container.setAdapter(adapter);
-        setDataToContainer();
+
+        if(connectionDetector.isConnectingToInternet())
+        {
+            setDataToContainer();
+        }
+        else
+            Utils.callToast(getActivity(),getResources().getString(R.string.internet_toast));
     }
 
     @Override
@@ -88,6 +105,13 @@ public class Home_fragment extends Fragment implements View.OnClickListener{
                 Utils.callToast(getContext(),"Recommend");
                 tv_recommended.setTypeface(Typeface.DEFAULT_BOLD);
                 tv_trending.setTypeface(Typeface.DEFAULT);
+                if(connectionDetector.isConnectingToInternet())
+                {
+                    setDataToContainer();
+                }
+                else
+                    Utils.callToast(getActivity(),getResources().getString(R.string.internet_toast));
+
                 break;
             case R.id.tv_trending:
                 Utils.callToast(getContext(),"trending");
@@ -97,15 +121,31 @@ public class Home_fragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    private void setDataToContainer()
-    {
-        modelArrayList.clear();
-        for(int i=0;i<urls.length;i++)
-        {
-            VideoModel model=new VideoModel();
-            model.setVideo_url(urls[i]);
-            modelArrayList.add(model);
-        }
-        adapter.notifyDataSetChanged();
+    private void setDataToContainer(){
+        Utils.showDialog(getContext());
+        Call<VideosListingResponse> call= RetrofitApis.Factory.createTemp(getContext()).videosListingService();
+        call.enqueue(new Callback<VideosListingResponse>() {
+            @Override
+            public void onResponse(Call<VideosListingResponse> call, Response<VideosListingResponse> response) {
+                Utils.dismissDialog();
+                VideosListingResponse body=response.body();
+                if(body.getStatus()==1){
+                  if(body.getVideos()!=null && body.getVideos().size()>0) {
+                      modelArrayList.clear();
+                      modelArrayList.addAll(body.getVideos());
+                  }
+                    adapter.notifyDataSetChanged();
+                }
+                else {
+                    Utils.callToast(getActivity(),body.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VideosListingResponse> call, Throwable t) {
+                Utils.dismissDialog();
+                Log.e("videoslist onFailure",""+call.toString());
+            }
+        });
     }
 }

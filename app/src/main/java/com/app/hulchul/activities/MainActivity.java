@@ -21,6 +21,7 @@ import com.app.hulchul.fragments.Discover_fragment;
 import com.app.hulchul.fragments.Home_fragment;
 import com.app.hulchul.fragments.Me_Fragment;
 import com.app.hulchul.fragments.Notification_fragment;
+import com.app.hulchul.utils.SessionManagement;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FragmentTransaction ft;
     private FragmentManager fragmentManager;
     private Fragment fragment;
+    private SessionManagement sessionManagement;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void init()
     {
+        sessionManagement=new SessionManagement(MainActivity.this);
         layout_home.setOnClickListener(this);
         layout_discover.setOnClickListener(this);
         layout_notification.setOnClickListener(this);
@@ -133,8 +136,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.layout_video:
                 setClickableFocus();
                 tv_video.setTextColor(getResources().getColor(R.color.colorPrimary));
-                if(checkingPermissionAreEnabledOrNot())
-                   startActivity(new Intent(MainActivity.this,MakingVideoActivity.class));
+                if(checkingPermissionAreEnabledOrNot()) {
+                    if(sessionManagement.getBooleanValueFromPreference(SessionManagement.ISLOGIN))
+                      startActivity(new Intent(MainActivity.this, MakingVideoActivity.class));
+                    else {
+                        startActivity(new Intent(MainActivity.this, LoginLandingActivity.class));
+                    }
+                }
                 else
                     requestMultiplePermission();
                 break;
