@@ -13,10 +13,13 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.app.hulchul.R;
 import com.app.hulchul.utils.Filters;
@@ -70,6 +73,10 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
     LinearLayout layout_sidevertical;
     @BindView(R.id.layout_bottomicons)
     LinearLayout layout_bottomicons;
+    @BindView(R.id.layout_filterslist)
+    RelativeLayout layout_filterslist;
+    @BindView(R.id.iv_closefilters)
+    ImageView iv_closefilters;
     private boolean isRecordStart=true;
     private Handler handler=new Handler();
 
@@ -94,6 +101,9 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
         iv_startshooting.setOnClickListener(this);
         layout_selectsound.setOnClickListener(this);
         layout_upload.setOnClickListener(this);
+        iv_closefilters.setOnClickListener(this);
+
+        moveDown(true);
     }
 
     @Override
@@ -162,8 +172,12 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
                 }
                 toggleClick = true;
                 break;
+            case R.id.iv_closefilters:
+                moveDown(false);
+                break;
             case R.id.layout_filters:
-                Utils.goToCommonActivity(MakingVideoActivity.this,"Filters work in progress");
+                //moveUp();
+                //Utils.goToCommonActivity(MakingVideoActivity.this,"Filters work in progress");
                /* if (filterDialog == null) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(MakingVideoActivity.this);
                     builder.setTitle("Choose a filter");
@@ -347,5 +361,66 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
         if(filepath!=null)
             new File(filepath).delete();
         finish();
+    }
+
+    public void moveUp(){
+        layout_filterslist.setVisibility(View.VISIBLE);
+        Animation animation1 =
+                AnimationUtils.loadAnimation(getApplicationContext(), R.anim.move_top);
+        layout_filterslist.startAnimation(animation1);
+        animation1.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                layout_filterslist.clearAnimation();
+                RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                        layout_filterslist.getWidth(), layout_filterslist.getHeight());
+                lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                layout_filterslist.setLayoutParams(lp);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+    }
+
+    public void moveDown(boolean isFast){
+        Animation animation1 =
+                AnimationUtils.loadAnimation(getApplicationContext(), R.anim.top_to_bottom);
+        if(isFast)
+          animation1.setDuration(10);
+        else
+            animation1.setDuration(400);
+
+        layout_filterslist.startAnimation(animation1);
+
+        animation1.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                layout_filterslist.clearAnimation();
+                RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                        layout_filterslist.getWidth(), layout_filterslist.getHeight());
+                lp.setMargins(0, 0, 0, -layout_filterslist.getHeight());
+                lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                layout_filterslist.setLayoutParams(lp);
+                layout_filterslist.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
     }
 }
