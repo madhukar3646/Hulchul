@@ -12,7 +12,7 @@
         android:id="@+id/player"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:resize_mode="fixed_height"
+        app:resize_mode="fill"
         app:surface_type="texture_view"
         app:use_controller="false"
         />
@@ -138,7 +138,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginRight="10dp"
             android:layout_alignParentRight="true"
-            android:background="@drawable/round_blacktransparent">
+            >
 
             <LinearLayout
                 android:id="@+id/layout_like"
@@ -227,7 +227,8 @@
             android:layout_alignParentBottom="true"
             android:orientation="horizontal"
             android:weightSum="5"
-            android:background="@android:drawable/screen_background_dark_transparent">
+            android:background="@android:drawable/screen_background_dark_transparent"
+            android:visibility="gone">
 
             <RelativeLayout
                 android:layout_width="0dp"
@@ -276,8 +277,9 @@
             android:id="@+id/layout_commentsandtags"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/layout_commentinput"
+            android:layout_alignParentBottom="true"
             android:orientation="horizontal"
+            android:paddingBottom="10dp"
             android:weightSum="2"
             android:paddingTop="10dp"
             android:background="@android:drawable/screen_background_dark_transparent">
@@ -308,8 +310,9 @@
                             android:id="@+id/latest1_commentfrom"
                             android:text="Satya"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/colorPrimary"
+                            android:textColor="@android:color/white"
                             android:singleLine="true"
+                            android:textStyle="bold"
                             />
                         <TextView
                             android:layout_width="wrap_content"
@@ -334,8 +337,9 @@
                             android:id="@+id/latest2_commentfrom"
                             android:text="Satya"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/colorPrimary"
+                            android:textColor="@android:color/white"
                             android:singleLine="true"
+                            android:textStyle="bold"
                             />
                         <TextView
                             android:layout_width="wrap_content"
