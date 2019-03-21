@@ -2,7 +2,6 @@ package com.app.hulchul.activities;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,9 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -114,10 +111,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ft.commit();
         invalidateOptionsMenu();
 
-        if(this.fragment instanceof Home_fragment)
-            layout_bottomicons.setBackgroundResource(R.drawable.rectanglebg_screenbgtransparent);
-        else
+        if(this.fragment instanceof Home_fragment) {
+            layout_bottomicons.setBackgroundColor(Color.TRANSPARENT);
+        }
+        else {
             layout_bottomicons.setBackgroundColor(Color.BLACK);
+        }
     }
 
     @Override

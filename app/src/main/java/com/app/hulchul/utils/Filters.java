@@ -1,6 +1,8 @@
 package com.app.hulchul.utils;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.app.hulchul.R;
@@ -67,7 +69,7 @@ public enum Filters {
             case MONOCHROME:
                 return new GlMonochromeFilter();
             case OVERLAY:
-                return new GlBitmapOverlaySample(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher_round));
+                return new GlBitmapOverlaySample(BitmapFactory.decodeResource(context.getResources(), R.drawable.overlay2));
             case SEPIA:
                 return new GlSepiaFilter();
             case SHARPEN:

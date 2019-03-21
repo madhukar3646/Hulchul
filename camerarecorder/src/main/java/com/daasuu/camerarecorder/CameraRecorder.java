@@ -39,7 +39,7 @@ public class CameraRecorder {
     private final LensFacing lensFacing;
     private final boolean flipHorizontal;
     private final boolean flipVertical;
-    private final boolean mute;
+    private boolean mute;
     private final CameraManager cameraManager;
     private final boolean isLandscapeDevice;
     private final int degrees;
@@ -216,6 +216,11 @@ public class CameraRecorder {
     /**
      * Start data processing
      */
+
+    public void isMuteRecord(boolean isMute)
+    {
+        this.mute=isMute;
+    }
     public void start(final String filePath) {
         if (started) return;
 

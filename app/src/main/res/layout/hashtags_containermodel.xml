@@ -59,11 +59,12 @@
                         />
 
                     <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_marginRight="5dp"
                         android:layout_centerVertical="true"
                         android:layout_toRightOf="@+id/tv_viewall"
-                        android:src="@mipmap/right_arrow_white"/>
+                        android:src="@mipmap/right_arrow_black"/>
                 </RelativeLayout>
             </RelativeLayout>
             <TextView

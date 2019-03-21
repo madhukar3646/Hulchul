@@ -1,6 +1,7 @@
 package com.app.hulchul.utils;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;

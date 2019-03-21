@@ -1,8 +1,11 @@
 package com.app.hulchul.utils;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
+import com.app.hulchul.R;
 import com.daasuu.camerarecorder.egl.filter.GlOverlayFilter;
 
 public class GlBitmapOverlaySample extends GlOverlayFilter {

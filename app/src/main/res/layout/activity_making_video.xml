@@ -189,22 +189,40 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
         >
 
-        <ImageView
-            android:id="@+id/iv_closefilters"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@mipmap/close_transparent"
-            android:layout_alignParentRight="true"
-            android:layout_margin="10dp"
-            />
+        <RelativeLayout
+            android:id="@+id/layout_titleandclose"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <ImageView
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add filters to video"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/colorPrimary"
+                android:layout_margin="5dp"
+                android:layout_centerVertical="true"/>
+
+            <ImageView
+                android:id="@+id/iv_closefilters"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@mipmap/close_transparent"
+                android:layout_alignParentRight="true"
+                android:layout_margin="5dp"
+                android:padding="5dp"
+                />
+
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView"
-            android:src="@drawable/ic_launcher_background"
+            android:layout_height="200dp"
+            android:id="@+id/rv_filters"
+            android:layout_below="@+id/layout_titleandclose"
             />
     </RelativeLayout>
     </RelativeLayout>

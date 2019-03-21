@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.app.hulchul.R;
 import com.squareup.picasso.Picasso;
@@ -16,12 +15,12 @@ import com.squareup.picasso.Picasso;
  * Created by admin on 4/20/2017.
  */
 
-public class TrendingHashtagsAdapter extends RecyclerView.Adapter<TrendingHashtagsAdapter.MyViewHolder>
+public class TrendingHashtagsBannersAdapter extends RecyclerView.Adapter<TrendingHashtagsBannersAdapter.MyViewHolder>
 {
     private Context context;
     private int width,height;
 
-    public TrendingHashtagsAdapter(Context context)
+    public TrendingHashtagsBannersAdapter(Context context)
     {
         this.context=context;
         DisplayMetrics metrics=context.getResources().getDisplayMetrics();
@@ -30,18 +29,18 @@ public class TrendingHashtagsAdapter extends RecyclerView.Adapter<TrendingHashta
     }
 
     @Override
-    public TrendingHashtagsAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public TrendingHashtagsBannersAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.trendinghashdiscovermodel, parent, false);
 
-        return new TrendingHashtagsAdapter.MyViewHolder(itemView);
+        return new TrendingHashtagsBannersAdapter.MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final TrendingHashtagsAdapter.MyViewHolder holder, final int position)
+    public void onBindViewHolder(final TrendingHashtagsBannersAdapter.MyViewHolder holder, final int position)
     {
-        final TrendingHashtagsAdapter.MyViewHolder myViewHolder=holder;
+        final TrendingHashtagsBannersAdapter.MyViewHolder myViewHolder=holder;
 
         Picasso.with(context).load(R.mipmap.sampleimage)
                 .error(R.mipmap.placeholder)

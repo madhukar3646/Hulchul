@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.app.hulchul.R;
 import com.app.hulchul.adapters.HashtagsCategoriesAdapter;
-import com.app.hulchul.adapters.TrendingHashtagsAdapter;
+import com.app.hulchul.adapters.TrendingHashtagsBannersAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,7 +21,7 @@ public class Discover_fragment extends Fragment {
     RecyclerView rv_trendinghashtags;
     @BindView(R.id.rv_hashtagslistcontainer)
     RecyclerView rv_hashtagslistcontainer;
-    TrendingHashtagsAdapter adapter;
+    TrendingHashtagsBannersAdapter adapter;
     HashtagsCategoriesAdapter hashtagsCategoriesAdapter;
 
     @Override
@@ -37,7 +37,7 @@ public class Discover_fragment extends Fragment {
     private void init(View view)
     {
         rv_trendinghashtags.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false));
-        adapter=new TrendingHashtagsAdapter(getActivity());
+        adapter=new TrendingHashtagsBannersAdapter(getActivity());
         rv_trendinghashtags.setAdapter(adapter);
 
         rv_hashtagslistcontainer.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL, false));

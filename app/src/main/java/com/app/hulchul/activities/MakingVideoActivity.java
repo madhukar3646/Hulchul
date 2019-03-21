@@ -9,6 +9,8 @@ import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.app.hulchul.R;
+import com.app.hulchul.adapters.VideoFiltersAdapter;
 import com.app.hulchul.utils.Filters;
 import com.app.hulchul.utils.SampleGLView;
 import com.app.hulchul.utils.Utils;
@@ -38,7 +41,7 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MakingVideoActivity extends AppCompatActivity implements View.OnClickListener {
+public class MakingVideoActivity extends AppCompatActivity implements View.OnClickListener,VideoFiltersAdapter.onFilterClickListener{
 
     private SampleGLView sampleGLView;
     protected CameraRecorder cameraRecorder;
@@ -77,8 +80,12 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
     RelativeLayout layout_filterslist;
     @BindView(R.id.iv_closefilters)
     ImageView iv_closefilters;
+    @BindView(R.id.rv_filters)
+    RecyclerView rv_filters;
     private boolean isRecordStart=true;
     private Handler handler=new Handler();
+    private VideoFiltersAdapter videoFiltersAdapter;
+    private Filters[] filters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,8 +109,23 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
         layout_selectsound.setOnClickListener(this);
         layout_upload.setOnClickListener(this);
         iv_closefilters.setOnClickListener(this);
-
         moveDown(true);
+        setFiltersData();
+    }
+
+    private void setFiltersData()
+    {
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(MakingVideoActivity.this,4);
+        rv_filters.getLayoutParams().height=this.getResources().getDisplayMetrics().heightPixels/4;
+        filters = Filters.values();
+        CharSequence[] charList = new CharSequence[filters.length];
+        for (int i = 0, n = filters.length; i < n; i++) {
+            charList[i] = filters[i].name();
+        }
+        videoFiltersAdapter=new VideoFiltersAdapter(MakingVideoActivity.this,charList);
+        videoFiltersAdapter.setOnFilterClickListener(this);
+        rv_filters.setLayoutManager(gridLayoutManager);
+        rv_filters.setAdapter(videoFiltersAdapter);
     }
 
     @Override
@@ -144,6 +166,7 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
                         new File(filepath).delete();
                     filepath = getVideoFilePath();
                     handler.postDelayed(timethread,15000);
+                    cameraRecorder.isMuteRecord(true);
                     cameraRecorder.start(filepath);
                     Glide.with(this)
                             .load(R.drawable.loader)
@@ -176,32 +199,7 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
                 moveDown(false);
                 break;
             case R.id.layout_filters:
-                //moveUp();
-                //Utils.goToCommonActivity(MakingVideoActivity.this,"Filters work in progress");
-               /* if (filterDialog == null) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MakingVideoActivity.this);
-                    builder.setTitle("Choose a filter");
-                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                        @Override
-                        public void onDismiss(DialogInterface dialogInterface) {
-                            filterDialog = null;
-                        }
-                    });
-                    final Filters[] filters = Filters.values();
-                    CharSequence[] charList = new CharSequence[filters.length];
-                    for (int i = 0, n = filters.length; i < n; i++) {
-                        charList[i] = filters[i].name();
-                    }
-                    builder.setItems(charList, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            changeFilter(filters[i]);
-                        }
-                    });
-                    filterDialog = builder.show();
-                } else {
-                    filterDialog.dismiss();
-                }*/
+                moveUp();
                 break;
         }
     }
@@ -304,8 +302,6 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
                 .cameraSize(cameraWidth, cameraHeight)
                 .lensFacing(lensFacing)
                 .build();
-
-
     }
 
     private void changeFilter(Filters filters) {
@@ -422,5 +418,10 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
 
             }
         });
+    }
+
+    @Override
+    public void onFilterClick(int filterpos) {
+        changeFilter(filters[filterpos]);
     }
 }

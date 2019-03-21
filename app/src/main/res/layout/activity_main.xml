@@ -15,7 +15,8 @@
     <FrameLayout
         android:id="@+id/layout_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
     </FrameLayout>
 
@@ -25,7 +26,6 @@
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
-        android:background="@android:drawable/screen_background_dark_transparent"
         android:weightSum="5"
         android:paddingBottom="2dp">
         <LinearLayout

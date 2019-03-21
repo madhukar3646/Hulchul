@@ -43,9 +43,9 @@
                 android:id="@+id/iv_searchicon"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@mipmap/ic_launcher"
+                android:src="@mipmap/search_gray"
                 android:layout_alignParentRight="true"
-                android:layout_margin="10dp"
+                android:layout_margin="15dp"
                 android:layout_centerVertical="true"/>
 
             <TextView
