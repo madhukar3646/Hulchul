@@ -153,7 +153,8 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.layout_selectsound:
-                Utils.goToCommonActivity(MakingVideoActivity.this,"select sound work in progress");
+                startActivity(new Intent(MakingVideoActivity.this,MySoundsActivity.class));
+                //Utils.goToCommonActivity(MakingVideoActivity.this,"select sound work in progress");
                 break;
 
             case R.id.layout_upload:

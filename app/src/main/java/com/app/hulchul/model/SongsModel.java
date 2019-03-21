@@ -3,6 +3,7 @@ package com.app.hulchul.model;
 public class SongsModel {
 
     private String songtitle,songartist,displayname,songpath;
+    private boolean isPlaying = false;
     public String getSongtitle() {
         return songtitle;
     }
@@ -33,5 +34,13 @@ public class SongsModel {
 
     public void setSongpath(String songpath) {
         this.songpath = songpath;
+    }
+
+    public boolean isPlaying() {
+        return isPlaying;
+    }
+
+    public void setPlaying(boolean playing) {
+        isPlaying = playing;
     }
 }

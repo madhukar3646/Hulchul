@@ -26,7 +26,8 @@ import com.app.hulchul.presenter.SocialLoginPresenter;
 import com.app.hulchul.utils.ConnectionDetector;
 import com.app.hulchul.utils.SessionManagement;
 import com.app.hulchul.utils.Utils;
-import com.facebook.AccessToken;
+//face book imports
+/*import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -35,7 +36,8 @@ import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
+import com.facebook.login.LoginResult;*/
+//face book imports
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -91,9 +93,10 @@ public class LoginLandingActivity extends AppCompatActivity implements View.OnCl
     private ConnectionDetector cd;
     TwitterAuthClient mTwitterAuthClient;
 
-    private CallbackManager mFacebookCallbackManager;
+    //face book code
+    /*private CallbackManager mFacebookCallbackManager;
     private LoginManager mLoginManager;
-    private AccessTokenTracker mAccessTokenTracker;
+    private AccessTokenTracker mAccessTokenTracker;*/
 
     private ConnectionDetector connectionDetector;
     private SessionManagement sessionManagement;
@@ -101,7 +104,8 @@ public class LoginLandingActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FacebookSdk.sdkInitialize(getApplicationContext());
+        //face book code
+        //FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login_landing);
         ButterKnife.bind(this);
 
@@ -138,7 +142,8 @@ public class LoginLandingActivity extends AppCompatActivity implements View.OnCl
         iv_google.setOnClickListener(this);
         iv_twitter.setOnClickListener(this);
         layout_login.setOnClickListener(this);
-        setupFacebook();
+        //face book code
+        //setupFacebook();
     }
 
     private void singleTextView(TextView textView, final String starttext, String termsofuse, final String middletext,final String privacypolicy)
@@ -202,8 +207,9 @@ public class LoginLandingActivity extends AppCompatActivity implements View.OnCl
                 startActivity(email);
                 break;
             case R.id.iv_fb:
-                mAccessTokenTracker.startTracking();
-                mLoginManager.logInWithReadPermissions(LoginLandingActivity.this, Arrays.asList("public_profile", "email", "user_birthday"));
+                //face book code
+                /*mAccessTokenTracker.startTracking();
+                mLoginManager.logInWithReadPermissions(LoginLandingActivity.this, Arrays.asList("public_profile", "email", "user_birthday"));*/
                 break;
             case R.id.iv_google:
                signIn();
@@ -317,7 +323,8 @@ public class LoginLandingActivity extends AppCompatActivity implements View.OnCl
         });
     }
 
-    private void setupFacebook() {
+    //face book code
+    /*private void setupFacebook() {
         mLoginManager = LoginManager.getInstance();
         mFacebookCallbackManager = CallbackManager.Factory.create();
         mAccessTokenTracker = new AccessTokenTracker() {
@@ -378,7 +385,7 @@ public class LoginLandingActivity extends AppCompatActivity implements View.OnCl
         parameters.putString("fields", "first_name,last_name,email");
         request.setParameters(parameters);
         request.executeAsync();
-    }
+    }*/
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -392,7 +399,8 @@ public class LoginLandingActivity extends AppCompatActivity implements View.OnCl
         }
         else {
             mTwitterAuthClient.onActivityResult(requestCode, resultCode, data);
-            mFacebookCallbackManager.onActivityResult(requestCode, resultCode, data);
+            //face book code
+            //mFacebookCallbackManager.onActivityResult(requestCode, resultCode, data);
         }
     }
 
