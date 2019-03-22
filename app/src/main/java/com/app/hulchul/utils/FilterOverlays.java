@@ -2,13 +2,13 @@ package com.app.hulchul.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+
 import com.daasuu.camerarecorder.egl.filter.GlOverlayFilter;
 
-public class GlBitmapOverlaySample extends GlOverlayFilter {
-
+public class FilterOverlays extends GlOverlayFilter {
     private Bitmap bitmap;
 
-    public GlBitmapOverlaySample(Bitmap bitmap) {
+    public FilterOverlays(Bitmap bitmap) {
         this.bitmap = bitmap;
     }
 

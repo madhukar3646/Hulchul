@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.FrameLayout;
 
 public class PortraitFrameLayout extends FrameLayout {
@@ -24,6 +25,7 @@ public class PortraitFrameLayout extends FrameLayout {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int width = getMeasuredWidth();
-        setMeasuredDimension(width, width / 9 * 16);
+        //Log.e("preview sizes",""+width+", "+width / 9 * 16);
+        setMeasuredDimension(width, getMeasuredHeight());
     }
 }

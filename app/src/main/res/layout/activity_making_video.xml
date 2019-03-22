@@ -6,12 +6,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary">
 
         <com.app.hulchul.utils.PortraitFrameLayout
             android:id="@+id/wrap_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_centerInParent="true"
              />
     </RelativeLayout>
 
@@ -27,8 +29,9 @@
         >
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="5dp"
             android:src="@mipmap/close_transparent"
             />
 
@@ -177,8 +180,8 @@
 
         <ImageView
             android:id="@+id/iv_record"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:src="@mipmap/video"
             />
     </RelativeLayout>
@@ -190,6 +193,7 @@
         android:layout_marginTop="10dp"
         android:layout_alignParentBottom="true"
         android:background="@android:color/white"
+        android:visibility="visible"
         >
 
         <RelativeLayout

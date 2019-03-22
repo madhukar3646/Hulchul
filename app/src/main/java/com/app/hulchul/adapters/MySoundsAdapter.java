@@ -35,6 +35,7 @@ public class MySoundsAdapter extends RecyclerView.Adapter<MySoundsAdapter.ViewHo
     private int last_index = -1;
     private int width;
     private ViewHolder myholder;
+    private OnSoundSelectionListener onSoundSelectionListener;
 
     public MySoundsAdapter(Activity context, ArrayList<SongsModel> songsModelArrayList){
         this.context = context;
@@ -42,6 +43,10 @@ public class MySoundsAdapter extends RecyclerView.Adapter<MySoundsAdapter.ViewHo
         this.width=context.getResources().getDisplayMetrics().widthPixels;
     }
 
+    public void setSoundSelectionListener(OnSoundSelectionListener onSoundSelectionListener)
+    {
+        this.onSoundSelectionListener=onSoundSelectionListener;
+    }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -149,7 +154,10 @@ public class MySoundsAdapter extends RecyclerView.Adapter<MySoundsAdapter.ViewHo
             layout_checked.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Utils.callToast(context,"Checked");
+                    int position = getAdapterPosition();
+                    SongsModel songsModel = songsModelArrayList.get(position);
+                    if(onSoundSelectionListener!=null)
+                        onSoundSelectionListener.onSoundSelected(songsModel);
                 }
             });
         }
@@ -201,5 +209,10 @@ public class MySoundsAdapter extends RecyclerView.Adapter<MySoundsAdapter.ViewHo
                 }
             });
         }
+    }
+
+    public interface OnSoundSelectionListener
+    {
+        void onSoundSelected(SongsModel songsModel);
     }
 }

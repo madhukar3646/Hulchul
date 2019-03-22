@@ -1,5 +1,6 @@
 package com.app.hulchul.activities;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +21,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MySoundsActivity extends AppCompatActivity {
+public class MySoundsActivity extends AppCompatActivity implements MySoundsAdapter.OnSoundSelectionListener{
 
     @BindView(R.id.back_btn)
     ImageView back_btn;
@@ -40,6 +41,7 @@ public class MySoundsActivity extends AppCompatActivity {
     private void init()
     {
         soundsAdapter=new MySoundsAdapter(MySoundsActivity.this,songsModelArrayList);
+        soundsAdapter.setSoundSelectionListener(this);
         rv_mysounds.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         rv_mysounds.setAdapter(soundsAdapter);
         setMusicDataTolist();
@@ -103,5 +105,14 @@ public class MySoundsActivity extends AppCompatActivity {
     protected void onStop() {
         soundsAdapter.stopPlayerFromActivity();
         super.onStop();
+    }
+
+    @Override
+    public void onSoundSelected(SongsModel songsModel) {
+        Intent intent=new Intent(MySoundsActivity.this,MakingVideoActivity.class);
+        intent.putExtra("songpath",songsModel.getSongpath());
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
     }
 }

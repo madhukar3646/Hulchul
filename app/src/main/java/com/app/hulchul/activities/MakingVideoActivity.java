@@ -2,6 +2,7 @@ package com.app.hulchul.activities;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
@@ -11,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,11 +23,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.app.hulchul.R;
 import com.app.hulchul.adapters.VideoFiltersAdapter;
-import com.app.hulchul.utils.Filters;
+import com.app.hulchul.utils.Effects;
 import com.app.hulchul.utils.SampleGLView;
 import com.app.hulchul.utils.Utils;
 import com.bumptech.glide.Glide;
@@ -35,6 +36,7 @@ import com.daasuu.camerarecorder.CameraRecorderBuilder;
 import com.daasuu.camerarecorder.LensFacing;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -47,10 +49,12 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
     protected CameraRecorder cameraRecorder;
     private String filepath;
     protected LensFacing lensFacing = LensFacing.BACK;
-    protected int cameraWidth = 1280;
-    protected int cameraHeight = 720;
-    protected int videoWidth = 720;
-    protected int videoHeight = 1280;
+    int seven20=720;
+    int onetwo80=1280;
+    protected int cameraWidth = onetwo80;
+    protected int cameraHeight = seven20;
+    protected int videoWidth = seven20;
+    protected int videoHeight = onetwo80;
     private AlertDialog filterDialog;
     private boolean toggleClick = false;
 
@@ -85,7 +89,9 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
     private boolean isRecordStart=true;
     private Handler handler=new Handler();
     private VideoFiltersAdapter videoFiltersAdapter;
-    private Filters[] filters;
+    private Effects[] effects;
+    private MediaPlayer musicplayer;
+    private String musicpath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +104,19 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
 
     private void init()
     {
+        if(getIntent().getStringExtra("songpath")!=null)
+        {
+            musicpath=getIntent().getStringExtra("songpath");
+            musicplayer=new MediaPlayer();
+            try {
+                musicplayer.setDataSource(musicpath);
+                musicplayer.prepare();
+            }
+            catch (IOException e) { Log.e("LOG_TAG", "prepare() failed"); }
+        }
+
+        DisplayMetrics metrics=getResources().getDisplayMetrics();
+        Log.e("width and height",""+metrics.widthPixels+", "+metrics.heightPixels);
         iv_record.setOnClickListener(this);
         iv_record.setImageResource(R.mipmap.video);
         layout_filters.setOnClickListener(this);
@@ -117,10 +136,10 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
     {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(MakingVideoActivity.this,4);
         rv_filters.getLayoutParams().height=this.getResources().getDisplayMetrics().heightPixels/4;
-        filters = Filters.values();
-        CharSequence[] charList = new CharSequence[filters.length];
-        for (int i = 0, n = filters.length; i < n; i++) {
-            charList[i] = filters[i].name();
+        effects = Effects.values();
+        CharSequence[] charList = new CharSequence[effects.length];
+        for (int i = 0, n = effects.length; i < n; i++) {
+            charList[i] = effects[i].name();
         }
         videoFiltersAdapter=new VideoFiltersAdapter(MakingVideoActivity.this,charList);
         videoFiltersAdapter.setOnFilterClickListener(this);
@@ -135,6 +154,8 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
         {
             case R.id.layout_close:
                 releaseCamera();
+                if(musicplayer!=null)
+                musicplayer.stop();
                 if(filepath!=null)
                     new File(filepath).delete();
                 finish();
@@ -169,6 +190,8 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
                     handler.postDelayed(timethread,15000);
                     cameraRecorder.isMuteRecord(true);
                     cameraRecorder.start(filepath);
+                    if(musicplayer!=null)
+                    musicplayer.start();
                     Glide.with(this)
                             .load(R.drawable.loader)
                             .placeholder(R.drawable.circle_placeholder)
@@ -178,6 +201,8 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
                     isRecordStart=false;
                 } else {
                     cameraRecorder.stop();
+                    if(musicplayer!=null)
+                    musicplayer.stop();
                     iv_record.setImageResource(R.mipmap.video);
                     isRecordStart=true;
                     goToSinglePlayActivity();
@@ -305,8 +330,8 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
                 .build();
     }
 
-    private void changeFilter(Filters filters) {
-        cameraRecorder.setFilter(Filters.getFilterInstance(filters, getApplicationContext()));
+    private void changeFilter(Effects filters) {
+        cameraRecorder.setFilter(Effects.getFilterInstance(filters, getApplicationContext()));
     }
 
 
@@ -332,6 +357,7 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
     {
         Intent intent=new Intent(MakingVideoActivity.this,SingleVideoPlayActivity.class);
         intent.putExtra("videourl",filepath);
+        intent.putExtra("songpath",musicpath);
         startActivity(intent);
     }
 
@@ -339,6 +365,8 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
         @Override
         public void run() {
             cameraRecorder.stop();
+            if(musicplayer!=null)
+            musicplayer.stop();
             iv_record.setImageResource(R.mipmap.video);
             isRecordStart=true;
             goToSinglePlayActivity();
@@ -349,12 +377,16 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if(musicplayer!=null)
+        musicplayer.stop();
         handler.removeCallbacks(timethread);
     }
 
     @Override
     public void onBackPressed() {
         releaseCamera();
+        if(musicplayer!=null)
+        musicplayer.stop();
         if(filepath!=null)
             new File(filepath).delete();
         finish();
@@ -423,6 +455,6 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onFilterClick(int filterpos) {
-        changeFilter(filters[filterpos]);
+        changeFilter(effects[filterpos]);
     }
 }

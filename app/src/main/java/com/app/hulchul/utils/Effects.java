@@ -1,8 +1,6 @@
 package com.app.hulchul.utils;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.app.hulchul.R;
@@ -27,7 +25,7 @@ import com.daasuu.camerarecorder.egl.filter.GlWeakPixelInclusionFilter;
 
 import java.io.InputStream;
 
-public enum Filters {
+public enum Effects {
     NORMAL,
     BILATERAL,
     BOX_BLUR,
@@ -48,7 +46,7 @@ public enum Filters {
     WEAKPIXELINCLUSION,
     FILTER_GROUP;
 
-    public static GlFilter getFilterInstance(Filters filter, Context context) {
+    public static GlFilter getFilterInstance(Effects filter, Context context) {
         switch (filter) {
             case BILATERAL:
                 return new GlBilateralFilter();

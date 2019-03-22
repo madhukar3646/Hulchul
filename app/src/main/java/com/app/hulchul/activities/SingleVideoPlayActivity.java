@@ -2,6 +2,7 @@ package com.app.hulchul.activities;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,13 +15,13 @@ import com.app.hulchul.R;
 import com.app.hulchul.adapters.SingleVideoAdapter;
 import com.app.hulchul.model.SignupResponse;
 import com.app.hulchul.model.VideoModel;
-import com.app.hulchul.presenter.LoginPresenter;
 import com.app.hulchul.presenter.RetrofitApis;
 import com.app.hulchul.utils.ConnectionDetector;
 import com.app.hulchul.utils.SessionManagement;
 import com.app.hulchul.utils.Utils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,6 +47,9 @@ public class SingleVideoPlayActivity extends AppCompatActivity implements View.O
     private ConnectionDetector connectionDetector;
     private SessionManagement sessionManagement;
 
+    private MediaPlayer musicplayer;
+    private String musicpath;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +61,18 @@ public class SingleVideoPlayActivity extends AppCompatActivity implements View.O
 
     private void init()
     {
+        if(getIntent().getStringExtra("songpath")!=null)
+        {
+            musicpath=getIntent().getStringExtra("songpath");
+            musicplayer=new MediaPlayer();
+            try {
+                musicplayer.setDataSource(musicpath);
+                musicplayer.prepare();
+                musicplayer.start();
+            }
+            catch (IOException e) { Log.e("LOG_TAG", "prepare() failed"); }
+        }
+
         connectionDetector=new ConnectionDetector(SingleVideoPlayActivity.this);
         sessionManagement=new SessionManagement(SingleVideoPlayActivity.this);
         layout_post.setOnClickListener(this);
@@ -135,5 +151,19 @@ public class SingleVideoPlayActivity extends AppCompatActivity implements View.O
                 Log.e("add offer onFailure",""+call.toString());
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(musicplayer!=null)
+        musicplayer.stop();
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if(musicplayer!=null)
+            musicplayer.stop();
+        super.onDestroy();
     }
 }
