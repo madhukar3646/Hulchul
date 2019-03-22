@@ -118,11 +118,9 @@ public class CameraRecorderBuilder {
                 degrees,
                 recordNoFilter
         );
-
-        cameraRecorder.setFilter(glFilter);
+        cameraRecorder.setEffect(glFilter);
         activity = null;
         resources = null;
         return cameraRecorder;
     }
-
 }

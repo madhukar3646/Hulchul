@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    >
 
     <RelativeLayout
         android:id="@+id/layout_filtercontainer"
         android:layout_width="100dp"
         android:layout_height="120dp"
-        android:layout_margin="5dp"
         >
 
         <RelativeLayout
@@ -18,8 +18,19 @@
                 android:id="@+id/iv_filterimage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/f1_thumb"
+                android:background="#d4d1d7"
                 />
+            <TextView
+                android:id="@+id/tv_filtername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:text="Filter Name"
+                android:gravity="center"
+                android:textColor="@android:color/black"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="5dp"/>
         </RelativeLayout>
 
     </RelativeLayout>

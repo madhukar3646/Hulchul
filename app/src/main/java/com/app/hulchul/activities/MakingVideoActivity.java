@@ -2,6 +2,7 @@ package com.app.hulchul.activities;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Environment;
@@ -23,10 +24,15 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.app.hulchul.R;
-import com.app.hulchul.adapters.VideoFiltersAdapter;
+import com.app.hulchul.adapters.VideoEffectsAdapter;
+import com.app.hulchul.adapters.VideoFilteroverlaysAdapter;
+import com.app.hulchul.model.EffectsModel;
+import com.app.hulchul.model.FiltersModel;
 import com.app.hulchul.utils.Effects;
+import com.app.hulchul.utils.FilterOverlays;
 import com.app.hulchul.utils.SampleGLView;
 import com.app.hulchul.utils.Utils;
 import com.bumptech.glide.Glide;
@@ -38,24 +44,22 @@ import com.daasuu.camerarecorder.LensFacing;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MakingVideoActivity extends AppCompatActivity implements View.OnClickListener,VideoFiltersAdapter.onFilterClickListener{
+public class MakingVideoActivity extends AppCompatActivity implements View.OnClickListener, VideoEffectsAdapter.onEffectClickListener,VideoFilteroverlaysAdapter.onFilterClickListener{
 
     private SampleGLView sampleGLView;
     protected CameraRecorder cameraRecorder;
     private String filepath;
     protected LensFacing lensFacing = LensFacing.BACK;
-    int seven20=720;
-    int onetwo80=1280;
-    protected int cameraWidth = onetwo80;
-    protected int cameraHeight = seven20;
-    protected int videoWidth = seven20;
-    protected int videoHeight = onetwo80;
-    private AlertDialog filterDialog;
+    protected int cameraWidth = 1280;
+    protected int cameraHeight = 720;
+    protected int videoWidth = 720;
+    protected int videoHeight = 1280;
     private boolean toggleClick = false;
 
     @BindView(R.id.layout_close)
@@ -74,6 +78,8 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
     ImageView iv_record;
     @BindView(R.id.layout_selectsound)
     LinearLayout layout_selectsound;
+    @BindView(R.id.layout_selecteffects)
+    LinearLayout layout_selecteffects;
     @BindView(R.id.layout_upload)
     LinearLayout layout_upload;
     @BindView(R.id.layout_sidevertical)
@@ -84,14 +90,27 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
     RelativeLayout layout_filterslist;
     @BindView(R.id.iv_closefilters)
     ImageView iv_closefilters;
+    @BindView(R.id.tv_selectiontitle)
+    TextView tv_selectiontitle;
     @BindView(R.id.rv_filters)
     RecyclerView rv_filters;
+
     private boolean isRecordStart=true;
     private Handler handler=new Handler();
-    private VideoFiltersAdapter videoFiltersAdapter;
+    private VideoEffectsAdapter videoEffectsAdapter;
+    private VideoFilteroverlaysAdapter videoFilteroverlaysAdapter;
     private Effects[] effects;
     private MediaPlayer musicplayer;
     private String musicpath;
+
+    private ArrayList<EffectsModel> effectsModelArrayList=new ArrayList<>();
+    private ArrayList<FiltersModel> filtersModelArrayList=new ArrayList<>();
+    private int filterthumbnails[]={R.drawable.f1_thumb,R.drawable.f2_thumb,R.drawable.f3_thumb,R.drawable.f4_thumb,
+            R.drawable.f5_thumb,R.drawable.f6_thumb,R.drawable.f7_thumb,R.drawable.f8_thumb,R.drawable.f9_thumb,R.drawable.f10_thumb,
+            R.drawable.f11_thumb,R.drawable.f12_thumb,R.drawable.f13_thumb,R.drawable.f14_thumb,R.drawable.f15_thumb};
+    private int filteroverlays[]={R.drawable.f1,R.drawable.f2,R.drawable.f3,R.drawable.f4,
+            R.drawable.f5,R.drawable.f6,R.drawable.f7,R.drawable.f8,R.drawable.f9,R.drawable.f10,
+            R.drawable.f11,R.drawable.f12,R.drawable.f13,R.drawable.f14,R.drawable.f15};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,23 +147,47 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
         layout_selectsound.setOnClickListener(this);
         layout_upload.setOnClickListener(this);
         iv_closefilters.setOnClickListener(this);
+        layout_selecteffects.setOnClickListener(this);
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(MakingVideoActivity.this,4);
+        rv_filters.getLayoutParams().height=this.getResources().getDisplayMetrics().heightPixels/4;
+        rv_filters.setLayoutManager(gridLayoutManager);
+
         moveDown(true);
+        setEffectsData();
         setFiltersData();
+    }
+
+    private void setEffectsData()
+    {
+        EffectsModel model;
+        effectsModelArrayList.clear();
+        effects = Effects.values();
+        CharSequence[] charList = new CharSequence[effects.length];
+        for (int i = 0, n = effects.length; i < n; i++) {
+            model=new EffectsModel();
+            model.setFiltername(effects[i].name());
+            model.setSelected(false);
+            effectsModelArrayList.add(model);
+        }
+        videoEffectsAdapter=new VideoEffectsAdapter(MakingVideoActivity.this,effectsModelArrayList);
+        videoEffectsAdapter.setOnEffectClickListener(this);
     }
 
     private void setFiltersData()
     {
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(MakingVideoActivity.this,4);
-        rv_filters.getLayoutParams().height=this.getResources().getDisplayMetrics().heightPixels/4;
-        effects = Effects.values();
-        CharSequence[] charList = new CharSequence[effects.length];
-        for (int i = 0, n = effects.length; i < n; i++) {
-            charList[i] = effects[i].name();
-        }
-        videoFiltersAdapter=new VideoFiltersAdapter(MakingVideoActivity.this,charList);
-        videoFiltersAdapter.setOnFilterClickListener(this);
-        rv_filters.setLayoutManager(gridLayoutManager);
-        rv_filters.setAdapter(videoFiltersAdapter);
+        filtersModelArrayList.clear();
+        FiltersModel model;
+       for(int i=0;i<15;i++)
+       {
+           model=new FiltersModel();
+           model.setFilter_layer(filteroverlays[i]);
+           model.setThumbnailid(filterthumbnails[i]);
+           model.setSelected(false);
+           filtersModelArrayList.add(model);
+       }
+       videoFilteroverlaysAdapter=new VideoFilteroverlaysAdapter(MakingVideoActivity.this,filtersModelArrayList);
+       videoFilteroverlaysAdapter.setOnFilterClickListener(this);
     }
 
     @Override
@@ -224,7 +267,14 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
             case R.id.iv_closefilters:
                 moveDown(false);
                 break;
+            case R.id.layout_selecteffects:
+                tv_selectiontitle.setText("Add effects to video");
+                rv_filters.setAdapter(videoEffectsAdapter);
+                moveUp();
+                break;
             case R.id.layout_filters:
+                tv_selectiontitle.setText("Add filters to video");
+                rv_filters.setAdapter(videoFilteroverlaysAdapter);
                 moveUp();
                 break;
         }
@@ -330,8 +380,8 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
                 .build();
     }
 
-    private void changeFilter(Effects filters) {
-        cameraRecorder.setFilter(Effects.getFilterInstance(filters, getApplicationContext()));
+    private void changeEffects(Effects filters) {
+        cameraRecorder.setEffect(Effects.getFilterInstance(filters, getApplicationContext()));
     }
 
 
@@ -454,7 +504,12 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
     }
 
     @Override
-    public void onFilterClick(int filterpos) {
-        changeFilter(effects[filterpos]);
+    public void onEffectClick(int filterpos) {
+        changeEffects(effects[filterpos]);
+    }
+
+    @Override
+    public void onFilterClick(Bitmap bitmap) {
+        cameraRecorder.setEffect(new FilterOverlays(bitmap));
     }
 }

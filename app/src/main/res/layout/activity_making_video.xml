@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary">
+       >
 
         <com.app.hulchul.utils.PortraitFrameLayout
             android:id="@+id/wrap_view"
@@ -87,7 +87,7 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:background="@android:drawable/screen_background_dark_transparent"
-        android:weightSum="3"
+        android:weightSum="4"
         android:paddingBottom="2dp">
         <LinearLayout
             android:id="@+id/layout_selectsound"
@@ -111,6 +111,32 @@
                 android:text="Select sound"
                 android:textSize="12sp"
                 android:textColor="#19938d"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_gravity="center"
+                android:gravity="center"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_selecteffects"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_gravity="bottom">
+
+            <ImageView
+                android:id="@+id/iv_selecteffects"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@mipmap/effects"
+                android:layout_gravity="center"
+                android:gravity="center"/>
+            <TextView
+                android:id="@+id/tv_selecteffects"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Effects"
+                android:textSize="12sp"
+                android:textColor="@android:color/white"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_gravity="center"
                 android:gravity="center"/>
@@ -202,6 +228,7 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/tv_selectiontitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Add filters to video"
@@ -229,5 +256,6 @@
             android:layout_below="@+id/layout_titleandclose"
             />
     </RelativeLayout>
+
     </RelativeLayout>
 </RelativeLayout>
