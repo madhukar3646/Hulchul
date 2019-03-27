@@ -1,7 +1,9 @@
 package com.app.hulchul.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.widget.ImageView;
 
 import com.app.hulchul.R;
 import com.app.hulchul.adapters.MySoundsAdapter;
+import com.app.hulchul.fragments.LocalVideos_fragment;
 import com.app.hulchul.model.SongsModel;
 
 import java.util.ArrayList;
@@ -44,13 +47,13 @@ public class MySoundsActivity extends AppCompatActivity implements MySoundsAdapt
         soundsAdapter.setSoundSelectionListener(this);
         rv_mysounds.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         rv_mysounds.setAdapter(soundsAdapter);
-        setMusicDataTolist();
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
               onBackPressed();
             }
         });
+        new LoadMusicFiles().execute("");
     }
 
     private void setMusicDataTolist()
@@ -85,8 +88,6 @@ public class MySoundsActivity extends AppCompatActivity implements MySoundsAdapt
                 songsModelArrayList.add(songsModel);
             }
         }
-
-        soundsAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -114,5 +115,28 @@ public class MySoundsActivity extends AppCompatActivity implements MySoundsAdapt
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
+    }
+
+    private class LoadMusicFiles extends AsyncTask<String, String, String>
+    {
+        ProgressDialog progressDialog;
+        @Override
+        protected void onPreExecute() {
+            progressDialog = ProgressDialog.show(MySoundsActivity.this,
+                    "Loading please wait...",null);
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            setMusicDataTolist();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            soundsAdapter.notifyDataSetChanged();
+            progressDialog.dismiss();
+        }
     }
 }

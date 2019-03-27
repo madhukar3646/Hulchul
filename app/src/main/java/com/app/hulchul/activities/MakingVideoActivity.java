@@ -221,7 +221,7 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.layout_upload:
-                Utils.goToCommonActivity(MakingVideoActivity.this,"Upload work in progress");
+                startActivity(new Intent(MakingVideoActivity.this,DisplayLocalVodsImagesActivity.class));
                 break;
 
             case R.id.iv_record:

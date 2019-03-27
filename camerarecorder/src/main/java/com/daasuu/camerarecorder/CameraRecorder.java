@@ -20,7 +20,6 @@ import com.daasuu.camerarecorder.egl.filter.GlFilter;
 
 public class CameraRecorder {
     private GlPreviewRenderer glPreviewRenderer;
-
     private final CameraRecordListener cameraRecordListener;
     private static final String TAG = "CameraRecorder";
 

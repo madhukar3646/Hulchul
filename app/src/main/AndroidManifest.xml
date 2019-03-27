@@ -26,9 +26,11 @@
         android:roundIcon="@mipmap/app_iconrounded"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.MySoundsActivity"
-            android:screenOrientation="portrait"
-            ></activity>
+        <activity android:name=".activities.DisplayLocalVodsImagesActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.MySoundsActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.SingleVideoPlayActivity"
             android:screenOrientation="portrait" />
@@ -52,8 +54,7 @@
         </activity>
         <activity
             android:name=".activities.MakingVideoActivity"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".CommonEmptyActivity"
             android:screenOrientation="portrait" />

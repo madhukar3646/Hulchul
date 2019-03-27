@@ -2,6 +2,7 @@ package com.app.hulchul.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.util.Log;
 
 import com.daasuu.camerarecorder.egl.filter.GlOverlayFilter;
 
@@ -15,6 +16,7 @@ public class FilterOverlays extends GlOverlayFilter {
     @Override
     protected void drawCanvas(Canvas canvas) {
         if (bitmap != null && !bitmap.isRecycled()) {
+            Log.e("drawing overlay","overlay");
             canvas.drawBitmap(bitmap, 0, 0, null);
         }
     }
