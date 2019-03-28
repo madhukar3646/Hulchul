@@ -11,6 +11,18 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upload"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
         <ImageView
             android:id="@+id/close_btn"
             android:layout_width="56dp"
@@ -21,17 +33,44 @@
             android:visibility="visible"
             android:layout_alignParentRight="true"
             />
-        <TextView
-            android:id="@+id/tv_title"
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/back_btn"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/tv_title"
+            android:layout_toLeftOf="@+id/close_btn"
             android:layout_marginLeft="10dp"
-            android:text="Upload"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:layout_centerInParent="true"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
+            android:layout_marginRight="10dp"
+            >
+
+            <RelativeLayout
+                android:id="@+id/layout_selectedimages"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true">
+
+                <TextView
+                    android:id="@+id/tv_selectedcount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Selected(3)"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+                <ImageView
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_toRightOf="@+id/tv_selectedcount"
+                    android:src="@mipmap/right_arrow_white"
+                    android:layout_marginLeft="5dp"
+                    android:layout_centerVertical="true"/>
+            </RelativeLayout>
+        </RelativeLayout>
+
+
     </RelativeLayout>
 
     <RelativeLayout

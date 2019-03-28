@@ -14,14 +14,17 @@
             android:id="@+id/iv_catimage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="2dp"
+            android:layout_margin="5dp"
             android:layout_centerInParent="true"
-            android:scaleType="fitXY"/>
+            android:background="#1A000000"
+            />
 
         <ImageView
+            android:id="@+id/iv_selectimage"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@mipmap/play_video"
-            android:layout_centerInParent="true"/>
+            android:src="@mipmap/tick_white"
+            android:layout_centerInParent="true"
+            android:visibility="visible"/>
     </RelativeLayout>
 </LinearLayout>

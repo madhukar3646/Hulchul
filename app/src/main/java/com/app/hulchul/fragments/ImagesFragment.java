@@ -15,18 +15,21 @@ import android.view.ViewGroup;
 
 import com.app.hulchul.R;
 import com.app.hulchul.adapters.LocalImagesAdapter;
+import com.app.hulchul.model.Local_imagesmodel;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ImagesFragment extends Fragment {
+public class ImagesFragment extends Fragment implements LocalImagesAdapter.onImagesSelectionListener{
 
     @BindView(R.id.rv_imageslist)
     RecyclerView rv_imageslist;
     LocalImagesAdapter adapter;
-    private ArrayList<String> listOfAllImages=new ArrayList<>();
+    private ArrayList<Local_imagesmodel> listOfAllImages=new ArrayList<>();
+    private ArrayList<String> selected_imageslist=new ArrayList<>();
+    private onSelectionImagesListener onSelectionImagesListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,14 +41,20 @@ public class ImagesFragment extends Fragment {
         return view;
     }
 
+    public void setonSelectionImagesListener(onSelectionImagesListener onSelectionImagesListener)
+    {
+        this.onSelectionImagesListener=onSelectionImagesListener;
+    }
+
     private void init(View view)
     {
         adapter=new LocalImagesAdapter(getActivity(),listOfAllImages);
+        adapter.setOnImagesSelectionListener(this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),3);
         rv_imageslist.setLayoutManager(gridLayoutManager);
         rv_imageslist.setAdapter(adapter);
 
-        new LoadImages().equals("");
+        new LoadImages().execute("");
     }
 
     public void getImagesPath(Activity activity) {
@@ -67,9 +76,21 @@ public class ImagesFragment extends Fragment {
                 .getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
         while (cursor.moveToNext()) {
             PathOfImage = cursor.getString(column_index_data);
-
-            listOfAllImages.add(PathOfImage);
+            Local_imagesmodel local_imagesmodel=new Local_imagesmodel();
+            local_imagesmodel.setPath(PathOfImage);
+            listOfAllImages.add(local_imagesmodel);
         }
+    }
+
+    @Override
+    public void onImageSelected(String path) {
+       if(selected_imageslist.contains(path))
+           selected_imageslist.remove(path);
+       else
+           selected_imageslist.add(path);
+
+       if(onSelectionImagesListener!=null)
+           onSelectionImagesListener.onImageSelected(selected_imageslist);
     }
 
     private class LoadImages extends AsyncTask<String, String, String>
@@ -83,7 +104,6 @@ public class ImagesFragment extends Fragment {
 
         @Override
         protected String doInBackground(String... strings) {
-
             getImagesPath(getActivity());
             return null;
         }
@@ -93,5 +113,10 @@ public class ImagesFragment extends Fragment {
             adapter.notifyDataSetChanged();
             progressDialog.dismiss();
         }
+    }
+
+    public interface onSelectionImagesListener
+    {
+        void onImageSelected(ArrayList<String> selected_imageslist);
     }
 }

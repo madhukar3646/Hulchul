@@ -25,6 +25,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/app_iconrounded"
         android:supportsRtl="true"
+        android:largeHeap="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activities.DisplayLocalVodsImagesActivity"
             android:screenOrientation="portrait"></activity>
