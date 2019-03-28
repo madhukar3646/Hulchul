@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.app.hulchul.CommonEmptyActivity;
 import com.app.hulchul.R;
-import com.app.hulchul.activities.LoginActivity;
+import com.app.hulchul.activities.EditProfileActivity;
 import com.app.hulchul.activities.LoginLandingActivity;
 import com.app.hulchul.adapters.VideothumbnailsAdapter;
 import com.app.hulchul.utils.ConnectionDetector;
@@ -151,8 +151,7 @@ public class Me_Fragment extends Fragment implements View.OnClickListener{
 
                 break;
             case R.id.layout_editprofile:
-                Intent editprofile=new Intent(getActivity(), CommonEmptyActivity.class);
-                editprofile.putExtra("common","Profile");
+                Intent editprofile=new Intent(getActivity(), EditProfileActivity.class);
                 startActivity(editprofile);
                 break;
             case R.id.layout_yourvideos:
