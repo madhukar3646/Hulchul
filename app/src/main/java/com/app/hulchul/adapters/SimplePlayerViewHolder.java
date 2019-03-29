@@ -122,18 +122,25 @@ public class SimplePlayerViewHolder extends RecyclerView.ViewHolder implements T
         }
         helper.initialize(playbackInfo);
         helper.addPlayerEventListener(this);
-
-        musicplayer=new MediaPlayer();
     }
 
     @Override public void play() {
         if (helper != null) helper.play();
-        try {
-            musicplayer.setDataSource(musicpath);
-            musicplayer.prepare();
+        if(musicplayer==null)
+        {
+            musicplayer = new MediaPlayer();
+            try {
+                musicplayer.setDataSource(musicpath);
+                musicplayer.prepare();
+                musicplayer.start();
+            } catch (IOException e) {
+                Log.e("LOG_TAG", "prepare() failed");
+            }
+        }
+        else {
+            musicplayer.seekTo(0);
             musicplayer.start();
         }
-        catch (IOException e) { Log.e("LOG_TAG", "prepare() failed"); }
     }
 
     @Override public void pause() {
@@ -168,6 +175,7 @@ public class SimplePlayerViewHolder extends RecyclerView.ViewHolder implements T
     }
 
     void bindMusic(String url) {
+        musicplayer=null;
         this.musicpath = url;
     }
 
