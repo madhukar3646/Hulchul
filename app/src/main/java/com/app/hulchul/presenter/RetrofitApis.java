@@ -5,6 +5,7 @@ import com.app.hulchul.model.CreatepasswordRequest;
 import com.app.hulchul.model.ForgotPasswordRequest;
 import com.app.hulchul.model.ForgotPasswordResponse;
 import com.app.hulchul.model.LoginRequest;
+import com.app.hulchul.model.ServerSoundsResponse;
 import com.app.hulchul.model.SocialloginRequest;
 import com.app.hulchul.model.Validateotp;
 import com.app.hulchul.model.SignUpRequest;
@@ -99,9 +100,12 @@ public interface RetrofitApis {
 
     @Multipart
     @POST("uploadVideo")
-    Call<SignupResponse> uploadVideo(@Part MultipartBody.Part file, @Part("userId") RequestBody userId);
+    Call<SignupResponse> uploadVideo(@Part MultipartBody.Part file, @Part("userId") RequestBody userId,@Part("songId") RequestBody songId);
 
     @GET("userVideos")
     Call<VideosListingResponse> videosListingService();
+
+    @GET("listSongs")
+    Call<ServerSoundsResponse> serverSoundsListingService();
 }
 

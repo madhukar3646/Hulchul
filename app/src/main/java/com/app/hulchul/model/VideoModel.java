@@ -18,6 +18,17 @@ public class VideoModel {
     @Expose
     private String createdOn;
 
+    @SerializedName("songfile")
+    @Expose
+    private String songfile;
+
+    @SerializedName("songId")
+    @Expose
+    private String songId;
+    @SerializedName("likes")
+    @Expose
+    private String likes;
+
     public String getId() {
         return id;
     }
@@ -48,5 +59,29 @@ public class VideoModel {
 
     public void setCreatedOn(String createdOn) {
         this.createdOn = createdOn;
+    }
+
+    public String getSongfile() {
+        return songfile;
+    }
+
+    public void setSongfile(String songfile) {
+        this.songfile = songfile;
+    }
+
+    public String getSongId() {
+        return songId;
+    }
+
+    public void setSongId(String songId) {
+        this.songId = songId;
+    }
+
+    public String getLikes() {
+        return likes;
+    }
+
+    public void setLikes(String likes) {
+        this.likes = likes;
     }
 }

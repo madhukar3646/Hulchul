@@ -144,7 +144,7 @@ public class Home_fragment extends Fragment implements View.OnClickListener{
             @Override
             public void onFailure(Call<VideosListingResponse> call, Throwable t) {
                 Utils.dismissDialog();
-                Log.e("videoslist onFailure",""+call.toString());
+                Log.e("videoslist onFailure",""+t.getMessage());
             }
         });
     }

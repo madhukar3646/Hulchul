@@ -37,6 +37,7 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder>{
 
     @Override public void onBindViewHolder(final SimplePlayerViewHolder holder, final int position) {
         holder.bind(Uri.parse("http://testingmadesimple.org/training_app/uploads/userVideos/"+modelArrayList.get(position).getVideo()) /* FIXME use real data */);
+        holder.bindMusic("http://testingmadesimple.org/training_app/uploads/songs/"+modelArrayList.get(position).getSongfile());
         holder.latest1_commentfrom.setText("@Satya");
         holder.latest2_commentfrom.setText("@Krishna");
         updateLikeAndFollows(holder,position);

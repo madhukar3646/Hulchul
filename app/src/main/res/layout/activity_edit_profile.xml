@@ -47,24 +47,24 @@
             <LinearLayout
                 android:id="@+id/layout_profileimage"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="200dp"
                 android:gravity="center"
-                android:paddingTop="20dp"
-                android:background="@mipmap/in"
+                android:background="@mipmap/bg_profile"
                 android:orientation="vertical"
                 >
 
                 <RelativeLayout
                     android:layout_width="110dp"
                     android:layout_height="100dp"
-                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:gravity="center"
                     >
                 <de.hdodenhof.circleimageview.CircleImageView
                     xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/profile_image"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:src="@mipmap/sampleimage"
+                    android:src="@mipmap/profile"
                     app:civ_border_width="2dp"
                     app:civ_border_color="#ffffff"
                     />
@@ -100,7 +100,7 @@
                     android:layout_height="20dp"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
-                    android:src="@mipmap/ic_launcher"/>
+                    android:src="@mipmap/user"/>
 
                 <EditText
                     android:layout_width="match_parent"
@@ -132,7 +132,7 @@
                     android:layout_height="20dp"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
-                    android:src="@mipmap/ic_launcher"/>
+                    android:src="@mipmap/mobile_black"/>
 
                 <EditText
                     android:layout_width="match_parent"
@@ -161,7 +161,7 @@
                     android:layout_height="20dp"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
-                    android:src="@mipmap/ic_launcher"/>
+                    android:src="@mipmap/old_password"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -214,7 +214,7 @@
                     android:layout_height="20dp"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
-                    android:src="@mipmap/ic_launcher"/>
+                    android:src="@mipmap/biodata"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -251,7 +251,7 @@
                     android:layout_height="20dp"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
-                    android:src="@mipmap/ic_launcher"/>
+                    android:src="@mipmap/fb_round"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -304,7 +304,7 @@
                     android:layout_height="20dp"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
-                    android:src="@mipmap/ic_launcher"/>
+                    android:src="@mipmap/google_round"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -357,7 +357,7 @@
                     android:layout_height="20dp"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
-                    android:src="@mipmap/ic_launcher"/>
+                    android:src="@mipmap/twiiter_round"/>
 
                 <TextView
                     android:layout_width="wrap_content"

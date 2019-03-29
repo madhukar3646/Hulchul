@@ -1,5 +1,6 @@
 package com.app.hulchul.adapters;
 
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 
 import com.app.hulchul.R;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,6 +75,9 @@ public class SimplePlayerViewHolder extends RecyclerView.ViewHolder implements T
     SimpleExoPlayerViewHelper helper;
     Uri mediaUri;
     boolean isPlay=true;
+    private MediaPlayer musicplayer;
+    private String musicpath;
+    private int musicposition=0;
 
     public SimplePlayerViewHolder(View itemView) {
         super(itemView);
@@ -87,11 +93,15 @@ public class SimplePlayerViewHolder extends RecyclerView.ViewHolder implements T
                     isPlay=false;
                     helper.pause();
                     iv_pauseresume.setVisibility(View.VISIBLE);
+                    musicplayer.pause();
+                    musicposition=musicplayer.getCurrentPosition();
                 }
                 else {
                     isPlay=true;
                     helper.play();
                     iv_pauseresume.setVisibility(View.GONE);
+                    musicplayer.seekTo(musicposition);
+                    musicplayer.start();
                 }
             }
         });
@@ -112,14 +122,24 @@ public class SimplePlayerViewHolder extends RecyclerView.ViewHolder implements T
         }
         helper.initialize(playbackInfo);
         helper.addPlayerEventListener(this);
+
+        musicplayer=new MediaPlayer();
     }
 
     @Override public void play() {
         if (helper != null) helper.play();
+        try {
+            musicplayer.setDataSource(musicpath);
+            musicplayer.prepare();
+            musicplayer.start();
+        }
+        catch (IOException e) { Log.e("LOG_TAG", "prepare() failed"); }
     }
 
     @Override public void pause() {
         if (helper != null) helper.pause();
+        musicplayer.pause();
+        musicposition=musicplayer.getCurrentPosition();
     }
 
     @Override public boolean isPlaying() {
@@ -130,6 +150,8 @@ public class SimplePlayerViewHolder extends RecyclerView.ViewHolder implements T
         if (helper != null) {
             helper.release();
             helper = null;
+
+            musicplayer.release();
         }
     }
 
@@ -143,6 +165,10 @@ public class SimplePlayerViewHolder extends RecyclerView.ViewHolder implements T
 
     void bind(Uri media) {
         this.mediaUri = media;
+    }
+
+    void bindMusic(String url) {
+        this.musicpath = url;
     }
 
     @Override

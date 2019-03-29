@@ -100,7 +100,7 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
     private VideoFilteroverlaysAdapter videoFilteroverlaysAdapter;
     private Effects[] effects;
     private MediaPlayer musicplayer;
-    private String musicpath;
+    private String musicpath,songid;
 
     private ArrayList<EffectsModel> effectsModelArrayList=new ArrayList<>();
     private ArrayList<FiltersModel> filtersModelArrayList=new ArrayList<>();
@@ -125,6 +125,7 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
         if(getIntent().getStringExtra("songpath")!=null)
         {
             musicpath=getIntent().getStringExtra("songpath");
+            songid=getIntent().getStringExtra("songid");
             musicplayer=new MediaPlayer();
             try {
                 musicplayer.setDataSource(musicpath);
@@ -216,7 +217,7 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.layout_selectsound:
-                startActivity(new Intent(MakingVideoActivity.this,MySoundsActivity.class));
+                startActivity(new Intent(MakingVideoActivity.this,ServerSoundsCompletelistingActivity.class));
                 //Utils.goToCommonActivity(MakingVideoActivity.this,"select sound work in progress");
                 break;
 
@@ -407,6 +408,7 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
         Intent intent=new Intent(MakingVideoActivity.this,SingleVideoPlayActivity.class);
         intent.putExtra("videourl",filepath);
         intent.putExtra("songpath",musicpath);
+        intent.putExtra("songid",songid);
         startActivity(intent);
     }
 

@@ -48,7 +48,7 @@ public class SingleVideoPlayActivity extends AppCompatActivity implements View.O
     private SessionManagement sessionManagement;
 
     private MediaPlayer musicplayer;
-    private String musicpath;
+    private String musicpath,songid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +64,7 @@ public class SingleVideoPlayActivity extends AppCompatActivity implements View.O
         if(getIntent().getStringExtra("songpath")!=null)
         {
             musicpath=getIntent().getStringExtra("songpath");
+            songid=getIntent().getStringExtra("songid");
             musicplayer=new MediaPlayer();
             try {
                 musicplayer.setDataSource(musicpath);
@@ -101,7 +102,7 @@ public class SingleVideoPlayActivity extends AppCompatActivity implements View.O
 
                 if(connectionDetector.isConnectingToInternet())
                 {
-                   uploadeVideo(sessionManagement.getValueFromPreference(SessionManagement.USERID),videourl);
+                   uploadeVideo(sessionManagement.getValueFromPreference(SessionManagement.USERID),videourl,songid);
                 }
                 else
                     Utils.callToast(SingleVideoPlayActivity.this,getResources().getString(R.string.internet_toast));
@@ -114,7 +115,7 @@ public class SingleVideoPlayActivity extends AppCompatActivity implements View.O
         }
     }
 
-    private void uploadeVideo(String userid, String path){
+    private void uploadeVideo(String userid, String path,String songid){
         Utils.showDialog(SingleVideoPlayActivity.this);
         MultipartBody.Part fileToUpload=null;
         if(path!=null&&!path.isEmpty()) {
@@ -126,7 +127,8 @@ public class SingleVideoPlayActivity extends AppCompatActivity implements View.O
             return;
         }
         RequestBody mid = RequestBody.create(MediaType.parse("text/plain"),userid);
-        Call<SignupResponse> call= RetrofitApis.Factory.createTemp(this).uploadVideo(fileToUpload,mid);
+        RequestBody sid = RequestBody.create(MediaType.parse("text/plain"),songid);
+        Call<SignupResponse> call= RetrofitApis.Factory.createTemp(this).uploadVideo(fileToUpload,mid,sid);
         call.enqueue(new Callback<SignupResponse>() {
             @Override
             public void onResponse(Call<SignupResponse> call, Response<SignupResponse> response) {

@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class VideosListingResponse {
+public class ServerSoundsResponse {
 
     @SerializedName("message")
     @Expose
@@ -13,16 +13,12 @@ public class VideosListingResponse {
     @SerializedName("status")
     @Expose
     private Integer status;
-    @SerializedName("videos")
+    @SerializedName("songs")
     @Expose
-    private List<VideoModel> videos = null;
+    private List<ServerSong> songs = null;
     @SerializedName("url")
     @Expose
     private String url;
-
-    @SerializedName("songurl")
-    @Expose
-    private String songurl;
 
     public String getMessage() {
         return message;
@@ -40,12 +36,12 @@ public class VideosListingResponse {
         this.status = status;
     }
 
-    public List<VideoModel> getVideos() {
-        return videos;
+    public List<ServerSong> getSongs() {
+        return songs;
     }
 
-    public void setVideos(List<VideoModel> videos) {
-        this.videos = videos;
+    public void setSongs(List<ServerSong> songs) {
+        this.songs = songs;
     }
 
     public String getUrl() {
@@ -54,13 +50,5 @@ public class VideosListingResponse {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    public String getSongurl() {
-        return songurl;
-    }
-
-    public void setSongurl(String songurl) {
-        this.songurl = songurl;
     }
 }

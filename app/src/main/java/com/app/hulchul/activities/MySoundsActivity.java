@@ -9,13 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.app.hulchul.R;
 import com.app.hulchul.adapters.MySoundsAdapter;
-import com.app.hulchul.fragments.LocalVideos_fragment;
 import com.app.hulchul.model.SongsModel;
 
 import java.util.ArrayList;
