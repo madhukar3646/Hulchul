@@ -371,8 +371,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=" #hashtag2 "
-                    android:background="@drawable/round_rect_primary"
                     android:textColor="@android:color/white"
+                    android:textStyle="bold"
                     android:textSize="12sp"
                     android:layout_marginRight="10dp"/>
 
@@ -382,8 +382,8 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/tv_hashtag2"
                     android:text=" #hashtag1 "
-                    android:background="@drawable/round_rect_primary"
                     android:textColor="@android:color/white"
+                    android:textStyle="bold"
                     android:textSize="12sp"
                     android:layout_marginRight="10dp"/>
 

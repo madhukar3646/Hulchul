@@ -121,6 +121,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void setVisibleFragmentFocus()
+    {
+        if(this.fragment instanceof Home_fragment)
+        {
+            setClickableFocus();
+            iv_home.setImageResource(R.mipmap.home_activeicon);
+            tv_home.setTextColor(getResources().getColor(R.color.colorPrimary));
+        }
+        else if(this.fragment instanceof Discover_fragment)
+        {
+            setClickableFocus();
+            iv_discover.setImageResource(R.mipmap.search_active);
+            tv_discover.setTextColor(getResources().getColor(R.color.colorPrimary));
+        }
+        else if(this.fragment instanceof Notification_fragment)
+        {
+            setClickableFocus();
+            iv_notification.setImageResource(R.mipmap.notification_active);
+            tv_notification.setTextColor(getResources().getColor(R.color.colorPrimary));
+        }
+        else if(this.fragment instanceof Me_Fragment)
+        {
+            setClickableFocus();
+            iv_me.setImageResource(R.mipmap.me_active);
+            tv_me.setTextColor(getResources().getColor(R.color.colorPrimary));
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setVisibleFragmentFocus();
+    }
+
     @Override
     public void onClick(View view) {
 
