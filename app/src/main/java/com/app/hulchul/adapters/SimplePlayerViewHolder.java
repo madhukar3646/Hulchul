@@ -93,15 +93,19 @@ public class SimplePlayerViewHolder extends RecyclerView.ViewHolder implements T
                     isPlay=false;
                     helper.pause();
                     iv_pauseresume.setVisibility(View.VISIBLE);
-                    musicplayer.pause();
-                    musicposition=musicplayer.getCurrentPosition();
+                    if(musicplayer!=null) {
+                        musicplayer.pause();
+                        musicposition = musicplayer.getCurrentPosition();
+                    }
                 }
                 else {
                     isPlay=true;
                     helper.play();
                     iv_pauseresume.setVisibility(View.GONE);
-                    musicplayer.seekTo(musicposition);
-                    musicplayer.start();
+                    if(musicplayer!=null) {
+                        musicplayer.seekTo(musicposition);
+                        musicplayer.start();
+                    }
                 }
             }
         });
@@ -126,27 +130,29 @@ public class SimplePlayerViewHolder extends RecyclerView.ViewHolder implements T
 
     @Override public void play() {
         if (helper != null) helper.play();
-        if(musicplayer==null)
-        {
-            musicplayer = new MediaPlayer();
-            try {
-                musicplayer.setDataSource(musicpath);
-                musicplayer.prepare();
-                musicplayer.start();
-            } catch (IOException e) {
-                Log.e("LOG_TAG", "prepare() failed");
+        if(musicpath!=null) {
+            if(musicplayer!=null)
+            musicplayer.release();
+            musicplayer=null;
+            if(musicplayer==null) {
+                musicplayer = new MediaPlayer();
+                try {
+                    musicplayer.setDataSource(musicpath);
+                    musicplayer.prepare();
+                    musicplayer.start();
+                } catch (IOException e) {
+                    Log.e("LOG_TAG", "prepare() failed");
+                }
             }
-        }
-        else {
-            musicplayer.seekTo(0);
-            musicplayer.start();
         }
     }
 
     @Override public void pause() {
         if (helper != null) helper.pause();
-        musicplayer.pause();
-        musicposition=musicplayer.getCurrentPosition();
+        if(musicplayer!=null) {
+            musicplayer.pause();
+            musicposition = musicplayer.getCurrentPosition();
+        }
     }
 
     @Override public boolean isPlaying() {
@@ -158,6 +164,7 @@ public class SimplePlayerViewHolder extends RecyclerView.ViewHolder implements T
             helper.release();
             helper = null;
 
+            if(musicplayer!=null)
             musicplayer.release();
         }
     }

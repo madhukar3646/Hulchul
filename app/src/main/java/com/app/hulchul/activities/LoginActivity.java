@@ -403,6 +403,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onLoginSuccess(SignupResponse data) {
         Utils.dismissDialog();
+        Log.e("user id",""+data.getData().getId());
         sessionManagement.setBooleanValuetoPreference(SessionManagement.ISLOGIN,true);
         sessionManagement.setValuetoPreference(SessionManagement.USERID,data.getData().getId());
         Intent intent=new Intent(LoginActivity.this,MainActivity.class);

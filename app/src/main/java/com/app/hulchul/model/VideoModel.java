@@ -29,6 +29,10 @@ public class VideoModel {
     @Expose
     private String likes;
 
+    @SerializedName("likestatus")
+    @Expose
+    private String likestatus;
+
     public String getId() {
         return id;
     }
@@ -83,5 +87,13 @@ public class VideoModel {
 
     public void setLikes(String likes) {
         this.likes = likes;
+    }
+
+    public String getLikestatus() {
+        return likestatus;
+    }
+
+    public void setLikestatus(String likestatus) {
+        this.likestatus = likestatus;
     }
 }

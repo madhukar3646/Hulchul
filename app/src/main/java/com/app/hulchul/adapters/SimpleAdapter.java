@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.app.hulchul.CommonEmptyActivity;
 import com.app.hulchul.R;
 import com.app.hulchul.activities.LoginLandingActivity;
 import com.app.hulchul.model.VideoModel;
@@ -21,6 +20,7 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder>{
     private ArrayList<VideoModel> modelArrayList;
     private Context context;
     private SessionManagement sessionManagement;
+    private VideoActionsListener videoActionsListener;
 
     public SimpleAdapter(Context context, ArrayList<VideoModel> modelArrayList)
     {
@@ -37,59 +37,60 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder>{
 
     @Override public void onBindViewHolder(final SimplePlayerViewHolder holder, final int position) {
         holder.bind(Uri.parse("http://testingmadesimple.org/training_app/uploads/userVideos/"+modelArrayList.get(position).getVideo()) /* FIXME use real data */);
-        holder.bindMusic("http://testingmadesimple.org/training_app/uploads/songs/"+modelArrayList.get(position).getSongfile());
+        if(modelArrayList.get(position).getSongfile()==null || modelArrayList.get(position).getSongfile().equalsIgnoreCase("null"))
+            holder.bindMusic(null);
+        else
+          holder.bindMusic("http://testingmadesimple.org/training_app/uploads/songs/"+modelArrayList.get(position).getSongfile());
         holder.latest1_commentfrom.setText("@Satya");
         holder.latest2_commentfrom.setText("@Krishna");
-        updateLikeAndFollows(holder,position);
+
+        holder.tv_likescount.setText(modelArrayList.get(position).getLikes());
+        if(modelArrayList.get(position).getLikestatus().equalsIgnoreCase("0"))
+            holder.iv_like.setImageResource(R.mipmap.heart_white);
+        else
+            holder.iv_like.setImageResource(R.mipmap.heart);
+
+        updateFollows(holder,position);
 
         holder.profile_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                followActions(holder,position);
+                if(videoActionsListener!=null)
+                    videoActionsListener.onFollowClicked(holder,position);
+                //followActions(holder,position);
             }
         });
         holder.iv_addfriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                followActions(holder,position);
+                if(videoActionsListener!=null)
+                    videoActionsListener.onFollowClicked(holder,position);
+                //followActions(holder,position);
             }
         });
         holder.layout_comments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Utils.callToast(context,"Comments");
+               if(videoActionsListener!=null)
+                   videoActionsListener.onCommentsClicked(holder,position);
             }
         });
+
         holder.layout_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(sessionManagement.getBooleanValueFromPreference(SessionManagement.ISLOGIN))
+                if(videoActionsListener!=null)
                 {
-                    String userid=sessionManagement.getValueFromPreference(SessionManagement.USERID);
-                    int likescount=sessionManagement.getIntegerValueFromPreference("lc"+position);
-                    boolean isliked=sessionManagement.getBooleanValueFromPreference(userid+"l"+position);
-                    if(isliked)
-                    {
-                        sessionManagement.setBooleanValuetoPreference(userid+"l"+position,false);
-                        sessionManagement.setIntegerValuetoPreference("lc"+position,likescount-1);
-                        holder.iv_addfriend.setImageResource(R.mipmap.add_friendicon);
-                    }
-                    else {
-                        sessionManagement.setBooleanValuetoPreference(userid+"l"+position,true);
-                        sessionManagement.setIntegerValuetoPreference("lc"+position,likescount+1);
-                        holder.iv_addfriend.setImageResource(R.mipmap.follow_check);
-                    }
-                    updateLikeAndFollows(holder,position);
-                }
-                else {
-                    context.startActivity(new Intent(context, LoginLandingActivity.class));
+                  videoActionsListener.onLikeClicked(holder,modelArrayList.get(position).getId(),position);
                 }
             }
         });
+
         holder.layout_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Utils.callToast(context,"share "+position);
+                if(videoActionsListener!=null)
+                    videoActionsListener.onShareClicked();
             }
         });
         holder.layout_sendcomment.setOnClickListener(new View.OnClickListener() {
@@ -101,9 +102,8 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder>{
         holder.layout_abuse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent abuse=new Intent(context, CommonEmptyActivity.class);
-                abuse.putExtra("common","Abuse Reason selection screen");
-                context.startActivity(abuse);
+               if(videoActionsListener!=null)
+                   videoActionsListener.onAbuseClicked();
             }
         });
     }
@@ -112,33 +112,48 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder>{
         return modelArrayList.size();
     }
 
-    private void updateLikeAndFollows(SimplePlayerViewHolder holder,int pos)
+    public void setVideoActionsListener(VideoActionsListener videoActionsListener)
     {
-        int likescount=sessionManagement.getIntegerValueFromPreference("lc"+pos);
+      this.videoActionsListener=videoActionsListener;
+    }
+
+    public void updateLike(SimplePlayerViewHolder holder,int pos)
+    {
+        int likescount=Integer.valueOf(modelArrayList.get(pos).getLikes());
+        holder.tv_likescount.setText(""+likescount);
+        if(modelArrayList.get(pos).getLikestatus().equalsIgnoreCase("0")) {
+            modelArrayList.get(pos).setLikes(""+(likescount+1));
+            modelArrayList.get(pos).setLikestatus("1");
+            holder.iv_like.setImageResource(R.mipmap.heart);
+            holder.tv_likescount.setText(""+(likescount+1));
+        }
+        else {
+            modelArrayList.get(pos).setLikes(""+(likescount-1));
+            modelArrayList.get(pos).setLikestatus("0");
+            holder.iv_like.setImageResource(R.mipmap.heart_white);
+            holder.tv_likescount.setText(""+(likescount-1));
+        }
+    }
+
+    public void updateFollows(SimplePlayerViewHolder holder,int pos)
+    {
         int followscount=sessionManagement.getIntegerValueFromPreference("fc"+pos);
         holder.tv_profilelikescount.setText(""+followscount);
-        holder.tv_likescount.setText(""+likescount);
         if(sessionManagement.getBooleanValueFromPreference(SessionManagement.ISLOGIN))
         {
             String userid=sessionManagement.getValueFromPreference(SessionManagement.USERID);
-            boolean isliked=sessionManagement.getBooleanValueFromPreference(userid+"l"+pos);
             boolean isfollow=sessionManagement.getBooleanValueFromPreference(userid+"f"+pos);
             if(isfollow)
                 holder.iv_addfriend.setImageResource(R.mipmap.follow_check);
             else
                 holder.iv_addfriend.setImageResource(R.mipmap.add_friendicon);
-            if(isliked)
-                holder.iv_like.setImageResource(R.mipmap.heart);
-            else
-                holder.iv_like.setImageResource(R.mipmap.heart_white);
         }
         else {
             holder.iv_addfriend.setImageResource(R.mipmap.add_friendicon);
-            holder.iv_like.setImageResource(R.mipmap.heart_white);
         }
     }
 
-    private void followActions(SimplePlayerViewHolder holder,int pos)
+    public void followActions(SimplePlayerViewHolder holder,int pos)
     {
         String userid=sessionManagement.getValueFromPreference(SessionManagement.USERID);
         int followcount=sessionManagement.getIntegerValueFromPreference("fc"+pos);
@@ -156,10 +171,19 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder>{
                 sessionManagement.setIntegerValuetoPreference("fc"+pos,followcount+1);
                 holder.iv_addfriend.setImageResource(R.mipmap.follow_check);
             }
-            updateLikeAndFollows(holder,pos);
+            updateFollows(holder,pos);
         }
         else {
             context.startActivity(new Intent(context, LoginLandingActivity.class));
         }
+    }
+
+    public interface VideoActionsListener
+    {
+        void onLikeClicked(SimplePlayerViewHolder holder,String videoid,int pos);
+        void onFollowClicked(SimplePlayerViewHolder holder,int pos);
+        void onCommentsClicked(SimplePlayerViewHolder holder,int pos);
+        void onShareClicked();
+        void onAbuseClicked();
     }
 }

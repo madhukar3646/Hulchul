@@ -23,10 +23,12 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.FormUrlEncoded;
 
 /**
  * Created by madhu on 8/2/2018.
@@ -102,10 +104,15 @@ public interface RetrofitApis {
     @POST("uploadVideo")
     Call<SignupResponse> uploadVideo(@Part MultipartBody.Part file, @Part("userId") RequestBody userId,@Part("songId") RequestBody songId);
 
-    @GET("userVideos")
-    Call<VideosListingResponse> videosListingService();
+    @FormUrlEncoded
+    @POST("userVideos")
+    Call<VideosListingResponse> videosListingService(@Field("userId") String userid);
 
     @GET("listSongs")
     Call<ServerSoundsResponse> serverSoundsListingService();
+
+    @FormUrlEncoded
+    @POST("videoLike")
+    Call<SignupResponse> likeUnlikeVideoService(@Field("userId") String userid, @Field("videoId") String videoid);
 }
 

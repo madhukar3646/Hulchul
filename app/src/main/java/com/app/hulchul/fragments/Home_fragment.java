@@ -1,6 +1,7 @@
 package com.app.hulchul.fragments;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,8 +14,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.app.hulchul.CommonEmptyActivity;
 import com.app.hulchul.R;
+import com.app.hulchul.activities.LoginLandingActivity;
 import com.app.hulchul.adapters.SimpleAdapter;
+import com.app.hulchul.adapters.SimplePlayerViewHolder;
+import com.app.hulchul.model.SignupResponse;
 import com.app.hulchul.model.VideoModel;
 import com.app.hulchul.model.VideosListingResponse;
 import com.app.hulchul.presenter.RetrofitApis;
@@ -34,7 +40,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Home_fragment extends Fragment implements View.OnClickListener{
+public class Home_fragment extends Fragment implements View.OnClickListener,SimpleAdapter.VideoActionsListener{
 
     @BindView(R.id.tv_recommended)
     TextView tv_recommended;
@@ -87,6 +93,7 @@ public class Home_fragment extends Fragment implements View.OnClickListener{
         snapHelper.attachToRecyclerView(container);
 
         adapter = new SimpleAdapter(getActivity(),modelArrayList);
+        adapter.setVideoActionsListener(this);
         container.setAdapter(adapter);
 
         if(connectionDetector.isConnectingToInternet())
@@ -122,22 +129,30 @@ public class Home_fragment extends Fragment implements View.OnClickListener{
     }
 
     private void setDataToContainer(){
+        String userid="";
+        if(sessionManagement.getBooleanValueFromPreference(SessionManagement.ISLOGIN))
+           userid=sessionManagement.getValueFromPreference(SessionManagement.USERID);
+
         Utils.showDialog(getContext());
-        Call<VideosListingResponse> call= RetrofitApis.Factory.createTemp(getContext()).videosListingService();
+        Call<VideosListingResponse> call= RetrofitApis.Factory.createTemp(getContext()).videosListingService(userid);
         call.enqueue(new Callback<VideosListingResponse>() {
             @Override
             public void onResponse(Call<VideosListingResponse> call, Response<VideosListingResponse> response) {
                 Utils.dismissDialog();
                 VideosListingResponse body=response.body();
-                if(body.getStatus()==1){
-                  if(body.getVideos()!=null && body.getVideos().size()>0) {
-                      modelArrayList.clear();
-                      modelArrayList.addAll(body.getVideos());
-                  }
-                    adapter.notifyDataSetChanged();
+                if(body!=null) {
+                    if (body.getStatus() == 1) {
+                        if (body.getVideos() != null && body.getVideos().size() > 0) {
+                            modelArrayList.clear();
+                            modelArrayList.addAll(body.getVideos());
+                        }
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        Utils.callToast(getActivity(), body.getMessage());
+                    }
                 }
                 else {
-                    Utils.callToast(getActivity(),body.getMessage());
+                    Utils.callToast(getActivity(),"null response came");
                 }
             }
 
@@ -148,4 +163,62 @@ public class Home_fragment extends Fragment implements View.OnClickListener{
             }
         });
     }
+
+    private void setLikeUnlike(final SimplePlayerViewHolder holder, String userid, String videoid, final int pos){
+        Utils.showDialog(getContext());
+        Call<SignupResponse> call= RetrofitApis.Factory.createTemp(getContext()).likeUnlikeVideoService(userid,videoid);
+        call.enqueue(new Callback<SignupResponse>() {
+            @Override
+            public void onResponse(Call<SignupResponse> call, Response<SignupResponse> response) {
+                Utils.dismissDialog();
+                SignupResponse body=response.body();
+                if(body.getStatus()==1){
+                  adapter.updateLike(holder,pos);
+                }
+                else {
+                    Utils.callToast(getActivity(),body.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SignupResponse> call, Throwable t) {
+                Utils.dismissDialog();
+                Log.e("videoslist onFailure",""+t.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void onLikeClicked(SimplePlayerViewHolder holder,String videoid,int pos) {
+        if(sessionManagement.getBooleanValueFromPreference(SessionManagement.ISLOGIN))
+        {
+          setLikeUnlike(holder,sessionManagement.getValueFromPreference(SessionManagement.USERID),videoid,pos);
+        }
+        else {
+            startActivity(new Intent(getActivity(), LoginLandingActivity.class));
+        }
+    }
+
+    @Override
+    public void onFollowClicked(SimplePlayerViewHolder holder,int pos) {
+        adapter.followActions(holder,pos);
+    }
+
+    @Override
+    public void onCommentsClicked(SimplePlayerViewHolder holder,int pos) {
+        Utils.callToast(getActivity(),"Comments");
+    }
+
+    @Override
+    public void onShareClicked() {
+        Utils.callToast(getActivity(),"share ");
+    }
+
+    @Override
+    public void onAbuseClicked() {
+        Intent abuse=new Intent(getActivity(), CommonEmptyActivity.class);
+        abuse.putExtra("common","Abuse Reason selection screen");
+        startActivity(abuse);
+    }
+
 }
