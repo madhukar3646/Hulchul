@@ -80,6 +80,6 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
         if(layout_commentinput.getVisibility()==View.VISIBLE)
             layout_commentinput.setVisibility(View.GONE);
         else
-            finish();
+             finish();
     }
 }
