@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.app.hulchul.CommonEmptyActivity;
 import com.app.hulchul.R;
+import com.app.hulchul.activities.CommentsActivity;
 import com.app.hulchul.activities.LoginLandingActivity;
 import com.app.hulchul.adapters.SimpleAdapter;
 import com.app.hulchul.adapters.SimplePlayerViewHolder;
@@ -206,7 +207,8 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
 
     @Override
     public void onCommentsClicked(SimplePlayerViewHolder holder,int pos) {
-        Utils.callToast(getActivity(),"Comments");
+        //Utils.callToast(getActivity(),"Comments");
+        startActivity(new Intent(getActivity(), CommentsActivity.class));
     }
 
     @Override

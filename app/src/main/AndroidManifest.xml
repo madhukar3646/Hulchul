@@ -30,7 +30,8 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".activities.ServerSoundsCompletelistingActivity"
             android:screenOrientation="portrait"></activity>
-        <activity android:name=".activities.CommentsActivity" />
+        <activity android:name=".activities.CommentsActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activities.ChangepasswordActivity"
             android:screenOrientation="portrait" />

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/layout_commentcontainer"
+    >
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profile_image"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_margin="10dp"
+        android:src="@mipmap/sampleimage"
+        app:civ_border_width="2dp"
+        app:civ_border_color="#e7d1ff"/>
+    
+   <RelativeLayout
+       android:id="@+id/layout_reply"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_alignParentRight="true"
+       android:layout_marginTop="10dp">
+
+       <ImageView
+           android:id="@+id/iv_reply"
+           android:layout_width="40dp"
+           android:layout_height="40dp"
+           android:src="@mipmap/ic_launcher"
+           android:padding="10dp"
+           />
+   </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/profile_image"
+        android:layout_toLeftOf="@+id/layout_reply"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="# hello boss"
+            android:textColor="@color/colorPrimary"
+           />
+
+        <TextView
+            android:id="@+id/tv_usercomment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="oidk io oifhwd jahdfioad whqw qwuihqw ieh "/>
+
+        <RelativeLayout
+            android:id="@+id/layout_repliedcommentlayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/leftborder"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:id="@+id/tv_replycomment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:text="oidk io oifhwd jahdfioad whqw qwuihqw ieh "/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_like"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:padding="5dp"
+                android:src="@mipmap/hearts_gray"
+                />
+
+            <TextView
+                android:id="@+id/tv_likescount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="55"
+                android:layout_gravity="center"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+            <TextView
+                android:id="@+id/tv_postedtime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="43m ago"
+                android:layout_gravity="center"
+                android:textColor="#1A000000"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/layout_content"
+        android:background="#1A000000"></View>
+
+</RelativeLayout>
