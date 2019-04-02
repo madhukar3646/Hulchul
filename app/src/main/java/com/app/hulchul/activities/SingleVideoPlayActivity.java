@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 
 import com.app.hulchul.R;
 import com.app.hulchul.adapters.SingleVideoAdapter;
+import com.app.hulchul.adapters.SingleVideoPlayerViewHolder;
 import com.app.hulchul.model.SignupResponse;
 import com.app.hulchul.model.VideoModel;
 import com.app.hulchul.presenter.RetrofitApis;
@@ -33,7 +34,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SingleVideoPlayActivity extends AppCompatActivity implements View.OnClickListener{
+public class SingleVideoPlayActivity extends AppCompatActivity implements View.OnClickListener, SingleVideoPlayerViewHolder.OnVideoCompletedListener{
 
     @BindView(R.id.player_container)
     Container container;
@@ -81,15 +82,9 @@ public class SingleVideoPlayActivity extends AppCompatActivity implements View.O
         layoutManager = new LinearLayoutManager(SingleVideoPlayActivity.this);
         container.setLayoutManager(layoutManager);
         adapter = new SingleVideoAdapter(SingleVideoPlayActivity.this,modelArrayList);
+        adapter.setOnVideoCompletedListener(this);
         container.setAdapter(adapter);
         setDataToContainer();
-
-        musicplayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                musicplayer.start();
-            }
-        });
     }
 
     private void setDataToContainer()
@@ -167,14 +162,20 @@ public class SingleVideoPlayActivity extends AppCompatActivity implements View.O
     @Override
     public void onBackPressed() {
         if(musicplayer!=null)
-        musicplayer.stop();
+        musicplayer.release();
         super.onBackPressed();
     }
 
     @Override
     protected void onDestroy() {
         if(musicplayer!=null)
-            musicplayer.stop();
+            musicplayer.release();
         super.onDestroy();
+    }
+
+    @Override
+    public void onVideoCompleted() {
+        if(musicplayer!=null)
+            musicplayer.seekTo(0);
     }
 }

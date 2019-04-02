@@ -22,6 +22,7 @@ public class SingleVideoPlayerViewHolder extends RecyclerView.ViewHolder impleme
     SimpleExoPlayerView playerView;
     SimpleExoPlayerViewHelper helper;
     Uri mediaUri;
+    OnVideoCompletedListener onVideoCompletedListener;
 
     public SingleVideoPlayerViewHolder(View itemView) {
         super(itemView);
@@ -93,7 +94,19 @@ public class SingleVideoPlayerViewHolder extends RecyclerView.ViewHolder impleme
 
     @Override
     public void onCompleted(Container container, ToroPlayer player) {
+        if(onVideoCompletedListener!=null)
+            onVideoCompletedListener.onVideoCompleted();
       play();
       Log.e("on completed","on completed");
+    }
+
+    public void setOnVideoCompletedListener(OnVideoCompletedListener onVideoCompletedListener)
+    {
+        this.onVideoCompletedListener=onVideoCompletedListener;
+    }
+
+    public interface OnVideoCompletedListener
+    {
+        void onVideoCompleted();
     }
 }

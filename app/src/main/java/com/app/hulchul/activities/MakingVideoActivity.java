@@ -1,4 +1,5 @@
 package com.app.hulchul.activities;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,8 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -118,11 +121,7 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_making_video);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ButterKnife.bind(this);
-        init();
-    }
 
-    private void init()
-    {
         if(getIntent().getStringExtra("songpath")!=null)
         {
             musicpath=getIntent().getStringExtra("songpath");
@@ -137,8 +136,14 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
             catch (IOException e) { Log.e("LOG_TAG", "prepare() failed"); }
         }
 
-        if(deleteTempVideosDir().exists())
-            deleteTempVideosDir().delete();
+        init();
+    }
+
+    private void init()
+    {
+        deleteTempFiles();
+        if(getTempVideosDir().exists())
+            getTempVideosDir().delete();
 
         DisplayMetrics metrics=getResources().getDisplayMetrics();
         Log.e("width and height",""+metrics.widthPixels+", "+metrics.heightPixels);
@@ -235,25 +240,30 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
 
             case R.id.iv_record:
                 if (isRecordStart) {
-                    if(filepath!=null)
-                        new File(filepath).delete();
-                    filepath = getVideoFilePath();
-                    handler.postDelayed(timethread,duration);
-                    if(musicpath==null)
-                        cameraRecorder.isMuteRecord(false);
-                    else
-                       cameraRecorder.isMuteRecord(true);
+                   if(getTempVideosDir().exists() && getTempVideosDir().listFiles().length>0)
+                   {
+                     if(filepath!=null)
+                         goToSinglePlayActivity();
+                   }
+                   else {
+                       filepath = getVideoFilePath();
+                       handler.postDelayed(timethread, duration);
+                       if (musicpath == null)
+                           cameraRecorder.isMuteRecord(false);
+                       else
+                           cameraRecorder.isMuteRecord(true);
 
-                    cameraRecorder.start(filepath);
-                    if(musicplayer!=null)
-                    musicplayer.start();
-                    Glide.with(this)
-                            .load(R.drawable.loader)
-                            .placeholder(R.drawable.circle_placeholder)
-                            .into(iv_record);
-                    layout_bottomicons.setVisibility(View.INVISIBLE);
-                    layout_sidevertical.setVisibility(View.INVISIBLE);
-                    isRecordStart=false;
+                       cameraRecorder.start(filepath);
+                       if (musicplayer != null)
+                           musicplayer.start();
+                       Glide.with(this)
+                               .load(R.drawable.loader)
+                               .placeholder(R.drawable.circle_placeholder)
+                               .into(iv_record);
+                       layout_bottomicons.setVisibility(View.INVISIBLE);
+                       layout_sidevertical.setVisibility(View.INVISIBLE);
+                       isRecordStart = false;
+                   }
                 } else {
                     cameraRecorder.stop();
                     if(musicplayer!=null)
@@ -417,12 +427,24 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
         return file.getAbsolutePath();
     }
 
-    public static File deleteTempVideosDir()
+    public static File getTempVideosDir()
     {
         String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() +
                 "/Hulchultempvideos";
         File dir = new File(file_path);
         return dir;
+    }
+
+    public static void deleteTempFiles()
+    {
+        if(getTempVideosDir().exists())
+        {
+            File dir=getTempVideosDir();
+            File files[]=dir.listFiles();
+            int length=dir.listFiles().length;
+            for(int i=0;i<length;i++)
+                new File(files[i].getAbsolutePath()).delete();
+        }
     }
 
     public static File getAndroidMoviesFolder() {
@@ -443,7 +465,7 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
         public void run() {
             cameraRecorder.stop();
             if(musicplayer!=null)
-            musicplayer.stop();
+            musicplayer.release();
             iv_record.setImageResource(R.mipmap.video);
             isRecordStart=true;
             goToSinglePlayActivity();
@@ -454,19 +476,12 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(musicplayer!=null)
-        musicplayer.stop();
         handler.removeCallbacks(timethread);
     }
 
     @Override
     public void onBackPressed() {
-        releaseCamera();
-        if(musicplayer!=null)
-        musicplayer.stop();
-        if(filepath!=null)
-            new File(filepath).delete();
-        finish();
+        displayExitDialog();
     }
 
     public void moveUp(){
@@ -538,5 +553,71 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onFilterClick(Bitmap bitmap) {
         cameraRecorder.setEffect(new FilterOverlays(bitmap));
+    }
+
+    private void displayExitDialog()
+    {
+        final Dialog dialog=new Dialog(MakingVideoActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.reshoot_exitdialog);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCancelable(true);
+
+        TextView tv_reshoot=(TextView)dialog.findViewById(R.id.tv_reshoot);
+        TextView tv_exit=(TextView)dialog.findViewById(R.id.tv_exit);
+        TextView tv_cancel=(TextView)dialog.findViewById(R.id.tv_cancel);
+
+        tv_exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                releaseCamera();
+                if(musicplayer!=null)
+                    musicplayer.release();
+                deleteTempFiles();
+                if(getTempVideosDir().exists())
+                    getTempVideosDir().delete();
+
+                if(musicpath!=null)
+                    new File(musicpath).delete();
+                dialog.dismiss();
+                finish();
+            }
+        });
+
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+            }
+        });
+
+        tv_reshoot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                deleteTempFiles();
+                if(getTempVideosDir().exists())
+                    getTempVideosDir().delete();
+
+                if(musicpath!=null) {
+                    if(musicplayer!=null)
+                        musicplayer.release();
+                    musicplayer=null;
+                    musicplayer = new MediaPlayer();
+                    try {
+                        musicplayer.setDataSource(musicpath);
+                        musicplayer.prepare();
+                    } catch (IOException e) {
+                        Log.e("LOG_TAG", "prepare() failed");
+                    }
+                }
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 }

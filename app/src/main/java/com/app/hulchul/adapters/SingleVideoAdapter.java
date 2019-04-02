@@ -14,11 +14,17 @@ public class SingleVideoAdapter extends RecyclerView.Adapter<SingleVideoPlayerVi
 
     private ArrayList<VideoModel> modelArrayList;
     private Context context;
+    private SingleVideoPlayerViewHolder.OnVideoCompletedListener onVideoCompletedListener;
 
     public SingleVideoAdapter(Context context, ArrayList<VideoModel> modelArrayList)
     {
         this.modelArrayList=modelArrayList;
         this.context=context;
+    }
+
+    public void setOnVideoCompletedListener(SingleVideoPlayerViewHolder.OnVideoCompletedListener onVideoCompletedListener)
+    {
+      this.onVideoCompletedListener=onVideoCompletedListener;
     }
 
     @Override public SingleVideoPlayerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -28,6 +34,7 @@ public class SingleVideoAdapter extends RecyclerView.Adapter<SingleVideoPlayerVi
     }
 
     @Override public void onBindViewHolder(final SingleVideoPlayerViewHolder holder, final int position) {
+        holder.setOnVideoCompletedListener(onVideoCompletedListener);
         holder.bind(Uri.parse(modelArrayList.get(position).getVideo()) /* FIXME use real data */);
     }
 
