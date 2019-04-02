@@ -110,6 +110,7 @@ public class MySoundsActivity extends AppCompatActivity implements MySoundsAdapt
     public void onSoundSelected(SongsModel songsModel) {
         Intent intent=new Intent(MySoundsActivity.this,MakingVideoActivity.class);
         intent.putExtra("songpath",songsModel.getSongpath());
+        intent.putExtra("duration","15000");
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();

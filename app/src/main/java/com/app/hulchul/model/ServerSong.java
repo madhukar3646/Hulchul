@@ -23,6 +23,10 @@ public class ServerSong {
     @Expose
     private String createAt;
 
+    @SerializedName("duration")
+    @Expose
+    private String duration;
+
     public String getSongId() {
         return songId;
     }
@@ -69,5 +73,13 @@ public class ServerSong {
 
     public void setPlaying(boolean playing) {
         isPlaying = playing;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
 }

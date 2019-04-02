@@ -101,6 +101,7 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
     private Effects[] effects;
     private MediaPlayer musicplayer;
     private String musicpath,songid;
+    private long duration=15000;
 
     private ArrayList<EffectsModel> effectsModelArrayList=new ArrayList<>();
     private ArrayList<FiltersModel> filtersModelArrayList=new ArrayList<>();
@@ -125,7 +126,9 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
         if(getIntent().getStringExtra("songpath")!=null)
         {
             musicpath=getIntent().getStringExtra("songpath");
+            Log.e("musicpath",""+musicpath);
             songid=getIntent().getStringExtra("songid");
+            duration=Long.parseLong(getIntent().getStringExtra("duration"));
             musicplayer=new MediaPlayer();
             try {
                 musicplayer.setDataSource(musicpath);
@@ -133,6 +136,9 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
             }
             catch (IOException e) { Log.e("LOG_TAG", "prepare() failed"); }
         }
+
+        if(deleteTempVideosDir().exists())
+            deleteTempVideosDir().delete();
 
         DisplayMetrics metrics=getResources().getDisplayMetrics();
         Log.e("width and height",""+metrics.widthPixels+", "+metrics.heightPixels);
@@ -201,6 +207,8 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
                 musicplayer.stop();
                 if(filepath!=null)
                     new File(filepath).delete();
+                if(musicpath!=null)
+                    new File(musicpath).delete();
                 finish();
                 break;
 
@@ -218,7 +226,7 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
 
             case R.id.layout_selectsound:
                 startActivity(new Intent(MakingVideoActivity.this,ServerSoundsCompletelistingActivity.class));
-                //Utils.goToCommonActivity(MakingVideoActivity.this,"select sound work in progress");
+                //startActivity(new Intent(MakingVideoActivity.this,MySoundsActivity.class));
                 break;
 
             case R.id.layout_upload:
@@ -230,8 +238,12 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
                     if(filepath!=null)
                         new File(filepath).delete();
                     filepath = getVideoFilePath();
-                    handler.postDelayed(timethread,15000);
-                    cameraRecorder.isMuteRecord(true);
+                    handler.postDelayed(timethread,duration);
+                    if(musicpath==null)
+                        cameraRecorder.isMuteRecord(false);
+                    else
+                       cameraRecorder.isMuteRecord(true);
+
                     cameraRecorder.start(filepath);
                     if(musicplayer!=null)
                     musicplayer.start();
@@ -384,7 +396,6 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
         cameraRecorder.setEffect(Effects.getFilterInstance(filters, getApplicationContext()));
     }
 
-
     public static void exportMp4ToGallery(Context context, String filePath) {
         final ContentValues values = new ContentValues(2);
         values.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4");
@@ -396,7 +407,22 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
     }
 
     public static String getVideoFilePath() {
-        return getAndroidMoviesFolder().getAbsolutePath() + "/" + new SimpleDateFormat("yyyyMM_dd-HHmmss").format(new Date()) + "cameraRecorder.mp4";
+        String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() +
+                "/Hulchultempvideos";
+        File dir = new File(file_path);
+        if(!dir.exists())
+            dir.mkdirs();
+        File file = new File(dir, ""+new SimpleDateFormat("yyyyMM_dd-HHmmss").format(new Date()) + "cameraRecorder.mp4");
+        //return getAndroidMoviesFolder().getAbsolutePath() + "/" + new SimpleDateFormat("yyyyMM_dd-HHmmss").format(new Date()) + "cameraRecorder.mp4";
+        return file.getAbsolutePath();
+    }
+
+    public static File deleteTempVideosDir()
+    {
+        String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() +
+                "/Hulchultempvideos";
+        File dir = new File(file_path);
+        return dir;
     }
 
     public static File getAndroidMoviesFolder() {

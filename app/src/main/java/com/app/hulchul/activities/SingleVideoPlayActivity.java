@@ -83,6 +83,13 @@ public class SingleVideoPlayActivity extends AppCompatActivity implements View.O
         adapter = new SingleVideoAdapter(SingleVideoPlayActivity.this,modelArrayList);
         container.setAdapter(adapter);
         setDataToContainer();
+
+        musicplayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                musicplayer.start();
+            }
+        });
     }
 
     private void setDataToContainer()
@@ -137,6 +144,8 @@ public class SingleVideoPlayActivity extends AppCompatActivity implements View.O
                 if(body.getStatus()==1){
                     Utils.callToast(SingleVideoPlayActivity.this,"Posted Successfully");
                     new File(videourl).delete();
+                    if(musicpath!=null)
+                        new File(musicpath).delete();
                     Intent intent=new Intent(SingleVideoPlayActivity.this,MainActivity.class);
                     startActivity(intent);
                     finish();
