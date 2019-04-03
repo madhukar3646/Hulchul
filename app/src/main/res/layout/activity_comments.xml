@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.CommentsActivity"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    android:id="@+id/layout_root">
 
     <RelativeLayout
         android:id="@+id/title_layout"
@@ -39,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/title_layout"
-        android:layout_above="@+id/layout_commentinput">
+        android:layout_above="@+id/layout_inputlayout">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_totalcomments"
@@ -51,55 +52,120 @@
 
     </RelativeLayout>
     <LinearLayout
-        android:id="@+id/layout_commentinput"
+        android:id="@+id/layout_inputlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:weightSum="5"
-        android:background="#d8dade"
-        android:visibility="gone">
+        android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/layout_replycommentinput"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:layout_margin="10dp"
-            android:background="@drawable/round_rect_white"
-            >
-            <EditText
-                android:id="@+id/et_commentinput"
-                android:layout_width="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:weightSum="5"
+            android:background="#d8dade"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:textColor="@android:color/black"
-                android:layout_centerVertical="true"
-                android:hint="Say Something"
-                android:background="@android:color/transparent"
-                android:layout_marginLeft="10dp"
+                android:layout_weight="4"
+                android:layout_margin="10dp"
+                android:background="@drawable/round_rect_white"
+                >
+                <com.app.hulchul.utils.KeyboardEditText
+                    android:id="@+id/et_replycommentinput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textColor="@android:color/black"
+                    android:layout_centerVertical="true"
+                    android:hint=""
+                    android:background="@android:color/transparent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:padding="2dp"
+                    >
+                </com.app.hulchul.utils.KeyboardEditText>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/layout_sendcommentreply"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/round_rect_primary"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:layout_marginRight="10dp"
                 >
-            </EditText>
 
-        </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/layout_sendcomment"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/round_rect_primary"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginRight="10dp"
-            >
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/right_arrow_white"
+                    android:layout_centerInParent="true"/>
 
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@mipmap/right_arrow_white"
-                android:layout_centerInParent="true"/>
+            </RelativeLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_commentinput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:weightSum="5"
+            android:background="#d8dade"
+            android:visibility="visible">
 
-        </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:layout_margin="10dp"
+                android:background="@drawable/round_rect_white"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                >
+                <EditText
+                    android:id="@+id/et_commentinput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textColor="@android:color/black"
+                    android:layout_centerVertical="true"
+                    android:hint="Leave your comment"
+                    android:background="@android:color/transparent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:padding="2dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    >
+                </EditText>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/layout_sendcomment"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/round_rect_primary"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                >
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/right_arrow_white"
+                    android:layout_centerInParent="true"/>
+
+            </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>

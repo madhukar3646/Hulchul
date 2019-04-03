@@ -9,9 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.app.hulchul.R;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -55,7 +53,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
             @Override
             public void onClick(View view) {
                 if(onCommentsActionsListener!=null)
-                    onCommentsActionsListener.onReplyClicked();
+                    onCommentsActionsListener.onReplyClicked("reply to user"+position);
             }
         });
     }
@@ -94,6 +92,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
 
     public interface OnCommentsActionsListener
     {
-        void onReplyClicked();
+        void onReplyClicked(String username);
     }
 }
