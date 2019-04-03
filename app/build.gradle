@@ -42,7 +42,7 @@ dependencies {
     //exo player dependencies
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
     implementation 'com.twitter.sdk.android:twitter-core:3.1.1'
-    /*implementation 'com.facebook.android:facebook-android-sdk:4.6.0'*/
+    implementation 'com.facebook.android:facebook-android-sdk:4.6.0'
     implementation 'com.squareup.retrofit2:retrofit:2.1.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.3.1'
