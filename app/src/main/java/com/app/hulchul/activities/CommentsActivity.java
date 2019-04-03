@@ -24,7 +24,6 @@ import butterknife.ButterKnife;
 
 public class CommentsActivity extends AppCompatActivity implements View.OnClickListener, CommentsAdapter.OnCommentsActionsListener, KeyboardEditText.KeyboardListener{
 
-
     @BindView(R.id.back_btn)
     ImageView back_btn;
     @BindView(R.id.rv_totalcomments)
