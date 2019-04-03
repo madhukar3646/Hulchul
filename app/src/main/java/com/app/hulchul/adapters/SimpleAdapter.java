@@ -36,11 +36,12 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder>{
     }
 
     @Override public void onBindViewHolder(final SimplePlayerViewHolder holder, final int position) {
-        holder.bind(Uri.parse("http://testingmadesimple.org/training_app/uploads/userVideos/"+modelArrayList.get(position).getVideo()) /* FIXME use real data */);
+         holder.bind(Uri.parse("http://testingmadesimple.org/training_app/uploads/userVideos/"+modelArrayList.get(position).getVideo()) /* FIXME use real data */);
         if(modelArrayList.get(position).getSongfile()==null || modelArrayList.get(position).getSongfile().equalsIgnoreCase("null"))
             holder.bindMusic(null);
         else
-          holder.bindMusic("http://testingmadesimple.org/training_app/uploads/songs/"+modelArrayList.get(position).getSongfile());
+            holder.bindMusic("http://testingmadesimple.org/training_app/uploads/songs/" + modelArrayList.get(position).getSongfile());
+
         holder.latest1_commentfrom.setText("@Satya");
         holder.latest2_commentfrom.setText("@Krishna");
 
@@ -57,7 +58,6 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder>{
             public void onClick(View view) {
                 if(videoActionsListener!=null)
                     videoActionsListener.onFollowClicked(holder,position);
-                //followActions(holder,position);
             }
         });
         holder.iv_addfriend.setOnClickListener(new View.OnClickListener() {
@@ -65,7 +65,6 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder>{
             public void onClick(View view) {
                 if(videoActionsListener!=null)
                     videoActionsListener.onFollowClicked(holder,position);
-                //followActions(holder,position);
             }
         });
         holder.layout_comments.setOnClickListener(new View.OnClickListener() {
