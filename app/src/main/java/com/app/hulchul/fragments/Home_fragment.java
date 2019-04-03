@@ -2,9 +2,15 @@ package com.app.hulchul.fragments;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StrictMode;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
@@ -14,13 +20,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.hulchul.CommonEmptyActivity;
 import com.app.hulchul.R;
 import com.app.hulchul.activities.CommentsActivity;
 import com.app.hulchul.activities.LoginLandingActivity;
+import com.app.hulchul.activities.MainActivity;
+import com.app.hulchul.activities.MakingVideoActivity;
+import com.app.hulchul.activities.ServerSoundsCompletelistingActivity;
 import com.app.hulchul.adapters.SimpleAdapter;
 import com.app.hulchul.adapters.SimplePlayerViewHolder;
+import com.app.hulchul.model.ServerSong;
 import com.app.hulchul.model.SignupResponse;
 import com.app.hulchul.model.VideoModel;
 import com.app.hulchul.model.VideosListingResponse;
@@ -30,7 +41,16 @@ import com.app.hulchul.utils.SessionManagement;
 import com.app.hulchul.utils.Utils;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+
+import javax.xml.transform.Result;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import im.ene.toro.widget.Container;
@@ -41,7 +61,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Home_fragment extends Fragment implements View.OnClickListener,SimpleAdapter.VideoActionsListener{
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.RECORD_AUDIO;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static android.app.Activity.RESULT_OK;
+
+public class Home_fragment extends Fragment implements View.OnClickListener,SimpleAdapter.VideoActionsListener,MainActivity.onFilePermissionListenerForFragment{
 
     @BindView(R.id.tv_recommended)
     TextView tv_recommended;
@@ -51,20 +76,21 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
     Container container;
     private Dialog dialog;
 
-    String urls[]={"http://testingmadesimple.org/samplevideo.mp4",
+    /*String urls[]={"http://testingmadesimple.org/samplevideo.mp4",
             "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
             "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
             "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
             "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
             "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
             "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4"
-    };
+    };*/
     SimpleAdapter adapter;
     LinearLayoutManager layoutManager;
     private ArrayList<VideoModel> modelArrayList=new ArrayList<>();
 
     private ConnectionDetector connectionDetector;
     private SessionManagement sessionManagement;
+    private String videoServerUrl;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,6 +99,10 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
         View view= inflater.inflate(R.layout.fragment_home_fragment, container, false);
         ButterKnife.bind(this,view);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+
         init(view);
         return view;
     }
@@ -81,9 +111,6 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
     {
         connectionDetector=new ConnectionDetector(getActivity());
         sessionManagement=new SessionManagement(getActivity());
-        dialog = new Dialog(getActivity(), android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
-        dialog.setContentView(R.layout.loading);
-        dialog.setCancelable(false);
 
         tv_recommended.setOnClickListener(this);
         tv_trending.setOnClickListener(this);
@@ -212,8 +239,22 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
     }
 
     @Override
-    public void onShareClicked() {
-        Utils.callToast(getActivity(),"share ");
+    public void onShareClicked(final String videoServerurl) {
+        this.videoServerUrl=videoServerurl;
+        if(checkingPermissionAreEnabledOrNot())
+            startDownloadAndSharing();
+        else
+            requestMultiplePermission();
+    }
+
+    public void startDownloadAndSharing()
+    {
+        showProgress();
+        new Thread(new Runnable() {
+            public void run() {
+                downloadFile(videoServerUrl);
+            }
+        }).start();
     }
 
     @Override
@@ -223,4 +264,133 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
         startActivity(abuse);
     }
 
+    public void shareVideo(String videopath) {
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("*/*");
+        File videofiletoshare = new File(videopath);
+        Uri uri = Uri.fromFile(videofiletoshare);
+        share.putExtra(Intent.EXTRA_STREAM, uri);
+        startActivityForResult(Intent.createChooser(share, "Share Video!"),100);
+    }
+
+
+    void downloadFile(String serverFileUrl){
+        try {
+            URL url = new URL(serverFileUrl);
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setDoOutput(true);
+
+            //connect
+            urlConnection.connect();
+
+            File file = new File(getVideoDownloadSharepath());
+
+            FileOutputStream fileOutput = new FileOutputStream(file);
+
+            //Stream used for reading the data from the internet
+            InputStream inputStream = urlConnection.getInputStream();
+
+            //this is the total size of the file which we are downloading
+            //create a buffer...
+            byte[] buffer = new byte[1024];
+            int bufferLength = 0;
+
+            while ( (bufferLength = inputStream.read(buffer)) > 0 ) {
+                fileOutput.write(buffer, 0, bufferLength);
+            }
+            //close the output stream when complete //
+            fileOutput.close();
+            getActivity().runOnUiThread(new Runnable() {
+                public void run() {
+                    dialog.dismiss();
+                    shareVideo(getVideoDownloadSharepath());
+                }
+            });
+
+        } catch (final MalformedURLException e) {
+            showError("Error : MalformedURLException " + e);
+            e.printStackTrace();
+        } catch (final IOException e) {
+            showError("Error : IOException " + e);
+            e.printStackTrace();
+        }
+        catch (final Exception e) {
+            showError("Error : Please check your internet connection " + e);
+        }
+    }
+
+    void showError(final String err){
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                Toast.makeText(getActivity(), err, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    void showProgress(){
+        dialog = new Dialog(getActivity(),
+                android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+        dialog.setContentView(R.layout.progressdialog_update);
+        dialog.setCancelable(false);
+        dialog.show();
+    }
+
+    public String getVideoDownloadSharepath()
+    {
+        String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() +
+                "/Hulchulshares";
+        File dir = new File(file_path);
+        if(!dir.exists())
+            dir.mkdirs();
+
+        File file = new File(dir, "hulchulshares" + ".mp4");
+        return file.getAbsolutePath();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode==100)
+        {
+            if(resultCode==RESULT_OK) {
+                Log.e("share done", "share done");
+            }
+            else
+                Log.e("share cancel","share cancel");
+        }
+    }
+
+    public boolean checkingPermissionAreEnabledOrNot() {
+        int write = ContextCompat.checkSelfPermission(getContext(), WRITE_EXTERNAL_STORAGE);
+        return write == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestMultiplePermission() {
+        ActivityCompat.requestPermissions(getActivity(), new String[]
+                {
+                        WRITE_EXTERNAL_STORAGE
+                }, 120);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case 120:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if(grantResults.length>=1)
+                    {
+                        if(checkingPermissionAreEnabledOrNot())
+                        {
+                            startDownloadAndSharing();
+                        }
+                        else
+                            requestMultiplePermission();
+                    }
+                } else {
+                    requestMultiplePermission();
+                }
+                break;
+        }
+    }
 }

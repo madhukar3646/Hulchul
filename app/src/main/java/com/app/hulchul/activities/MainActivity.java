@@ -178,9 +178,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if(checkingPermissionAreEnabledOrNot()) {
                     if(sessionManagement.getBooleanValueFromPreference(SessionManagement.ISLOGIN))
                       startActivity(new Intent(MainActivity.this, MakingVideoActivity.class));
-                    else {
+                    else
                         startActivity(new Intent(MainActivity.this, LoginLandingActivity.class));
-                    }
                 }
                 else
                     requestMultiplePermission();
@@ -238,7 +237,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if(grantResults.length>=3)
                     {
                         if(checkingPermissionAreEnabledOrNot())
-                            startActivity(new Intent(MainActivity.this,MakingVideoActivity.class));
+                        {
+                            if(sessionManagement.getBooleanValueFromPreference(SessionManagement.ISLOGIN))
+                                startActivity(new Intent(MainActivity.this,MakingVideoActivity.class));
+                            else
+                                startActivity(new Intent(MainActivity.this, LoginLandingActivity.class));
+                        }
                         else
                             requestMultiplePermission();
                     }
@@ -246,6 +250,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     requestMultiplePermission();
                 }
                 break;
+
+            case 120:
+                if(fragment instanceof onFilePermissionListenerForFragment)
+                    fragment.onRequestPermissionsResult(requestCode,permissions,grantResults);
+                break;
         }
+    }
+
+    public interface onFilePermissionListenerForFragment
+    {
+        void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults);
     }
 }

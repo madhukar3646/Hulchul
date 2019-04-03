@@ -89,7 +89,7 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder>{
             @Override
             public void onClick(View view) {
                 if(videoActionsListener!=null)
-                    videoActionsListener.onShareClicked();
+                    videoActionsListener.onShareClicked("http://testingmadesimple.org/training_app/uploads/userVideos/"+modelArrayList.get(position).getVideo());
             }
         });
         holder.layout_sendcomment.setOnClickListener(new View.OnClickListener() {
@@ -182,7 +182,7 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder>{
         void onLikeClicked(SimplePlayerViewHolder holder,String videoid,int pos);
         void onFollowClicked(SimplePlayerViewHolder holder,int pos);
         void onCommentsClicked(SimplePlayerViewHolder holder,int pos);
-        void onShareClicked();
+        void onShareClicked(String videoServerurl);
         void onAbuseClicked();
     }
 }
