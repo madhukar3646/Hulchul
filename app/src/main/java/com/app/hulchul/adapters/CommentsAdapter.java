@@ -10,6 +10,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.app.hulchul.R;
 import com.app.hulchul.model.CommentslistModel;
+import com.app.hulchul.utils.SessionManagement;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -24,10 +26,14 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
     private ArrayList<CommentslistModel> commentslistModelArrayList;
     private Context context;
     private OnCommentsActionsListener onCommentsActionsListener;
+    private SessionManagement sessionManagement;
+    private String userid;
     public CommentsAdapter(Context context,ArrayList<CommentslistModel> commentslistModelArrayList)
     {
         this.context=context;
         this.commentslistModelArrayList=commentslistModelArrayList;
+        sessionManagement=new SessionManagement(context);
+        userid=sessionManagement.getValueFromPreference(SessionManagement.USERID);
     }
 
     public void setOnCommentsActionsListener(OnCommentsActionsListener onCommentsActionsListener)
@@ -57,6 +63,14 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
 
         holder.tv_likescount.setText(""+model.getLikeCount());
         String id=model.getUserId().getId();
+        if(userid!=null)
+        {
+            if(userid.equalsIgnoreCase(id))
+                holder.iv_reply.setVisibility(View.GONE);
+            else
+                holder.iv_reply.setVisibility(View.VISIBLE);
+        }
+
         holder.tv_username.setText("@User"+id.substring(id.length()-4));
         holder.tv_usercomment.setText(model.getComment());
         holder.tv_postedtime.setVisibility(View.GONE);
@@ -65,7 +79,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
             @Override
             public void onClick(View view) {
                 if(onCommentsActionsListener!=null)
-                    onCommentsActionsListener.onReplyClicked("reply to user"+position);
+                    onCommentsActionsListener.onReplyClicked(commentslistModelArrayList.get(position));
             }
         });
     }
@@ -106,6 +120,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
 
     public interface OnCommentsActionsListener
     {
-        void onReplyClicked(String username);
+        void onReplyClicked(CommentslistModel model);
     }
 }

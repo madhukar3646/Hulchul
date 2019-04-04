@@ -10,6 +10,7 @@ import com.app.hulchul.model.CreatepasswordRequest;
 import com.app.hulchul.model.ForgotPasswordRequest;
 import com.app.hulchul.model.ForgotPasswordResponse;
 import com.app.hulchul.model.LoginRequest;
+import com.app.hulchul.model.ReplyCommentRequest;
 import com.app.hulchul.model.ServerSoundsResponse;
 import com.app.hulchul.model.SocialloginRequest;
 import com.app.hulchul.model.Validateotp;
@@ -127,5 +128,8 @@ public interface RetrofitApis {
 
     @POST("comments/{videoId}")
     Call<CommentPostResponse> postCommentService(@Path("videoId") String videoid, @Body CommentPostRequest commentPostRequest);
+
+    @POST("comments/replyComment/{commentId}")
+    Call<CommentPostResponse> replyCommentService(@Path("commentId") String commentid, @Body ReplyCommentRequest replyCommentRequest);
 }
 

@@ -22,6 +22,7 @@ import com.app.hulchul.model.CommentPostRequest;
 import com.app.hulchul.model.CommentPostResponse;
 import com.app.hulchul.model.CommentslistModel;
 import com.app.hulchul.model.CommentslistingResponse;
+import com.app.hulchul.model.ReplyCommentRequest;
 import com.app.hulchul.model.ServerSoundsResponse;
 import com.app.hulchul.presenter.RetrofitApis;
 import com.app.hulchul.utils.ConnectionDetector;
@@ -65,7 +66,7 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
     private ArrayList<CommentslistModel> commentslistModelArrayList=new ArrayList<>();
     private ConnectionDetector connectionDetector;
     private SessionManagement sessionManagement;
-    private String videoid,userid;
+    private String videoid,userid,commentid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +113,12 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
                 finish();
                 break;
             case R.id.layout_sendcommentreply:
+                if(userid!=null)
+                  validatereplyComment(commentid);
+                else{
+                    startActivity(new Intent(CommentsActivity.this,LoginLandingActivity.class));
+                    finish();
+                }
                 break;
             case R.id.layout_sendcomment:
                 if(userid!=null)
@@ -141,14 +148,33 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
             Utils.callToast(CommentsActivity.this,getResources().getString(R.string.internet_toast));
     }
 
+    public void validatereplyComment(String commentid)
+    {
+        String comment=et_replycommentinput.getText().toString();
+        if(comment.trim().length()==0)
+            Utils.callToast(CommentsActivity.this,"Please enter your comment and send");
+        else if(connectionDetector.isConnectingToInternet()){
+            ReplyCommentRequest replyCommentRequest = new ReplyCommentRequest();
+            replyCommentRequest.setVideoId(videoid);
+            replyCommentRequest.setUserId(userid);
+            replyCommentRequest.setComment(comment);
+            replyCommentRequest.setCommentId(commentid);
+            replyCommentService(commentid,replyCommentRequest);
+        }
+        else
+            Utils.callToast(CommentsActivity.this,getResources().getString(R.string.internet_toast));
+    }
+
     @Override
-    public void onReplyClicked(String username) {
+    public void onReplyClicked(CommentslistModel model) {
         layout_commentinput.setVisibility(View.GONE);
         layout_replycommentinput.setVisibility(View.VISIBLE);
         et_replycommentinput.requestFocus();
-        et_replycommentinput.setHint(""+username);
+        String id=model.getUserId().getId();
+        et_replycommentinput.setHint("Reply to @user"+id.substring(id.length()-4));
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(et_replycommentinput, InputMethodManager.SHOW_IMPLICIT);
+        commentid=model.getId();
     }
 
     @Override
@@ -224,6 +250,37 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
             public void onFailure(Call<CommentPostResponse> call, Throwable t) {
                 Utils.dismissDialog();
                 Log.e("commentslist onFailure",""+t.getMessage());
+            }
+        });
+    }
+
+    private void replyCommentService(String commentid,ReplyCommentRequest replyCommentRequest){
+        Utils.showDialog(CommentsActivity.this);
+        Call<CommentPostResponse> call= RetrofitApis.Factory.create(CommentsActivity.this).replyCommentService(commentid,replyCommentRequest);
+        call.enqueue(new Callback<CommentPostResponse>() {
+            @Override
+            public void onResponse(Call<CommentPostResponse> call, Response<CommentPostResponse> response) {
+                Utils.dismissDialog();
+                CommentPostResponse body=response.body();
+                if(body!=null) {
+                    if (body.getSuccess()) {
+                        et_replycommentinput.setText("");
+                        layout_replycommentinput.setVisibility(View.GONE);
+                        layout_commentinput.setVisibility(View.VISIBLE);
+                        setDataToContainer();
+                    } else {
+                        Utils.callToast(CommentsActivity.this, body.getMessage());
+                    }
+                }
+                else {
+                    Utils.callToast(CommentsActivity.this, "Null data came");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CommentPostResponse> call, Throwable t) {
+                Utils.dismissDialog();
+                Log.e("replyComment onFailure",""+t.getMessage());
             }
         });
     }
