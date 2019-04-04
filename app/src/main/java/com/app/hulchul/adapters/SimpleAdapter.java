@@ -57,7 +57,7 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder>{
             @Override
             public void onClick(View view) {
                 if(videoActionsListener!=null)
-                    videoActionsListener.onFollowClicked(holder,position);
+                    videoActionsListener.onProfileClicked(modelArrayList.get(position));
             }
         });
         holder.iv_addfriend.setOnClickListener(new View.OnClickListener() {
@@ -71,7 +71,7 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder>{
             @Override
             public void onClick(View view) {
                if(videoActionsListener!=null)
-                   videoActionsListener.onCommentsClicked(holder,position);
+                   videoActionsListener.onCommentsClicked(modelArrayList.get(position).getId());
             }
         });
 
@@ -181,7 +181,8 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder>{
     {
         void onLikeClicked(SimplePlayerViewHolder holder,String videoid,int pos);
         void onFollowClicked(SimplePlayerViewHolder holder,int pos);
-        void onCommentsClicked(SimplePlayerViewHolder holder,int pos);
+        void onProfileClicked(VideoModel model);
+        void onCommentsClicked(String videoid);
         void onShareClicked(String videoServerurl);
         void onAbuseClicked();
     }

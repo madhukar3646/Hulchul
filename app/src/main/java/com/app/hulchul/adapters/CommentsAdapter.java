@@ -6,10 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.app.hulchul.R;
+import com.app.hulchul.model.CommentslistModel;
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -17,14 +19,15 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * Created by admin on 4/20/2017.
  */
-
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyViewHolder>
 {
+    private ArrayList<CommentslistModel> commentslistModelArrayList;
     private Context context;
     private OnCommentsActionsListener onCommentsActionsListener;
-    public CommentsAdapter(Context context)
+    public CommentsAdapter(Context context,ArrayList<CommentslistModel> commentslistModelArrayList)
     {
         this.context=context;
+        this.commentslistModelArrayList=commentslistModelArrayList;
     }
 
     public void setOnCommentsActionsListener(OnCommentsActionsListener onCommentsActionsListener)
@@ -44,10 +47,19 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
     public void onBindViewHolder(final CommentsAdapter.MyViewHolder holder, final int position)
     {
         final CommentsAdapter.MyViewHolder myViewHolder=holder;
-        if(position%10==0)
+        CommentslistModel model=commentslistModelArrayList.get(position);
+        if(model.getParentId()!=null) {
             holder.layout_repliedcommentlayout.setVisibility(View.VISIBLE);
+            holder.tv_replycomment.setText(model.getParentId().getCommentId().getComment());
+        }
         else
            holder.layout_repliedcommentlayout.setVisibility(View.GONE);
+
+        holder.tv_likescount.setText(""+model.getLikeCount());
+        String id=model.getUserId().getId();
+        holder.tv_username.setText("@User"+id.substring(id.length()-4));
+        holder.tv_usercomment.setText(model.getComment());
+        holder.tv_postedtime.setVisibility(View.GONE);
 
         holder.iv_reply.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +73,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
     @Override
     public int getItemCount()
     {
-        return 30;
+        return commentslistModelArrayList.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder
@@ -72,11 +84,13 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         ImageView iv_reply;
         @BindView(R.id.tv_username)
         TextView tv_username;
+        @BindView(R.id.tv_usercomment)
+        TextView tv_usercomment;
         @BindView(R.id.tv_replycomment)
         TextView tv_replycomment;
         @BindView(R.id.iv_like)
         ImageView iv_like;
-        @BindView(R.id.tv_likescount)
+        @BindView(R.id.tv_likescounts)
         TextView tv_likescount;
         @BindView(R.id.tv_postedtime)
         TextView tv_postedtime;

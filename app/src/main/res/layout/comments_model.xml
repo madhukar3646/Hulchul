@@ -86,7 +86,7 @@
                 />
 
             <TextView
-                android:id="@+id/tv_likescount"
+                android:id="@+id/tv_likescounts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"

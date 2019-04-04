@@ -1,6 +1,11 @@
 package com.app.hulchul.presenter;
 
 import android.content.Context;
+
+import com.app.hulchul.model.CommentPostRequest;
+import com.app.hulchul.model.CommentPostResponse;
+import com.app.hulchul.model.CommentpostResponseData;
+import com.app.hulchul.model.CommentslistingResponse;
 import com.app.hulchul.model.CreatepasswordRequest;
 import com.app.hulchul.model.ForgotPasswordRequest;
 import com.app.hulchul.model.ForgotPasswordResponse;
@@ -19,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -29,6 +35,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Path;
 
 /**
  * Created by madhu on 8/2/2018.
@@ -114,5 +121,11 @@ public interface RetrofitApis {
     @FormUrlEncoded
     @POST("videoLike")
     Call<SignupResponse> likeUnlikeVideoService(@Field("userId") String userid, @Field("videoId") String videoid);
+
+    @GET("comments/{videoId}")
+    Call<CommentslistingResponse> commentsListingService(@Path("videoId") String videoid);
+
+    @POST("comments/{videoId}")
+    Call<CommentPostResponse> postCommentService(@Path("videoId") String videoid, @Body CommentPostRequest commentPostRequest);
 }
 

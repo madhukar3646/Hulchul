@@ -29,6 +29,7 @@ import com.app.hulchul.activities.LoginLandingActivity;
 import com.app.hulchul.activities.MainActivity;
 import com.app.hulchul.activities.MakingVideoActivity;
 import com.app.hulchul.activities.ServerSoundsCompletelistingActivity;
+import com.app.hulchul.activities.UserProfileActivity;
 import com.app.hulchul.adapters.SimpleAdapter;
 import com.app.hulchul.adapters.SimplePlayerViewHolder;
 import com.app.hulchul.model.ServerSong;
@@ -233,9 +234,16 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
     }
 
     @Override
-    public void onCommentsClicked(SimplePlayerViewHolder holder,int pos) {
-        //Utils.callToast(getActivity(),"Comments");
-        startActivity(new Intent(getActivity(), CommentsActivity.class));
+    public void onProfileClicked(VideoModel model) {
+        startActivity(new Intent(getActivity(), UserProfileActivity.class));
+    }
+
+    @Override
+    public void onCommentsClicked(String videoid) {
+        Intent intent=new Intent(getActivity(),CommentsActivity.class);
+        //videoid="5ca33b0852c2300b04980198";
+        intent.putExtra("videoid",videoid);
+        startActivity(intent);
     }
 
     @Override

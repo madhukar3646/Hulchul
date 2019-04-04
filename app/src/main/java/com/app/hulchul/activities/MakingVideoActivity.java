@@ -209,7 +209,7 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
             case R.id.layout_close:
                 releaseCamera();
                 if(musicplayer!=null)
-                musicplayer.stop();
+                musicplayer.release();
                 if(filepath!=null)
                     new File(filepath).delete();
                 if(musicpath!=null)
