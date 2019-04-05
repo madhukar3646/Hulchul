@@ -2,9 +2,8 @@ package com.app.hulchul.presenter;
 
 import android.content.Context;
 
-import com.app.hulchul.model.LoginRequest;
 import com.app.hulchul.model.SignupResponse;
-import com.app.hulchul.model.SocialloginRequest;
+import com.app.hulchul.servicerequestmodels.SocialloginRequest;
 
 import retrofit2.Call;
 import retrofit2.Callback;

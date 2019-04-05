@@ -2,7 +2,7 @@ package com.app.hulchul.presenter;
 
 import android.content.Context;
 
-import com.app.hulchul.model.CreatepasswordRequest;
+import com.app.hulchul.servicerequestmodels.CreatepasswordRequest;
 import com.app.hulchul.model.SignupResponse;
 
 import retrofit2.Call;

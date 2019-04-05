@@ -51,6 +51,14 @@
 
         </android.support.v7.widget.RecyclerView>
 
+        <TextView
+            android:id="@+id/tv_emptylistmessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Be the first to comment"
+            android:layout_centerInParent="true"
+            android:visibility="gone"/>
+
     </RelativeLayout>
     <LinearLayout
         android:id="@+id/layout_inputlayout"

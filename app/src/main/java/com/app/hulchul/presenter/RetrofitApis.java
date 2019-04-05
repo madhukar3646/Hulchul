@@ -2,21 +2,21 @@ package com.app.hulchul.presenter;
 
 import android.content.Context;
 
-import com.app.hulchul.model.CommentPostRequest;
+import com.app.hulchul.servicerequestmodels.CommentPostRequest;
 import com.app.hulchul.model.CommentPostResponse;
-import com.app.hulchul.model.CommentpostResponseData;
 import com.app.hulchul.model.CommentslistingResponse;
-import com.app.hulchul.model.CreatepasswordRequest;
-import com.app.hulchul.model.ForgotPasswordRequest;
+import com.app.hulchul.servicerequestmodels.CreatepasswordRequest;
+import com.app.hulchul.servicerequestmodels.ForgotPasswordRequest;
 import com.app.hulchul.model.ForgotPasswordResponse;
-import com.app.hulchul.model.LoginRequest;
-import com.app.hulchul.model.ReplyCommentRequest;
+import com.app.hulchul.servicerequestmodels.LoginRequest;
+import com.app.hulchul.servicerequestmodels.ReplyCommentRequest;
 import com.app.hulchul.model.ServerSoundsResponse;
-import com.app.hulchul.model.SocialloginRequest;
+import com.app.hulchul.servicerequestmodels.SocialloginRequest;
 import com.app.hulchul.model.Validateotp;
-import com.app.hulchul.model.SignUpRequest;
+import com.app.hulchul.servicerequestmodels.SignUpRequest;
 import com.app.hulchul.model.SignupResponse;
 import com.app.hulchul.model.VideosListingResponse;
+import com.app.hulchul.servicerequestmodels.UseridPostRequest;
 import com.app.hulchul.utils.ApiUrls;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -25,7 +25,6 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -131,5 +130,8 @@ public interface RetrofitApis {
 
     @POST("comments/replyComment/{commentId}")
     Call<CommentPostResponse> replyCommentService(@Path("commentId") String commentid, @Body ReplyCommentRequest replyCommentRequest);
+
+    @POST("comments/likeComment/{commentId}")
+    Call<CommentPostResponse> likeCommentService(@Path("commentId") String commentid, @Body UseridPostRequest useridpostrequest);
 }
 

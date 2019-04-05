@@ -18,24 +18,22 @@ import android.widget.TextView;
 
 import com.app.hulchul.R;
 import com.app.hulchul.adapters.CommentsAdapter;
-import com.app.hulchul.model.CommentPostRequest;
+import com.app.hulchul.servicerequestmodels.CommentPostRequest;
 import com.app.hulchul.model.CommentPostResponse;
 import com.app.hulchul.model.CommentslistModel;
 import com.app.hulchul.model.CommentslistingResponse;
-import com.app.hulchul.model.ReplyCommentRequest;
-import com.app.hulchul.model.ServerSoundsResponse;
+import com.app.hulchul.servicerequestmodels.ReplyCommentRequest;
 import com.app.hulchul.presenter.RetrofitApis;
+import com.app.hulchul.servicerequestmodels.UseridPostRequest;
 import com.app.hulchul.utils.ConnectionDetector;
 import com.app.hulchul.utils.KeyboardEditText;
 import com.app.hulchul.utils.SessionManagement;
 import com.app.hulchul.utils.Utils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,6 +61,8 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
     EditText et_commentinput;
     @BindView(R.id.layout_sendcomment)
     RelativeLayout layout_sendcomment;
+    @BindView(R.id.tv_emptylistmessage)
+    TextView tv_emptylistmessage;
     private ArrayList<CommentslistModel> commentslistModelArrayList=new ArrayList<>();
     private ConnectionDetector connectionDetector;
     private SessionManagement sessionManagement;
@@ -165,6 +165,17 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
             Utils.callToast(CommentsActivity.this,getResources().getString(R.string.internet_toast));
     }
 
+    public void validatelikeComment(String commentid)
+    {
+        if(connectionDetector.isConnectingToInternet()){
+            UseridPostRequest useridPostRequest = new UseridPostRequest();
+            useridPostRequest.setUserId(userid);
+            commentLikeService(commentid,useridPostRequest);
+        }
+        else
+            Utils.callToast(CommentsActivity.this,getResources().getString(R.string.internet_toast));
+    }
+
     @Override
     public void onReplyClicked(CommentslistModel model) {
         layout_commentinput.setVisibility(View.GONE);
@@ -175,6 +186,17 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(et_replycommentinput, InputMethodManager.SHOW_IMPLICIT);
         commentid=model.getId();
+    }
+
+    @Override
+    public void onCommentLikeClicked(CommentslistModel model) {
+
+        if(userid!=null)
+            validatelikeComment(model.getId());
+        else{
+            startActivity(new Intent(CommentsActivity.this,LoginLandingActivity.class));
+            finish();
+        }
     }
 
     @Override
@@ -206,14 +228,20 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
                             commentslistModelArrayList.addAll(body.getData());
                         }
                         commentsAdapter.notifyDataSetChanged();
-                        if(commentslistModelArrayList.size()>0)
-                         rv_totalcomments.scrollToPosition(0);
+                        if(commentslistModelArrayList.size()>0) {
+                            rv_totalcomments.scrollToPosition(0);
+                            tv_emptylistmessage.setVisibility(View.GONE);
+                        }
+                        else {
+                            tv_emptylistmessage.setVisibility(View.VISIBLE);
+                        }
                     } else {
                         Utils.callToast(CommentsActivity.this, body.getMessage());
                     }
                 }
                 else {
-                    Utils.callToast(CommentsActivity.this, "Null data came");
+                    //Utils.callToast(CommentsActivity.this, "Null data came");
+                    Log.e("null data came","null came");
                 }
             }
 
@@ -267,6 +295,34 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
                         et_replycommentinput.setText("");
                         layout_replycommentinput.setVisibility(View.GONE);
                         layout_commentinput.setVisibility(View.VISIBLE);
+                        setDataToContainer();
+                    } else {
+                        Utils.callToast(CommentsActivity.this, body.getMessage());
+                    }
+                }
+                else {
+                    Utils.callToast(CommentsActivity.this, "Null data came");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CommentPostResponse> call, Throwable t) {
+                Utils.dismissDialog();
+                Log.e("replyComment onFailure",""+t.getMessage());
+            }
+        });
+    }
+
+    private void commentLikeService(String commentid, UseridPostRequest useridpost){
+        Utils.showDialog(CommentsActivity.this);
+        Call<CommentPostResponse> call= RetrofitApis.Factory.create(CommentsActivity.this).likeCommentService(commentid,useridpost);
+        call.enqueue(new Callback<CommentPostResponse>() {
+            @Override
+            public void onResponse(Call<CommentPostResponse> call, Response<CommentPostResponse> response) {
+                Utils.dismissDialog();
+                CommentPostResponse body=response.body();
+                if(body!=null) {
+                    if (body.getSuccess()) {
                         setDataToContainer();
                     } else {
                         Utils.callToast(CommentsActivity.this, body.getMessage());

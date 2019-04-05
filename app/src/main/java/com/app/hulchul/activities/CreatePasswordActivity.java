@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import com.app.hulchul.R;
-import com.app.hulchul.model.CreatepasswordRequest;
+import com.app.hulchul.servicerequestmodels.CreatepasswordRequest;
 import com.app.hulchul.model.SignupResponse;
 import com.app.hulchul.presenter.CreatepasswordPresenter;
 import com.app.hulchul.utils.ConnectionDetector;

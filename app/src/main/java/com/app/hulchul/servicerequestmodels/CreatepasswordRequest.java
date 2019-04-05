@@ -1,24 +1,16 @@
-package com.app.hulchul.model;
+package com.app.hulchul.servicerequestmodels;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class LoginRequest {
-
-    @SerializedName("username")
-    @Expose
-    private String username;
+public class CreatepasswordRequest {
     @SerializedName("password")
     @Expose
     private String password;
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
+    @SerializedName("userId")
+    @Expose
+    private String userId;
 
     public String getPassword() {
         return password;
@@ -26,5 +18,13 @@ public class LoginRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

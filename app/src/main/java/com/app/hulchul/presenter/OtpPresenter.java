@@ -1,7 +1,7 @@
 package com.app.hulchul.presenter;
 
 import android.content.Context;
-import com.app.hulchul.model.SignUpRequest;
+
 import com.app.hulchul.model.SignupResponse;
 import com.app.hulchul.model.Validateotp;
 

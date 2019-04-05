@@ -2,8 +2,7 @@ package com.app.hulchul.presenter;
 
 import android.content.Context;
 
-import com.app.hulchul.model.LoginRequest;
-import com.app.hulchul.model.SignUpRequest;
+import com.app.hulchul.servicerequestmodels.LoginRequest;
 import com.app.hulchul.model.SignupResponse;
 
 import retrofit2.Call;

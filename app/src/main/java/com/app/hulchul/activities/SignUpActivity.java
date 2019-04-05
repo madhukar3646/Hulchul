@@ -27,7 +27,7 @@ import com.app.hulchul.CommonEmptyActivity;
 import com.app.hulchul.R;
 import com.app.hulchul.adapters.CountryListAdapter;
 import com.app.hulchul.model.Country_model;
-import com.app.hulchul.model.SignUpRequest;
+import com.app.hulchul.servicerequestmodels.SignUpRequest;
 import com.app.hulchul.model.SignupResponse;
 import com.app.hulchul.presenter.Signuppresenter;
 import com.app.hulchul.utils.ConnectionDetector;

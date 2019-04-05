@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.app.hulchul.CommonEmptyActivity;
 import com.app.hulchul.R;
 import com.app.hulchul.model.SignupResponse;
-import com.app.hulchul.model.SocialloginRequest;
+import com.app.hulchul.servicerequestmodels.SocialloginRequest;
 import com.app.hulchul.presenter.SocialLoginPresenter;
 import com.app.hulchul.utils.ConnectionDetector;
 import com.app.hulchul.utils.SessionManagement;

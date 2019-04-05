@@ -78,8 +78,17 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         holder.iv_reply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if(onCommentsActionsListener!=null)
                     onCommentsActionsListener.onReplyClicked(commentslistModelArrayList.get(position));
+            }
+        });
+
+        holder.iv_like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(onCommentsActionsListener!=null)
+                    onCommentsActionsListener.onCommentLikeClicked(commentslistModelArrayList.get(position));
             }
         });
     }
@@ -121,5 +130,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
     public interface OnCommentsActionsListener
     {
         void onReplyClicked(CommentslistModel model);
+        void onCommentLikeClicked(CommentslistModel model);
     }
 }

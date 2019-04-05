@@ -2,10 +2,8 @@ package com.app.hulchul.presenter;
 
 import android.content.Context;
 
-import com.app.hulchul.model.ForgotPasswordRequest;
+import com.app.hulchul.servicerequestmodels.ForgotPasswordRequest;
 import com.app.hulchul.model.ForgotPasswordResponse;
-import com.app.hulchul.model.SignUpRequest;
-import com.app.hulchul.model.SignupResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;

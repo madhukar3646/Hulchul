@@ -1,4 +1,4 @@
-package com.app.hulchul.model;
+package com.app.hulchul.servicerequestmodels;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

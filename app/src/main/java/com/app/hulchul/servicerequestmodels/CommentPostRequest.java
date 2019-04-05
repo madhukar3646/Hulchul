@@ -1,9 +1,8 @@
-package com.app.hulchul.model;
-
+package com.app.hulchul.servicerequestmodels;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ReplyCommentRequest {
+public class CommentPostRequest {
 
     @SerializedName("userId")
     @Expose
@@ -14,9 +13,9 @@ public class ReplyCommentRequest {
     @SerializedName("comment")
     @Expose
     private String comment;
-    @SerializedName("commentId")
+    @SerializedName("parentId")
     @Expose
-    private String commentId;
+    private String parentId;
 
     public String getUserId() {
         return userId;
@@ -42,11 +41,11 @@ public class ReplyCommentRequest {
         this.comment = comment;
     }
 
-    public String getCommentId() {
-        return commentId;
+    public String getParentId() {
+        return parentId;
     }
 
-    public void setCommentId(String commentId) {
-        this.commentId = commentId;
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 }

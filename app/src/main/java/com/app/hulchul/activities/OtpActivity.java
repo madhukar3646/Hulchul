@@ -14,12 +14,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.hulchul.R;
-import com.app.hulchul.model.CreatepasswordRequest;
 import com.app.hulchul.model.SignupResponse;
 import com.app.hulchul.model.Validateotp;
-import com.app.hulchul.presenter.CreatepasswordPresenter;
 import com.app.hulchul.presenter.OtpPresenter;
-import com.app.hulchul.presenter.Signuppresenter;
 import com.app.hulchul.utils.ConnectionDetector;
 import com.app.hulchul.utils.SessionManagement;
 import com.app.hulchul.utils.Utils;
