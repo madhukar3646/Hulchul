@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.app.hulchul.CommonEmptyActivity;
 import com.app.hulchul.R;
+import com.app.hulchul.activities.AbuseSelectionActivity;
 import com.app.hulchul.activities.CommentsActivity;
 import com.app.hulchul.activities.LoginLandingActivity;
 import com.app.hulchul.activities.MainActivity;
@@ -50,20 +51,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-import javax.xml.transform.Result;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import im.ene.toro.widget.Container;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.Manifest.permission.CAMERA;
-import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.app.Activity.RESULT_OK;
 
@@ -93,6 +87,10 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
     private SessionManagement sessionManagement;
     private String videoServerUrl;
 
+    private SimplePlayerViewHolder holder;
+    private String userid,videoid;
+    private int position;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -112,6 +110,7 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
     {
         connectionDetector=new ConnectionDetector(getActivity());
         sessionManagement=new SessionManagement(getActivity());
+        Log.e("user id","is "+sessionManagement.getValueFromPreference(SessionManagement.USERID));
 
         tv_recommended.setOnClickListener(this);
         tv_trending.setOnClickListener(this);
@@ -205,7 +204,7 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
                   adapter.updateLike(holder,pos);
                 }
                 else {
-                    Utils.callToast(getActivity(),body.getMessage());
+                    //Utils.callToast(getActivity(),body.getMessage());
                 }
             }
 
@@ -213,6 +212,30 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
             public void onFailure(Call<SignupResponse> call, Throwable t) {
                 Utils.dismissDialog();
                 Log.e("videoslist onFailure",""+t.getMessage());
+            }
+        });
+    }
+
+    private void setFollowUnFollow(final SimplePlayerViewHolder holder, String userid, String videoid, final int pos){
+        Utils.showDialog(getContext());
+        Call<SignupResponse> call= RetrofitApis.Factory.createTemp(getContext()).followUnfollowUserService(userid,videoid);
+        call.enqueue(new Callback<SignupResponse>() {
+            @Override
+            public void onResponse(Call<SignupResponse> call, Response<SignupResponse> response) {
+                Utils.dismissDialog();
+                SignupResponse body=response.body();
+                if(body.getStatus()==1){
+                    adapter.updateFollows(holder,pos);
+                }
+                else {
+                    //Utils.callToast(getActivity(),body.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SignupResponse> call, Throwable t) {
+                Utils.dismissDialog();
+                Log.e("follow onFailure",""+t.getMessage());
             }
         });
     }
@@ -229,8 +252,14 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
     }
 
     @Override
-    public void onFollowClicked(SimplePlayerViewHolder holder,int pos) {
-        adapter.followActions(holder,pos);
+    public void onFollowClicked(SimplePlayerViewHolder holder,String videoid,int pos) {
+        if(sessionManagement.getBooleanValueFromPreference(SessionManagement.ISLOGIN))
+        {
+            setFollowUnFollow(holder,sessionManagement.getValueFromPreference(SessionManagement.USERID),videoid,pos);
+        }
+        else {
+            startActivity(new Intent(getActivity(), LoginLandingActivity.class));
+        }
     }
 
     @Override
@@ -239,20 +268,46 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
     }
 
     @Override
-    public void onCommentsClicked(String videoid) {
+    public void onCommentsClicked(SimplePlayerViewHolder holder,int pos,String videoid,String commentscount) {
+
+        this.holder = holder;
+        this.videoid = videoid;
+        this.position = pos;
+
+        CommentsActivity.commentsCount=null;
         Intent intent=new Intent(getActivity(),CommentsActivity.class);
-        //videoid="5ca33b0852c2300b04980198";
         intent.putExtra("videoid",videoid);
         startActivity(intent);
     }
 
     @Override
-    public void onShareClicked(final String videoServerurl) {
-        this.videoServerUrl=videoServerurl;
-        if(checkingPermissionAreEnabledOrNot())
-            startDownloadAndSharing();
-        else
-            requestMultiplePermission();
+    public void onResume() {
+        super.onResume();
+        if(CommentsActivity.commentsCount!=null)
+        {
+            if(adapter!=null)
+                adapter.updateCommentsCount(holder,position,CommentsActivity.commentsCount);
+            CommentsActivity.commentsCount=null;
+        }
+    }
+
+    @Override
+    public void onShareClicked(final String videoServerurl,SimplePlayerViewHolder holder,String videoid,int pos) {
+        this.userid=sessionManagement.getValueFromPreference(SessionManagement.USERID);
+        if(userid!=null) {
+            this.videoServerUrl = videoServerurl;
+            this.holder = holder;
+            this.videoid = videoid;
+            this.position = pos;
+
+            if (checkingPermissionAreEnabledOrNot())
+                startDownloadAndSharing();
+            else
+                requestMultiplePermission();
+        }
+        else {
+            getContext().startActivity(new Intent(getActivity(),LoginLandingActivity.class));
+        }
     }
 
     public void startDownloadAndSharing()
@@ -267,7 +322,7 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
 
     @Override
     public void onAbuseClicked() {
-        Intent abuse=new Intent(getActivity(), CommonEmptyActivity.class);
+        Intent abuse=new Intent(getActivity(), AbuseSelectionActivity.class);
         abuse.putExtra("common","Abuse Reason selection screen");
         startActivity(abuse);
     }
@@ -363,6 +418,7 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
         {
             if(resultCode==RESULT_OK) {
                 Log.e("share done", "share done");
+                updateSharecount(holder,userid,videoid,position);
             }
             else
                 Log.e("share cancel","share cancel");
@@ -400,5 +456,29 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
                 }
                 break;
         }
+    }
+
+    private void updateSharecount(final SimplePlayerViewHolder holder, String userid, String videoid, final int pos){
+        Utils.showDialog(getContext());
+        Call<SignupResponse> call= RetrofitApis.Factory.createTemp(getContext()).videoShareService(userid,videoid);
+        call.enqueue(new Callback<SignupResponse>() {
+            @Override
+            public void onResponse(Call<SignupResponse> call, Response<SignupResponse> response) {
+                Utils.dismissDialog();
+                SignupResponse body=response.body();
+                if(body.getStatus()==1){
+                    adapter.updateShares(holder,pos);
+                }
+                else {
+                    Utils.callToast(getActivity(),body.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SignupResponse> call, Throwable t) {
+                Utils.dismissDialog();
+                Log.e("videoshare onFailure",""+t.getMessage());
+            }
+        });
     }
 }

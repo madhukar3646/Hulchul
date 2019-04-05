@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import com.app.hulchul.R;
 import com.app.hulchul.adapters.CommentsAdapter;
+import com.app.hulchul.adapters.SimplePlayerViewHolder;
+import com.app.hulchul.model.SignupResponse;
 import com.app.hulchul.servicerequestmodels.CommentPostRequest;
 import com.app.hulchul.model.CommentPostResponse;
 import com.app.hulchul.model.CommentslistModel;
@@ -67,6 +69,7 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
     private ConnectionDetector connectionDetector;
     private SessionManagement sessionManagement;
     private String videoid,userid,commentid;
+    public static String commentsCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -235,6 +238,7 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
                         else {
                             tv_emptylistmessage.setVisibility(View.VISIBLE);
                         }
+                        commentsCount=""+commentslistModelArrayList.size();
                     } else {
                         Utils.callToast(CommentsActivity.this, body.getMessage());
                     }
@@ -264,7 +268,8 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
                 if(body!=null) {
                     if (body.getSuccess()) {
                         et_commentinput.setText("");
-                        setDataToContainer();
+                        updateCommentscount(userid,videoid);
+                        //setDataToContainer();
                     } else {
                         Utils.callToast(CommentsActivity.this, body.getMessage());
                     }
@@ -295,7 +300,8 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
                         et_replycommentinput.setText("");
                         layout_replycommentinput.setVisibility(View.GONE);
                         layout_commentinput.setVisibility(View.VISIBLE);
-                        setDataToContainer();
+                        updateCommentscount(userid,videoid);
+                        //setDataToContainer();
                     } else {
                         Utils.callToast(CommentsActivity.this, body.getMessage());
                     }
@@ -337,6 +343,30 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
             public void onFailure(Call<CommentPostResponse> call, Throwable t) {
                 Utils.dismissDialog();
                 Log.e("replyComment onFailure",""+t.getMessage());
+            }
+        });
+    }
+
+    private void updateCommentscount(String userid, String videoid){
+        Utils.showDialog(CommentsActivity.this);
+        Call<SignupResponse> call= RetrofitApis.Factory.createTemp(CommentsActivity.this).videoCommentcountupdateService(userid,videoid);
+        call.enqueue(new Callback<SignupResponse>() {
+            @Override
+            public void onResponse(Call<SignupResponse> call, Response<SignupResponse> response) {
+                Utils.dismissDialog();
+                SignupResponse body=response.body();
+                if(body.getStatus()==1){
+                    setDataToContainer();
+                }
+                else {
+                    Utils.callToast(CommentsActivity.this,body.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SignupResponse> call, Throwable t) {
+                Utils.dismissDialog();
+                Log.e("commentscount onFailure",""+t.getMessage());
             }
         });
     }

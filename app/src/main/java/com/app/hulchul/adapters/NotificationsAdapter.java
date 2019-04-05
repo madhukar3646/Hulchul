@@ -7,6 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.app.hulchul.R;
+import com.app.hulchul.model.NotificationModel;
+
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -17,9 +21,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdapter.MyViewHolder>
 {
     private Context context;
-    public NotificationsAdapter(Context context)
+    private ArrayList<NotificationModel> notificationModelArrayList;
+
+    public NotificationsAdapter(Context context,ArrayList<NotificationModel> notificationModelArrayList)
     {
         this.context=context;
+        this.notificationModelArrayList=notificationModelArrayList;
     }
 
     @Override
@@ -27,7 +34,6 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.notification_model, parent, false);
-
         return new NotificationsAdapter.MyViewHolder(itemView);
     }
 
@@ -35,12 +41,15 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     public void onBindViewHolder(final NotificationsAdapter.MyViewHolder holder, final int position)
     {
         final NotificationsAdapter.MyViewHolder myViewHolder=holder;
+        NotificationModel model=notificationModelArrayList.get(position);
+        String userid=model.getUserId();
+        holder.tv_notification.setText("@User"+userid.substring(userid.length()-4)+" posted a video");
     }
 
     @Override
     public int getItemCount()
     {
-        return 30;
+        return notificationModelArrayList.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder

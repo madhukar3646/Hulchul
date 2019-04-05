@@ -71,6 +71,8 @@ public class SimplePlayerViewHolder extends RecyclerView.ViewHolder implements T
     TextView tv_sharescount;
     @BindView(R.id.layout_abuse)
     LinearLayout layout_abuse;
+    @BindView(R.id.iv_heart)
+    ImageView iv_heart;
 
     SimpleExoPlayerViewHelper helper;
     Uri mediaUri;

@@ -2,6 +2,7 @@ package com.app.hulchul.presenter;
 
 import android.content.Context;
 
+import com.app.hulchul.model.NotificationsResponse;
 import com.app.hulchul.servicerequestmodels.CommentPostRequest;
 import com.app.hulchul.model.CommentPostResponse;
 import com.app.hulchul.model.CommentslistingResponse;
@@ -122,6 +123,18 @@ public interface RetrofitApis {
     @POST("videoLike")
     Call<SignupResponse> likeUnlikeVideoService(@Field("userId") String userid, @Field("videoId") String videoid);
 
+    @FormUrlEncoded
+    @POST("videoShare")
+    Call<SignupResponse> videoShareService(@Field("userId") String userid, @Field("videoId") String videoid);
+
+    @FormUrlEncoded
+    @POST("videoComment")
+    Call<SignupResponse> videoCommentcountupdateService(@Field("userId") String userid, @Field("videoId") String videoid);
+
+    @FormUrlEncoded
+    @POST("videoFollowers")
+    Call<SignupResponse> followUnfollowUserService(@Field("userId") String userid, @Field("videoId") String videoid);
+
     @GET("comments/{videoId}")
     Call<CommentslistingResponse> commentsListingService(@Path("videoId") String videoid);
 
@@ -133,5 +146,8 @@ public interface RetrofitApis {
 
     @POST("comments/likeComment/{commentId}")
     Call<CommentPostResponse> likeCommentService(@Path("commentId") String commentid, @Body UseridPostRequest useridpostrequest);
+
+    @GET("listNotifications")
+    Call<NotificationsResponse> notificationsService();
 }
 

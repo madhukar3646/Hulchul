@@ -28,8 +28,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.UserProfileActivity"
+        <activity android:name=".activities.AbuseSelectionActivity"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.UserProfileActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.ServerSoundsCompletelistingActivity"
             android:screenOrientation="portrait" />

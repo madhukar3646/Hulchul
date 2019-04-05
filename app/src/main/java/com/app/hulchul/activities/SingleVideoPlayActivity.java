@@ -104,6 +104,8 @@ public class SingleVideoPlayActivity extends AppCompatActivity implements View.O
 
                 if(connectionDetector.isConnectingToInternet())
                 {
+                    if(songid==null)
+                        songid="";
                    uploadeVideo(sessionManagement.getValueFromPreference(SessionManagement.USERID),videourl,songid);
                 }
                 else

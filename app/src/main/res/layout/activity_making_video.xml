@@ -88,7 +88,7 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:background="@android:drawable/screen_background_dark_transparent"
-        android:weightSum="4"
+        android:weightSum="3"
         android:paddingBottom="2dp">
         <LinearLayout
             android:id="@+id/layout_selectsound"
@@ -174,7 +174,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_weight="1"
-            android:layout_gravity="bottom">
+            android:layout_gravity="bottom"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/iv_video"
