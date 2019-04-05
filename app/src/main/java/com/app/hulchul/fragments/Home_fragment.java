@@ -336,7 +336,6 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
         startActivityForResult(Intent.createChooser(share, "Share Video!"),100);
     }
 
-
     void downloadFile(String serverFileUrl){
         try {
             URL url = new URL(serverFileUrl);

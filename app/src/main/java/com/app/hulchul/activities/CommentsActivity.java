@@ -347,7 +347,7 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
         });
     }
 
-    private void updateCommentscount(String userid, String videoid,String comment){
+    private void updateCommentscount(String userid, String videoid, final String comment){
         Utils.showDialog(CommentsActivity.this);
         Call<SignupResponse> call= RetrofitApis.Factory.createTemp(CommentsActivity.this).videoCommentcountupdateService(userid,videoid,comment);
         call.enqueue(new Callback<SignupResponse>() {
@@ -356,6 +356,7 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
                 Utils.dismissDialog();
                 SignupResponse body=response.body();
                 if(body.getStatus()==1){
+                    Log.e("comments count","updated "+comment);
                     setDataToContainer();
                 }
                 else {

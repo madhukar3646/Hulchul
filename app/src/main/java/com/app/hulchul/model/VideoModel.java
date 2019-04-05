@@ -3,6 +3,8 @@ package com.app.hulchul.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class VideoModel {
 
     @SerializedName("id")
@@ -48,6 +50,10 @@ public class VideoModel {
     @SerializedName("commentCount")
     @Expose
     private String commentCount;
+
+    @SerializedName("comments")
+    @Expose
+    private List<HomescreenCommentModel> comments = null;
 
     public String getId() {
         return id;
@@ -143,5 +149,13 @@ public class VideoModel {
 
     public void setCommentCount(String commentCount) {
         this.commentCount = commentCount;
+    }
+
+    public List<HomescreenCommentModel> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<HomescreenCommentModel> comments) {
+        this.comments = comments;
     }
 }

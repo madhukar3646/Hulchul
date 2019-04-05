@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:id="@+id/tag"
-    android:text="tags"
-    android:textSize="16sp"
-    android:clickable="true"
-    android:layout_gravity="center"
-    android:gravity="center"
-    android:layout_margin="5dp"
-    android:paddingTop="2dp"
-    android:paddingBottom="2dp"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp"
-    android:background="@drawable/selector_category"
     >
-</TextView>
+
+    <TextView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tag"
+        android:text="tags"
+        android:textSize="16sp"
+        android:layout_margin="10dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:background="@drawable/selector_category"
+        >
+    </TextView>
+
+</RelativeLayout>

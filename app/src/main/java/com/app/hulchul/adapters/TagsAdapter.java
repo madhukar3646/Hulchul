@@ -46,10 +46,10 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
         if(selected==pos)
         {
            viewHolder.tag.setTextColor(Color.parseColor("#ffffff"));
-           viewHolder.itemView.setSelected(true);
+           viewHolder.tag.setSelected(true);
         }else {
             viewHolder.tag.setTextColor(Color.parseColor("#000000"));
-            viewHolder.itemView.setSelected(false);
+            viewHolder.tag.setSelected(false);
         }
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

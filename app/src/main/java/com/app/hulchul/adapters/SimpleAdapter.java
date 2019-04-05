@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.app.hulchul.R;
 import com.app.hulchul.activities.LoginLandingActivity;
+import com.app.hulchul.model.HomescreenCommentModel;
 import com.app.hulchul.model.VideoModel;
 import com.app.hulchul.utils.SessionManagement;
 import com.app.hulchul.utils.Utils;
@@ -44,8 +45,29 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder>{
             holder.bindMusic("http://testingmadesimple.org/training_app/uploads/songs/" + modelArrayList.get(position).getSongfile());
 
         holder.tv_profilename.setText("@User"+modelArrayList.get(position).getUserId().substring(modelArrayList.get(position).getUserId().length()-4));
-        holder.latest1_commentfrom.setText("@Satya");
-        holder.latest2_commentfrom.setText("@Krishna");
+
+        if(modelArrayList.get(position).getComments()!=null && modelArrayList.get(position).getComments().size()>0)
+        {
+            HomescreenCommentModel model=modelArrayList.get(position).getComments().get(0);
+            String com_userid=model.getUserId();
+            holder.latest1_commentfrom.setText("@user"+com_userid.substring(com_userid.length()-4));
+            holder.latest1_comment.setText(model.getComment());
+        }
+        else {
+            holder.latest1_commentfrom.setVisibility(View.GONE);
+            holder.latest1_comment.setVisibility(View.GONE);
+        }
+        if(modelArrayList.get(position).getComments()!=null && modelArrayList.get(position).getComments().size()>1)
+        {
+            HomescreenCommentModel model=modelArrayList.get(position).getComments().get(1);
+            String com_userid=model.getUserId();
+            holder.latest2_commentfrom.setText("@user"+com_userid.substring(com_userid.length()-4));
+            holder.latest2_comment.setText(model.getComment());
+        }
+        else {
+            holder.latest2_commentfrom.setVisibility(View.GONE);
+            holder.latest2_comment.setVisibility(View.GONE);
+        }
 
         holder.tv_likescount.setText(modelArrayList.get(position).getLikes());
         if(modelArrayList.get(position).getLikestatus().equalsIgnoreCase("0"))

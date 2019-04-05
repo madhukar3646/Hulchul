@@ -23,7 +23,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AbuseSelectionActivity extends AppCompatActivity {
+public class AbuseSelectionActivity extends AppCompatActivity implements TagsAdapter.OnTagSelectionListener{
 
     @BindView(R.id.iv_back)
     ImageView iv_back;
@@ -36,6 +36,8 @@ public class AbuseSelectionActivity extends AppCompatActivity {
     @BindView(R.id.tv_submit)
     TextView tv_submit;
     float ratingcount;
+    private ArrayList<String> selectedlist=new ArrayList<>();
+    private TagsAdapter tagsAdapter;
     private String abusereasons[]={"Sexual content","Abusive Language","Abusive Visual","Religious Content"};
 
     @Override
@@ -47,6 +49,7 @@ public class AbuseSelectionActivity extends AppCompatActivity {
         rating_bar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                ratingcount=rating;
                 if(rating>0&&rating<=1){
                     tv_rating_label.setText("Poor");
 
@@ -71,16 +74,23 @@ public class AbuseSelectionActivity extends AppCompatActivity {
         flowLayoutManager.setAutoMeasureEnabled(true);
         rv_tags.setLayoutManager(flowLayoutManager);
         List<String> strings=new ArrayList<>();
-        for(int i=0;i<=abusereasons.length;i++){
+        for(int i=0;i<abusereasons.length;i++){
             strings.add(abusereasons[i]);
         }
-        rv_tags.setAdapter(new TagsAdapter(AbuseSelectionActivity.this,strings));
+        tagsAdapter=new TagsAdapter(AbuseSelectionActivity.this,strings);
+        tagsAdapter.setListener(this);
+        rv_tags.setAdapter(tagsAdapter);
 
         tv_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.callToast(AbuseSelectionActivity.this,"Reported Successfully.");
-                finish();
+                if(selectedlist.size()>0 || ratingcount>0) {
+                    Utils.callToast(AbuseSelectionActivity.this, "Reported Successfully.");
+                    finish();
+                }
+                else {
+                    Utils.callToast(AbuseSelectionActivity.this, "Please select or give rating for abuse report");
+                }
             }
         });
 
@@ -90,5 +100,13 @@ public class AbuseSelectionActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    public void onCategorySelected(String category) {
+       if(selectedlist.contains(category))
+           selectedlist.remove(category);
+       else
+           selectedlist.add(category);
     }
 }
