@@ -129,7 +129,7 @@ public interface RetrofitApis {
 
     @FormUrlEncoded
     @POST("videoComment")
-    Call<SignupResponse> videoCommentcountupdateService(@Field("userId") String userid, @Field("videoId") String videoid);
+    Call<SignupResponse> videoCommentcountupdateService(@Field("userId") String userid, @Field("videoId") String videoid,@Field("comment") String comment);
 
     @FormUrlEncoded
     @POST("videoFollowers")

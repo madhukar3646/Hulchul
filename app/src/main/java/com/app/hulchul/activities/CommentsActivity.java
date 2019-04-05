@@ -267,8 +267,8 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
                 CommentPostResponse body=response.body();
                 if(body!=null) {
                     if (body.getSuccess()) {
+                        updateCommentscount(userid,videoid,et_commentinput.getText().toString().trim());
                         et_commentinput.setText("");
-                        updateCommentscount(userid,videoid);
                         //setDataToContainer();
                     } else {
                         Utils.callToast(CommentsActivity.this, body.getMessage());
@@ -297,10 +297,10 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
                 CommentPostResponse body=response.body();
                 if(body!=null) {
                     if (body.getSuccess()) {
-                        et_replycommentinput.setText("");
                         layout_replycommentinput.setVisibility(View.GONE);
                         layout_commentinput.setVisibility(View.VISIBLE);
-                        updateCommentscount(userid,videoid);
+                        updateCommentscount(userid,videoid,et_replycommentinput.getText().toString());
+                        et_replycommentinput.setText("");
                         //setDataToContainer();
                     } else {
                         Utils.callToast(CommentsActivity.this, body.getMessage());
@@ -347,9 +347,9 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
         });
     }
 
-    private void updateCommentscount(String userid, String videoid){
+    private void updateCommentscount(String userid, String videoid,String comment){
         Utils.showDialog(CommentsActivity.this);
-        Call<SignupResponse> call= RetrofitApis.Factory.createTemp(CommentsActivity.this).videoCommentcountupdateService(userid,videoid);
+        Call<SignupResponse> call= RetrofitApis.Factory.createTemp(CommentsActivity.this).videoCommentcountupdateService(userid,videoid,comment);
         call.enqueue(new Callback<SignupResponse>() {
             @Override
             public void onResponse(Call<SignupResponse> call, Response<SignupResponse> response) {

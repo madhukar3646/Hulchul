@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -12,6 +13,9 @@ import android.widget.TextView;
 
 import com.app.hulchul.R;
 import com.app.hulchul.adapters.TagsAdapter;
+import com.app.hulchul.adapters.TagsListAdapter;
+import com.app.hulchul.utils.Utils;
+import com.xiaofeng.flowlayoutmanager.FlowLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +35,8 @@ public class AbuseSelectionActivity extends AppCompatActivity {
     RecyclerView rv_tags;
     @BindView(R.id.tv_submit)
     TextView tv_submit;
+    float ratingcount;
+    private String abusereasons[]={"Sexual content","Abusive Language","Abusive Visual","Religious Content"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,24 +61,25 @@ public class AbuseSelectionActivity extends AppCompatActivity {
 
                 }else if(rating>4&&rating<=5){
                     tv_rating_label.setText("Excellent");
+                }else {
+                    tv_rating_label.setText("Give your rating");
                 }
             }
         });
 
-        StaggeredGridLayoutManager staggeredGridLayoutManager =
-                new StaggeredGridLayoutManager(
-                        2, //The number of Columns in the grid
-                        LinearLayoutManager.HORIZONTAL);
-        rv_tags.setLayoutManager(staggeredGridLayoutManager);
+        FlowLayoutManager flowLayoutManager = new FlowLayoutManager();
+        flowLayoutManager.setAutoMeasureEnabled(true);
+        rv_tags.setLayoutManager(flowLayoutManager);
         List<String> strings=new ArrayList<>();
-        for(int i=1;i<=5;i++){
-            strings.add("Tag Lable "+i);
+        for(int i=0;i<=abusereasons.length;i++){
+            strings.add(abusereasons[i]);
         }
         rv_tags.setAdapter(new TagsAdapter(AbuseSelectionActivity.this,strings));
 
         tv_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Utils.callToast(AbuseSelectionActivity.this,"Reported Successfully.");
                 finish();
             }
         });

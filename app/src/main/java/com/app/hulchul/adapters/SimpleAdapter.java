@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -208,6 +209,7 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder>{
         else
             sharescount=Integer.valueOf(modelArrayList.get(pos).getShareCount());
 
+        Log.e("shares count","setting "+(sharescount+1));
         holder.tv_sharescount.setText(""+(sharescount+1));
         modelArrayList.get(pos).setShareCount(""+(sharescount+1));
     }
