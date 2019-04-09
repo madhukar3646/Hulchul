@@ -10,8 +10,6 @@ import android.widget.TextView;
 
 import com.app.hulchul.R;
 import com.app.hulchul.adapters.ViewPagerAdapter;
-import com.app.hulchul.fragments.ImagesFragment;
-import com.app.hulchul.fragments.LocalVideos_fragment;
 import com.app.hulchul.fragments.SearchHashtags_fragment;
 import com.app.hulchul.fragments.SearchSound_fragment;
 import com.app.hulchul.fragments.SearchUsers_Fragment;
@@ -44,7 +42,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         tabs.setupWithViewPager(viewpager);
     }
 
-    private void setupViewPager(ViewPager viewPager) {
+    private void setupViewPager(ViewPager viewPager)
+    {
         final ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new SearchUsers_Fragment(), "Users");
         adapter.addFragment(new SearchHashtags_fragment(), "Hashtags");

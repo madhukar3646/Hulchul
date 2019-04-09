@@ -1,21 +1,34 @@
 package com.app.hulchul.activities;
+import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.media.MediaPlayer;
+import android.media.ThumbnailUtils;
 import android.os.Build;
+import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.hulchul.R;
@@ -24,6 +37,8 @@ import com.app.hulchul.fragments.Home_fragment;
 import com.app.hulchul.fragments.Me_Fragment;
 import com.app.hulchul.fragments.Notification_fragment;
 import com.app.hulchul.utils.SessionManagement;
+import com.app.hulchul.utils.Utils;
+import com.bumptech.glide.Glide;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -70,10 +85,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.layout_bottomicons)
     LinearLayout layout_bottomicons;
 
+    @BindView(R.id.layout_uploadinglayout)
+    RelativeLayout layout_uploadinglayout;
+    @BindView(R.id.tv_uploadpercentage)
+    TextView tv_uploadpercentage;
+    @BindView(R.id.iv_gifloading)
+    ImageView iv_gifloading;
+    private boolean isUploading=false;
+
     private FragmentTransaction ft;
     private FragmentManager fragmentManager;
     private Fragment fragment;
     private SessionManagement sessionManagement;
+    private int backpressclicks=0;
+    private Handler handler=new Handler();
+    private Bitmap uploadingbmp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +116,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void init()
     {
+        layout_uploadinglayout.setVisibility(View.GONE);
+       /* Glide.with(this)
+                .load(R.drawable.gif_loading)
+                .placeholder(R.drawable.gif_loading)
+                .into(iv_gifloading);*/
+
         sessionManagement=new SessionManagement(MainActivity.this);
         layout_home.setOnClickListener(this);
         layout_discover.setOnClickListener(this);
@@ -153,6 +185,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
         setVisibleFragmentFocus();
+        IntentFilter intentFilter = new IntentFilter("my.own.broadcast");
+        LocalBroadcastManager.getInstance(this).registerReceiver(myLocalBroadcastReceiver, intentFilter);
+    }
+
+    private BroadcastReceiver myLocalBroadcastReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            String result = intent.getStringExtra("result");
+            String path = intent.getStringExtra("videopath");
+            if(result.equalsIgnoreCase("101")) {
+                isUploading=false;
+                layout_uploadinglayout.setVisibility(View.GONE);
+                uploadingbmp=null;
+            }
+            else {
+                if(uploadingbmp==null) {
+                    uploadingbmp = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Video.Thumbnails.MICRO_KIND);
+                    iv_gifloading.setImageBitmap(uploadingbmp);
+                }
+                layout_uploadinglayout.setVisibility(View.VISIBLE);
+                isUploading=true;
+            }
+            tv_uploadpercentage.setText(result);
+        }
+    };
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(myLocalBroadcastReceiver);
     }
 
     @Override
@@ -173,16 +237,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tv_discover.setTextColor(getResources().getColor(R.color.colorPrimary));
                 break;
             case R.id.layout_video:
-                setClickableFocus();
-                tv_video.setTextColor(getResources().getColor(R.color.colorPrimary));
-                if(checkingPermissionAreEnabledOrNot()) {
-                    if(sessionManagement.getBooleanValueFromPreference(SessionManagement.ISLOGIN))
-                      startActivity(new Intent(MainActivity.this, MakingVideoActivity.class));
-                    else
-                        startActivity(new Intent(MainActivity.this, LoginLandingActivity.class));
+                if(!isUploading) {
+                    setClickableFocus();
+                    tv_video.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    if (checkingPermissionAreEnabledOrNot()) {
+                        if (sessionManagement.getBooleanValueFromPreference(SessionManagement.ISLOGIN))
+                            startActivity(new Intent(MainActivity.this, MakingVideoActivity.class));
+                        else
+                            startActivity(new Intent(MainActivity.this, LoginLandingActivity.class));
+                    } else
+                        requestMultiplePermission();
                 }
-                else
-                    requestMultiplePermission();
+                else {
+                    Utils.callToast(MainActivity.this,"Your previous video is uploading. Please wait!");
+                }
+
                 break;
             case R.id.layout_notification:
                 changeFragment(new Notification_fragment());
@@ -262,4 +331,60 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults);
     }
+
+    @Override
+    public void onBackPressed() {
+        if(!isUploading) {
+            backpressclicks++;
+            handler.postDelayed(backpress,3000);
+            if (backpressclicks>=2) {
+                handler.removeCallbacks(backpress);
+                super.onBackPressed();
+            }
+            else
+                Utils.callToast(MainActivity.this,"Press again to exit.");
+        }
+        else {
+            displayExitDialog();
+        }
+    }
+
+    private void displayExitDialog()
+    {
+        final Dialog dialog=new Dialog(MainActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.main_exit);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCancelable(true);
+
+        TextView tv_exit=(TextView)dialog.findViewById(R.id.tv_exit);
+        TextView tv_cancel=(TextView)dialog.findViewById(R.id.tv_cancel);
+
+        tv_exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                dialog.dismiss();
+                finish();
+            }
+        });
+
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    }
+
+    Runnable backpress=new Runnable() {
+        @Override
+        public void run() {
+            backpressclicks=0;
+        }
+    };
 }
