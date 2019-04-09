@@ -197,6 +197,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String result = intent.getStringExtra("result");
             String path = intent.getStringExtra("videopath");
             if(result.equalsIgnoreCase("101")) {
+                Utils.callToast(MainActivity.this,"Your video uploaded successfully");
                 isUploading=false;
                 layout_uploadinglayout.setVisibility(View.GONE);
                 uploadingbmp=null;
