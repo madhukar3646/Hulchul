@@ -29,13 +29,14 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_margin="10dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Post "
-            android:textColor="@android:color/white"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"/>
+            android:layout_marginRight="5dp"
+            android:text=" Next "
+            android:textColor="@android:color/white" />
     </RelativeLayout>
 
 </RelativeLayout>

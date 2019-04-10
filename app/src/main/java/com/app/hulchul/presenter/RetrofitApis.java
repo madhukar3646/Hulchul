@@ -108,9 +108,9 @@ public interface RetrofitApis {
     @POST("users/fogot-password")
     Call<ForgotPasswordResponse> getForgotpasswordResponse(@Body ForgotPasswordRequest forgotPasswordRequest);
 
-    @Multipart
+    @FormUrlEncoded
     @POST("uploadVideo")
-    Call<SignupResponse> uploadVideo(@Part MultipartBody.Part file, @Part("userId") RequestBody userId,@Part("songId") RequestBody songId);
+    Call<SignupResponse> uploadVideo(@Field("userId") String userId,@Field("songId") String songId,@Field("videoId") String videoId);
 
     @FormUrlEncoded
     @POST("userVideos")

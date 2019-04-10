@@ -17,7 +17,12 @@ import retrofit2.http.Part;
  */
 public interface RestApiService {
 
-    @Multipart
+    /*@Multipart
     @POST("uploadVideo")
-    Single<ResponseBody> onFileUpload(@Part MultipartBody.Part file,@Part("userId") RequestBody userId, @Part("songId") RequestBody songId);
+    Single<ResponseBody> onFileUpload(@Part MultipartBody.Part file, @Part("userId") RequestBody userId, @Part("songId") RequestBody songId);
+   */
+
+    @Multipart
+    @POST("uploadVoDFile/one.mp4")
+    Single<ResponseBody> onFileUpload(@Part MultipartBody.Part file);
 }

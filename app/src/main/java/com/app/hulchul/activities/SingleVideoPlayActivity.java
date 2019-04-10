@@ -107,8 +107,10 @@ public class SingleVideoPlayActivity extends AppCompatActivity implements View.O
         switch (view.getId())
         {
             case R.id.layout_post:
-
-                if(connectionDetector.isConnectingToInternet())
+                if(songid==null)
+                    songid="";
+                goToPostingScreen(videourl,songid);
+               /* if(connectionDetector.isConnectingToInternet())
                 {
                     if(songid==null)
                         songid="";
@@ -116,9 +118,18 @@ public class SingleVideoPlayActivity extends AppCompatActivity implements View.O
                     uploadfromBackground(sessionManagement.getValueFromPreference(SessionManagement.USERID),videourl,songid);
                 }
                 else
-                    Utils.callToast(SingleVideoPlayActivity.this,getResources().getString(R.string.internet_toast));
+                    Utils.callToast(SingleVideoPlayActivity.this,getResources().getString(R.string.internet_toast));*/
                 break;
         }
+    }
+
+    private void goToPostingScreen(String path,String songid)
+    {
+        Intent intent=new Intent(SingleVideoPlayActivity.this,VideoPosting_Activity.class);
+        intent.putExtra("musicpath",musicpath);
+        intent.putExtra("videopath",path);
+        intent.putExtra("songid",songid);
+        startActivity(intent);
     }
 
     private void uploadfromBackground(String userid, String path,String songid)

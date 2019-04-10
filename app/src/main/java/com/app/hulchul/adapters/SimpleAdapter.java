@@ -23,12 +23,20 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder>{
     private Context context;
     private SessionManagement sessionManagement;
     private VideoActionsListener videoActionsListener;
+    private String videobasepath;
+    private String audiobasepath;
 
     public SimpleAdapter(Context context, ArrayList<VideoModel> modelArrayList)
     {
         this.modelArrayList=modelArrayList;
         this.context=context;
         sessionManagement=new SessionManagement(context);
+    }
+
+    public void setBasepaths(String videobasepath,String audiobasepath)
+    {
+        this.videobasepath=videobasepath;
+        this.audiobasepath=audiobasepath;
     }
 
     @Override public SimplePlayerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -38,11 +46,11 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder>{
     }
 
     @Override public void onBindViewHolder(final SimplePlayerViewHolder holder, final int position) {
-         holder.bind(Uri.parse("http://testingmadesimple.org/training_app/uploads/userVideos/"+modelArrayList.get(position).getVideo()) /* FIXME use real data */);
+         holder.bind(Uri.parse(videobasepath+modelArrayList.get(position).getVideo()) /* FIXME use real data */);
         if(modelArrayList.get(position).getSongfile()==null || modelArrayList.get(position).getSongfile().equalsIgnoreCase("null"))
             holder.bindMusic(null);
         else
-            holder.bindMusic("http://testingmadesimple.org/training_app/uploads/songs/" + modelArrayList.get(position).getSongfile());
+            holder.bindMusic(audiobasepath+ modelArrayList.get(position).getSongfile());
 
         holder.tv_profilename.setText("@User"+modelArrayList.get(position).getUserId().substring(modelArrayList.get(position).getUserId().length()-4));
 

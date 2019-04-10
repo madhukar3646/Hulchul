@@ -174,6 +174,7 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
                             modelArrayList.clear();
                             modelArrayList.addAll(body.getVideos());
                         }
+                        adapter.setBasepaths(body.getUrl(), body.getSongurl());
                         adapter.notifyDataSetChanged();
                     } else {
                         Utils.callToast(getActivity(), body.getMessage());
