@@ -11,10 +11,6 @@ import com.app.hulchul.model.AntMediaUploadResponse;
 import com.app.hulchul.model.SignupResponse;
 import com.app.hulchul.presenter.RetrofitApis;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;

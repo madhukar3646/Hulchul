@@ -21,6 +21,8 @@ public class VideothumbnailsAdapter extends RecyclerView.Adapter<Videothumbnails
 {
     private Context context;
     private int width;
+    private OnVideoSelectedListener onVideoSelectedListener;
+    private boolean isDrafts=false;
 
     public VideothumbnailsAdapter(Context context)
     {
@@ -29,6 +31,15 @@ public class VideothumbnailsAdapter extends RecyclerView.Adapter<Videothumbnails
         width=metrics.widthPixels;
     }
 
+    public void setOnVideoSelectedListener(OnVideoSelectedListener onVideoSelectedListener)
+    {
+        this.onVideoSelectedListener=onVideoSelectedListener;
+    }
+
+    public void setDraftEnabled(boolean isDrafts)
+    {
+      this.isDrafts=isDrafts;
+    }
     @Override
     public VideothumbnailsAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
@@ -46,6 +57,21 @@ public class VideothumbnailsAdapter extends RecyclerView.Adapter<Videothumbnails
         Picasso.with(context).load(R.mipmap.sampleimage)
                 .error(R.mipmap.placeholder)
                 .into(holder.iv_catimage);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(position==0 && isDrafts)
+                {
+                   if(onVideoSelectedListener!=null)
+                       onVideoSelectedListener.onDraftsClicked();
+                }
+                else {
+                   if(onVideoSelectedListener!=null)
+                       onVideoSelectedListener.onVideoSelected();
+                }
+            }
+        });
     }
 
     @Override
@@ -67,6 +93,12 @@ public class VideothumbnailsAdapter extends RecyclerView.Adapter<Videothumbnails
             iv_catimage=(ImageView)itemView.findViewById(R.id.iv_catimage);
             tv_duration=(TextView)itemView.findViewById(R.id.tv_duration);
         }
+    }
+
+    public interface OnVideoSelectedListener
+    {
+        void onVideoSelected();
+        void onDraftsClicked();
     }
 
 }

@@ -81,6 +81,11 @@ public class SingleVideoPlayActivity extends AppCompatActivity implements View.O
             catch (IOException e) { Log.e("LOG_TAG", "prepare() failed"); }
         }
 
+        if(getIntent().getStringExtra("isfrom").equalsIgnoreCase("VideoPosting_Activity"))
+            layout_post.setVisibility(View.GONE);
+        else
+            layout_post.setVisibility(View.VISIBLE);
+
         connectionDetector=new ConnectionDetector(SingleVideoPlayActivity.this);
         sessionManagement=new SessionManagement(SingleVideoPlayActivity.this);
         layout_post.setOnClickListener(this);

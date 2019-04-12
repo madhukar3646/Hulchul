@@ -261,10 +261,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tv_notification.setTextColor(getResources().getColor(R.color.colorPrimary));
                 break;
             case R.id.layout_me:
-                changeFragment(new Me_Fragment());
-                setClickableFocus();
-                iv_me.setImageResource(R.mipmap.me_active);
-                tv_me.setTextColor(getResources().getColor(R.color.colorPrimary));
+                if(checkingFilePermissions()) {
+                    changeFragment(new Me_Fragment());
+                    setClickableFocus();
+                    iv_me.setImageResource(R.mipmap.me_active);
+                    tv_me.setTextColor(getResources().getColor(R.color.colorPrimary));
+                }
+                else {
+                    requestFilePermission();
+                }
                 break;
         }
     }
@@ -299,6 +304,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }, 100);
     }
 
+    public boolean checkingFilePermissions() {
+        int write = ContextCompat.checkSelfPermission(MainActivity.this, WRITE_EXTERNAL_STORAGE);
+        return write == PackageManager.PERMISSION_GRANTED;
+    }
+    private void requestFilePermission() {
+        ActivityCompat.requestPermissions(MainActivity.this, new String[]
+                {
+                        WRITE_EXTERNAL_STORAGE
+                }, 130);
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
@@ -324,6 +340,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case 120:
                 if(fragment instanceof onFilePermissionListenerForFragment)
                     fragment.onRequestPermissionsResult(requestCode,permissions,grantResults);
+                break;
+            case 130:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if(grantResults.length>=1)
+                    {
+                        if(checkingFilePermissions())
+                        {
+                            changeFragment(new Me_Fragment());
+                            setClickableFocus();
+                            iv_me.setImageResource(R.mipmap.me_active);
+                            tv_me.setTextColor(getResources().getColor(R.color.colorPrimary));
+                        }
+                        else
+                            requestFilePermission();
+                    }
+                } else {
+                    requestFilePermission();
+                }
                 break;
         }
     }

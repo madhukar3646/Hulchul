@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.MediaPlayer;
+import android.media.ThumbnailUtils;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -82,10 +84,12 @@ public class VideoPosting_Activity extends AppCompatActivity implements View.OnC
         musicpath=intent.getStringExtra("musicpath");
         songid=intent.getStringExtra("songid");
         videopath=intent.getStringExtra("videopath");
+        iv_videothumbnail.setImageBitmap(ThumbnailUtils.createVideoThumbnail(videopath, MediaStore.Video.Thumbnails.MINI_KIND));
 
         back_btn.setOnClickListener(this);
         layout_post.setOnClickListener(this);
         layout_save.setOnClickListener(this);
+        iv_videothumbnail.setOnClickListener(this);
     }
 
     @Override
@@ -101,11 +105,39 @@ public class VideoPosting_Activity extends AppCompatActivity implements View.OnC
                     Utils.callToast(VideoPosting_Activity.this,getResources().getString(R.string.internet_toast));
                 break;
             case R.id.layout_save:
+
+                String draftpath=moveFileToDraft(videopath);
+                if(musicpath!=null)
+                    new File(musicpath).delete();
+                Intent intent=new Intent(VideoPosting_Activity.this,MainActivity.class);
+                startActivity(intent);
+                finish();
+                finishAffinity();
+
                 break;
             case R.id.back_btn:
                 finish();
                 break;
+            case R.id.iv_videothumbnail:
+               goToSinglePlayActivity(videopath);
+                break;
         }
+    }
+
+    private String getHashTags()
+    {
+        String hashtags="";
+        String hashes=et_hashtags.getText().toString().trim();
+        String arr[]=hashes.split("#");
+        hashes="";
+        for(int i=0;i<arr.length;i++)
+        {
+            hashes=hashes+"#"+arr[i].trim()+",";
+        }
+        if(hashes.length()>2)
+            hashtags=hashes.substring(2,hashes.length()-1);
+
+        return hashtags;
     }
 
     private void uploadfromBackground(String userid, String path,String songid)
@@ -174,5 +206,15 @@ public class VideoPosting_Activity extends AppCompatActivity implements View.OnC
     protected void onPause() {
         super.onPause();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(myLocalBroadcastReceiver);
+    }
+
+    private void goToSinglePlayActivity(String filepath)
+    {
+        Intent intent=new Intent(VideoPosting_Activity.this,SingleVideoPlayActivity.class);
+        intent.putExtra("isfrom","VideoPosting_Activity");
+        intent.putExtra("videourl",filepath);
+        intent.putExtra("songpath",musicpath);
+        intent.putExtra("songid",songid);
+        startActivity(intent);
     }
 }

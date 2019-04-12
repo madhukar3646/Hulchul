@@ -110,7 +110,8 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:src="@mipmap/play_video"
-                        android:layout_centerInParent="true"/>
+                        android:layout_centerInParent="true"
+                        android:visibility="gone"/>
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -129,7 +130,8 @@
                             android:layout_height="35dp"
                             android:src="@drawable/addfriends_post"
                             android:padding="5dp"
-                            android:background="@drawable/round_rect_gray"/>
+                            android:background="@drawable/round_rect_gray"
+                            android:visibility="gone"/>
                         <ImageView
                             android:id="@+id/iv_addhashtags"
                             android:layout_width="35dp"
@@ -137,7 +139,8 @@
                             android:src="@drawable/hash_post"
                             android:padding="5dp"
                             android:layout_marginLeft="10dp"
-                            android:background="@drawable/round_rect_gray"/>
+                            android:background="@drawable/round_rect_gray"
+                            android:visibility="gone"/>
                     </LinearLayout>
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -151,9 +154,10 @@
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
                             android:hint="title with #Hashtag and @Friends"
-                            android:inputType="text"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
+                            android:inputType="textMultiLine"
+                            android:maxLength="100"
                             />
                     </RelativeLayout>
                 </RelativeLayout>

@@ -454,6 +454,7 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
     private void goToSinglePlayActivity()
     {
         Intent intent=new Intent(MakingVideoActivity.this,SingleVideoPlayActivity.class);
+        intent.putExtra("isfrom","MakingVideoActivity");
         intent.putExtra("videourl",filepath);
         intent.putExtra("songpath",musicpath);
         intent.putExtra("songid",songid);

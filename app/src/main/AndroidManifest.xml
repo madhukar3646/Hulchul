@@ -29,8 +29,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.VideoPosting_Activity"
+        <activity android:name=".activities.DraftsActivity"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.VideoPosting_Activity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.SearchActivity"
             android:screenOrientation="portrait" />

@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,17 +19,20 @@ import android.widget.TextView;
 
 import com.app.hulchul.CommonEmptyActivity;
 import com.app.hulchul.R;
+import com.app.hulchul.activities.DraftsActivity;
 import com.app.hulchul.activities.EditProfileActivity;
 import com.app.hulchul.activities.LoginLandingActivity;
 import com.app.hulchul.adapters.VideothumbnailsAdapter;
 import com.app.hulchul.utils.ConnectionDetector;
 import com.app.hulchul.utils.SessionManagement;
 
+import java.io.File;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class Me_Fragment extends Fragment implements View.OnClickListener{
+public class Me_Fragment extends Fragment implements View.OnClickListener,VideothumbnailsAdapter.OnVideoSelectedListener{
 
     @BindView(R.id.iv_favourite)
     ImageView iv_favourite;
@@ -75,7 +79,7 @@ public class Me_Fragment extends Fragment implements View.OnClickListener{
 
     private SessionManagement sessionManagement;
     private ConnectionDetector connectionDetector;
-
+    private VideothumbnailsAdapter adapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -109,7 +113,10 @@ public class Me_Fragment extends Fragment implements View.OnClickListener{
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),3);
         recyclerview_videos.setLayoutManager(gridLayoutManager);
         recyclerview_videos.setNestedScrollingEnabled(false);
-        recyclerview_videos.setAdapter(new VideothumbnailsAdapter(getContext()));
+        adapter=new VideothumbnailsAdapter(getContext());
+        adapter.setOnVideoSelectedListener(this);
+        setDraftsEnableorDisable();
+        recyclerview_videos.setAdapter(adapter);
     }
 
     @Override
@@ -220,5 +227,31 @@ public class Me_Fragment extends Fragment implements View.OnClickListener{
 
         dialog.show();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    }
+
+    @Override
+    public void onVideoSelected() {
+
+    }
+
+    @Override
+    public void onDraftsClicked() {
+      startActivity(new Intent(getActivity(), DraftsActivity.class));
+    }
+
+    private void setDraftsEnableorDisable()
+    {
+        String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() +
+                "/Hulchuldrafts";
+        File dir = new File(file_path);
+        if(dir.exists())
+        {
+            if(dir.listFiles().length>0)
+                adapter.setDraftEnabled(true);
+            else
+                adapter.setDraftEnabled(false);
+        }
+        else
+            adapter.setDraftEnabled(false);
     }
 }
