@@ -54,6 +54,7 @@
                 >
 
                 <RelativeLayout
+                    android:id="@+id/layout_profilecircle"
                     android:layout_width="110dp"
                     android:layout_height="100dp"
                     android:layout_gravity="center"
