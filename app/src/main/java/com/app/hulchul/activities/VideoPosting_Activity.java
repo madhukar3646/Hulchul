@@ -1,11 +1,13 @@
 package com.app.hulchul.activities;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.media.ThumbnailUtils;
+import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.LocalBroadcastManager;
@@ -90,6 +92,11 @@ public class VideoPosting_Activity extends AppCompatActivity implements View.OnC
         layout_post.setOnClickListener(this);
         layout_save.setOnClickListener(this);
         iv_videothumbnail.setOnClickListener(this);
+        iv_whatsapp.setOnClickListener(this);
+        iv_facebook.setOnClickListener(this);
+        iv_gmail.setOnClickListener(this);
+        iv_twitter.setOnClickListener(this);
+        iv_instagram.setOnClickListener(this);
     }
 
     @Override
@@ -121,6 +128,22 @@ public class VideoPosting_Activity extends AppCompatActivity implements View.OnC
             case R.id.iv_videothumbnail:
                goToSinglePlayActivity(videopath);
                 break;
+            case R.id.iv_whatsapp:
+                 shareVideoonSocialapps(videopath,"com.whatsapp","Whatsapp");
+                break;
+            case R.id.iv_facebook:
+                  shareVideoonSocialapps(videopath,"com.facebook.katana","Facebook");
+                break;
+            case R.id.iv_instagram:
+                shareVideoonSocialapps(videopath,"com.instagram.android","Instagram");
+                break;
+            case R.id.iv_twitter:
+                shareVideoonSocialapps(videopath,"com.twitter.android","Twitter");
+                break;
+            case R.id.iv_gmail:
+                 shareVideoonSocialapps(videopath,"com.google.android.gm","Gmail");
+                break;
+
         }
     }
 
@@ -216,5 +239,39 @@ public class VideoPosting_Activity extends AppCompatActivity implements View.OnC
         intent.putExtra("songpath",musicpath);
         intent.putExtra("songid",songid);
         startActivity(intent);
+    }
+
+    public void shareVideoonSocialapps(String videopath,String packagename,String appname) {
+        try {
+            File videofiletoshare = new File(videopath);
+            Uri uri = Uri.fromFile(videofiletoshare);
+            Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+            shareIntent.setType("*/*");
+            shareIntent.putExtra(Intent.EXTRA_STREAM, uri); // set uri
+            shareIntent.setPackage(packagename);
+            startActivity(shareIntent);
+        }
+        catch (Exception e)
+        {
+            if(appname.equalsIgnoreCase("Facebook"))
+            {
+                try {
+                    File videofiletoshare = new File(videopath);
+                    Uri uri = Uri.fromFile(videofiletoshare);
+                    Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+                    shareIntent.setType("*/*");
+                    shareIntent.putExtra(Intent.EXTRA_STREAM, uri); // set uri
+                    shareIntent.setPackage("com.facebook.lite");
+                    startActivity(shareIntent);
+                }
+                catch (Exception ef)
+                {
+                    Utils.callToast(VideoPosting_Activity.this, "You don't have " + appname + " app in your phone");
+                }
+            }
+            else {
+                Utils.callToast(VideoPosting_Activity.this, "You don't have " + appname + " app in your phone");
+            }
+        }
     }
 }
