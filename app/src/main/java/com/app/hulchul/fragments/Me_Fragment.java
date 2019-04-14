@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,14 +24,24 @@ import com.app.hulchul.activities.DraftsActivity;
 import com.app.hulchul.activities.EditProfileActivity;
 import com.app.hulchul.activities.LoginLandingActivity;
 import com.app.hulchul.adapters.VideothumbnailsAdapter;
+import com.app.hulchul.model.ProfileViewdata;
+import com.app.hulchul.model.ProfilepicUpdateResponse;
+import com.app.hulchul.model.ViewProfileResponse;
+import com.app.hulchul.presenter.RetrofitApis;
+import com.app.hulchul.utils.ApiUrls;
 import com.app.hulchul.utils.ConnectionDetector;
 import com.app.hulchul.utils.SessionManagement;
+import com.app.hulchul.utils.Utils;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Me_Fragment extends Fragment implements View.OnClickListener,VideothumbnailsAdapter.OnVideoSelectedListener{
 
@@ -80,6 +91,8 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Videot
     private SessionManagement sessionManagement;
     private ConnectionDetector connectionDetector;
     private VideothumbnailsAdapter adapter;
+    private ProfileViewdata viewdata;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -101,13 +114,6 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Videot
         layout_editprofile.setOnClickListener(this);
         layout_yourvideos.setOnClickListener(this);
         layout_hearts.setOnClickListener(this);
-        tv_name.setText("Satya demo");
-        tv_title.setText("Satya demo");
-        tv_following.setText("35 Following");
-        tv_friends.setText("5 Friends");
-        tv_hearts.setText("15 Hearts");
-        tv_videos.setText("10 Videos");
-        tv_followers.setText("15 Followers");
 
         setClickableFocus(true);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),3);
@@ -117,6 +123,11 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Videot
         adapter.setOnVideoSelectedListener(this);
         setDraftsEnableorDisable();
         recyclerview_videos.setAdapter(adapter);
+
+        if(connectionDetector.isConnectingToInternet())
+            viewProfile(sessionManagement.getValueFromPreference(SessionManagement.USERID));
+        else
+            Utils.callToast(getActivity(),getResources().getString(R.string.internet_toast));
     }
 
     @Override
@@ -159,6 +170,12 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Videot
                 break;
             case R.id.layout_editprofile:
                 Intent editprofile=new Intent(getActivity(), EditProfileActivity.class);
+                if(viewdata!=null)
+                {
+                    editprofile.putExtra("name",viewdata.getFullName());
+                    editprofile.putExtra("biodata",viewdata.getBioData());
+                    editprofile.putExtra("profilephoto",viewdata.getPhoto());
+                }
                 startActivity(editprofile);
                 break;
             case R.id.layout_yourvideos:
@@ -253,5 +270,77 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Videot
         }
         else
             adapter.setDraftEnabled(false);
+    }
+
+    private void viewProfile(String userid){
+        Utils.showDialog(getActivity());
+        Call<ViewProfileResponse> call= RetrofitApis.Factory.createTemp(getActivity()).viewProfile(userid);
+        call.enqueue(new Callback<ViewProfileResponse>() {
+            @Override
+            public void onResponse(Call<ViewProfileResponse> call, Response<ViewProfileResponse> response) {
+                Utils.dismissDialog();
+                ViewProfileResponse body=response.body();
+                if(body!=null) {
+                    if (body.getStatus()==0) {
+                       if(body.getData()!=null)
+                           updateFields(body.getData());
+                    } else {
+                        Utils.callToast(getActivity(), body.getMessage());
+                    }
+                }
+                else {
+                    Utils.callToast(getActivity(), "Null data came");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ViewProfileResponse> call, Throwable t) {
+                Utils.dismissDialog();
+                Log.e("commentslist onFailure",""+t.getMessage());
+            }
+        });
+    }
+
+    private void updateFields(ProfileViewdata viewdata)
+    {
+        /*tv_name.setText("Satya demo");
+        tv_title.setText("Satya demo");
+        tv_following.setText("35 Following");
+        tv_friends.setText("5 Friends");
+        tv_hearts.setText("15 Hearts");
+        tv_videos.setText("10 Videos");
+        tv_followers.setText("15 Followers");*/
+
+        tv_name.setText(viewdata.getFullName());
+        tv_title.setText(viewdata.getFullName());
+        tv_following.setText(viewdata.getFollowing()+" Following");
+        tv_friends.setText("5 Friends");
+        tv_friends.setVisibility(View.GONE);
+        tv_hearts.setText(viewdata.getLikes()+" Hearts");
+        tv_videos.setText(viewdata.getVideos()+" Videos");
+        tv_followers.setText(viewdata.getFollowers()+" Followers");
+        tv_biodata.setText(viewdata.getBioData());
+
+        String userid=sessionManagement.getValueFromPreference(SessionManagement.USERID);
+        String username,biodata;
+        if(viewdata.getFullName()==null || viewdata.getFullName().equalsIgnoreCase("null"))
+        {
+            username="@User"+userid.substring(userid.length()-4);
+            viewdata.setFullName(username);
+            tv_name.setText(username);
+            tv_title.setText(username);
+        }
+
+        if(viewdata.getBioData()==null || viewdata.getBioData().equalsIgnoreCase("null"))
+        {
+            biodata="Your biodata";
+            viewdata.setBioData(biodata);
+        }
+
+        Picasso.with(getActivity()).load(ApiUrls.PROFILEBASEPATH+viewdata.getPhoto()).placeholder(R.mipmap.placeholder)
+                .error(R.mipmap.placeholder)
+                .into(profile_image);
+
+        this.viewdata=viewdata;
     }
 }

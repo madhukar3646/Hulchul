@@ -104,6 +104,7 @@
                     android:src="@mipmap/user"/>
 
                 <EditText
+                    android:id="@+id/et_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Johney demo"
@@ -113,6 +114,7 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:inputType="text"
                     android:focusableInTouchMode="true"
+                    android:maxLength="80"
                     android:focusable="true"/>
 
             </LinearLayout>
@@ -127,7 +129,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:focusableInTouchMode="true"
-                android:focusable="true">
+                android:focusable="true"
+                android:visibility="gone">
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -226,15 +229,21 @@
                     android:layout_gravity="center"
                     android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-                <TextView
+                <EditText
+                    android:id="@+id/et_biodata"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/iv_biodata"
-                    android:text="Android is a software package and linux based operating system which is used for"
+                    android:hint="Enter your bio data"
                     android:layout_marginLeft="40dp"
                     android:layout_gravity="center"
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="10dp"
+                    android:inputType="text"
+                    android:focusableInTouchMode="true"
+                    android:focusable="true"
+                    android:maxLength="150"
+                    android:background="@android:color/transparent"
                     android:textAppearance="?android:attr/textAppearanceSmall"/>
 
             </RelativeLayout>
@@ -246,7 +255,8 @@
             </View>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -294,12 +304,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#1A000000"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="5dp"
+                android:visibility="gone">
             </View>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -347,12 +359,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#1A000000"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="5dp"
+                android:visibility="gone">
             </View>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -400,7 +414,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#1A000000"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="5dp"
+                android:visibility="gone">
             </View>
 
             <RelativeLayout
@@ -410,13 +425,16 @@
                 android:layout_margin="20dp"
                 android:background="@drawable/rounded_rectangle_primary"
                 >
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
                     android:text="  Save  "
-                    android:textColor="@android:color/white"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_margin="5dp"/>
+                    android:textColor="@android:color/white" />
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>

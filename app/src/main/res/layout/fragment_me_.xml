@@ -51,7 +51,7 @@
                     android:id="@+id/tv_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Satya demo"
+                    android:text=""
                     android:layout_marginLeft="10dp"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@android:color/white"
@@ -88,7 +88,6 @@
                             android:id="@+id/profile_image"
                             android:layout_width="80dp"
                             android:layout_height="80dp"
-                            android:src="@mipmap/person_imagesample"
                             app:civ_border_width="2dp"
                             android:layout_gravity="center"
                             app:civ_border_color="@color/colorPrimary"/>
@@ -97,7 +96,7 @@
                             android:id="@+id/tv_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Sathya Demo"
+                            android:text=""
                             android:textColor="@android:color/black"
                             android:textStyle="bold"
                             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -142,7 +141,7 @@
                                 android:id="@+id/tv_following"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="35 Following"
+                                android:text="0 Following"
                                 android:layout_marginLeft="10dp"
                                 android:layout_gravity="center_vertical"
                                 android:textColor="@color/textcolorblackalpha"/>
@@ -162,7 +161,7 @@
                                 android:id="@+id/tv_followers"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="5 Followers"
+                                android:text="0 Followers"
                                 android:textColor="@color/textcolorblackalpha"
                                 android:layout_marginLeft="10dp"
                                 android:layout_gravity="center_vertical"/>
@@ -182,7 +181,7 @@
                                 android:id="@+id/tv_hearts"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="15 Hearts"
+                                android:text="0 Hearts"
                                 android:layout_marginLeft="10dp"
                                 android:layout_gravity="center_vertical"
                                 android:textColor="@color/textcolorblackalpha"/>
@@ -192,7 +191,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:layout_marginTop="15dp">
+                            android:layout_marginTop="15dp"
+                            android:visibility="gone">
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
@@ -222,7 +222,7 @@
                                 android:id="@+id/tv_videos"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="10 Videos"
+                                android:text="0 Videos"
                                 android:layout_marginLeft="10dp"
                                 android:layout_gravity="center_vertical"
                                 android:textColor="@color/textcolorblackalpha"/>
@@ -251,7 +251,7 @@
                     android:id="@+id/tv_biodata"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry.Contrary to popular belief, Lorem Ipsum is not simply random text."
+                    android:text="Bio data"
                     android:layout_margin="10dp"
                     android:layout_gravity="center_vertical"
                     android:textSize="12sp"
@@ -267,7 +267,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="5dp"
-                    android:weightSum="2">
+                    android:weightSum="2"
+                    android:visibility="gone">
 
                    <LinearLayout
                        android:id="@+id/layout_yourvideos"
@@ -319,13 +320,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="#1A000000"
-                    android:layout_marginTop="5dp"></View>
+                    android:layout_marginTop="5dp"
+                    android:visibility="gone"></View>
 
                 <android.support.v7.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/recyclerview_videos"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     />
 
             </LinearLayout>

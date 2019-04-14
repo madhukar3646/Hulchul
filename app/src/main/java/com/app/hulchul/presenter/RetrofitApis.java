@@ -3,6 +3,8 @@ package com.app.hulchul.presenter;
 import android.content.Context;
 
 import com.app.hulchul.model.NotificationsResponse;
+import com.app.hulchul.model.ProfilepicUpdateResponse;
+import com.app.hulchul.model.ViewProfileResponse;
 import com.app.hulchul.servicerequestmodels.CommentPostRequest;
 import com.app.hulchul.model.CommentPostResponse;
 import com.app.hulchul.model.CommentslistingResponse;
@@ -149,5 +151,18 @@ public interface RetrofitApis {
 
     @GET("listNotifications")
     Call<NotificationsResponse> notificationsService();
+
+    @Multipart
+    @POST("hprofilepic")
+    Call<ProfilepicUpdateResponse> uploadProfilepic(@Part MultipartBody.Part imageFile, @Part("userId") String userid);
+
+    @FormUrlEncoded
+    @POST("hprofileupdate")
+    Call<ProfilepicUpdateResponse> profileUpdate(@Field("userId") String userid, @Field("fullName") String fullName,@Field("bioData") String bioData);
+
+    @FormUrlEncoded
+    @POST("viewprofile")
+    Call<ViewProfileResponse> viewProfile(@Field("userId") String userid);
+
 }
 
