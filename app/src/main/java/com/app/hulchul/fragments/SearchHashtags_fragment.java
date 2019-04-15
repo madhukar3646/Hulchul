@@ -14,6 +14,7 @@ import com.app.hulchul.activities.MySoundsActivity;
 import com.app.hulchul.activities.SearchActivity;
 import com.app.hulchul.adapters.HashtagSearchAdapter;
 import com.app.hulchul.adapters.MySoundsAdapter;
+import com.app.hulchul.utils.ConnectionDetector;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,6 +25,7 @@ public class SearchHashtags_fragment extends Fragment implements SearchActivity.
     @BindView(R.id.rv_hashtags)
     RecyclerView rv_hashtags;
     private HashtagSearchAdapter hashtagSearchAdapter;
+    private ConnectionDetector connectionDetector;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,5 +47,9 @@ public class SearchHashtags_fragment extends Fragment implements SearchActivity.
     @Override
     public void onSearchFragmentSelected() {
         Log.e("Hashtags fragment","Hashtags fragment");
+    }
+
+    public void onPerformSearch(String key) {
+
     }
 }

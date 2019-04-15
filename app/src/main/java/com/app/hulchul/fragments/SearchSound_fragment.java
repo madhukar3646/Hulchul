@@ -15,6 +15,7 @@ import com.app.hulchul.R;
 import com.app.hulchul.activities.SearchActivity;
 import com.app.hulchul.adapters.HashtagSearchAdapter;
 import com.app.hulchul.adapters.SoundSearchAdapter;
+import com.app.hulchul.utils.ConnectionDetector;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,6 +26,7 @@ public class SearchSound_fragment extends Fragment implements SearchActivity.OnS
     @BindView(R.id.rv_sounds)
     RecyclerView rv_sounds;
     private SoundSearchAdapter soundSearchAdapter;
+    private ConnectionDetector connectionDetector;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,5 +48,9 @@ public class SearchSound_fragment extends Fragment implements SearchActivity.OnS
     @Override
     public void onSearchFragmentSelected() {
         Log.e("Sound fragment","Sound fragment");
+    }
+
+    public void onPerformSearch(String key) {
+
     }
 }

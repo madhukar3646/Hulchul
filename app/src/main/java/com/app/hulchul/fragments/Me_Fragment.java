@@ -316,12 +316,25 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Videot
 
         tv_name.setText(viewdata.getFullName());
         tv_title.setText(viewdata.getFullName());
-        tv_following.setText(viewdata.getFollowing()+" Following");
+        if(viewdata.getFollowing()!=null)
+          tv_following.setText(viewdata.getFollowing()+" Following");
+        else
+            tv_following.setText("0"+" Following");
         tv_friends.setText("5 Friends");
         tv_friends.setVisibility(View.GONE);
-        tv_hearts.setText(viewdata.getLikes()+" Hearts");
-        tv_videos.setText(viewdata.getVideos()+" Videos");
-        tv_followers.setText(viewdata.getFollowers()+" Followers");
+        if(viewdata.getLikes()!=null)
+          tv_hearts.setText(viewdata.getLikes()+" Hearts");
+        else
+            tv_hearts.setText("0"+" Hearts");
+        if(viewdata.getVideos()!=null)
+          tv_videos.setText(viewdata.getVideos()+" Videos");
+        else
+            tv_videos.setText("0"+" Videos");
+        if(viewdata.getFollowers()!=null)
+          tv_followers.setText(viewdata.getFollowers()+" Followers");
+        else
+            tv_followers.setText("0"+" Followers");
+
         tv_biodata.setText(viewdata.getBioData());
 
         String userid=sessionManagement.getValueFromPreference(SessionManagement.USERID);

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.app.hulchul.model.NotificationsResponse;
 import com.app.hulchul.model.ProfilepicUpdateResponse;
+import com.app.hulchul.model.SearchUserResponse;
 import com.app.hulchul.model.ViewProfileResponse;
 import com.app.hulchul.servicerequestmodels.ChangepasswordRequest;
 import com.app.hulchul.servicerequestmodels.CommentPostRequest;
@@ -168,5 +169,18 @@ public interface RetrofitApis {
 
     @POST("users/change-password")
     Call<SignupResponse> changepassword(@Header("x-auth-code") String token,@Body ChangepasswordRequest changepasswordRequest);
+
+    @FormUrlEncoded
+    @POST("userSearch")
+    Call<SearchUserResponse> searchUser(@Field("search") String search);
+
+    @FormUrlEncoded
+    @POST("hastTagSearch")
+    Call<SearchUserResponse> hastTagSearch(@Field("search") String search);
+
+    @FormUrlEncoded
+    @POST("songSearch")
+    Call<SearchUserResponse> songSearch  (@Field("search") String search);
+
 }
 
