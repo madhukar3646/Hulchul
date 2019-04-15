@@ -137,8 +137,11 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Videot
             case R.id.iv_favourite:
                 if(sessionManagement.getBooleanValueFromPreference(SessionManagement.ISLOGIN))
                 {
-                    Intent intent=new Intent(getActivity(), CommonEmptyActivity.class);
+                    /*Intent intent=new Intent(getActivity(), CommonEmptyActivity.class);
                     intent.putExtra("common","Favourites");
+                    startActivity(intent);*/
+
+                    Intent intent=new Intent(getActivity(), DraftsActivity.class);
                     startActivity(intent);
                 }
                 else {
@@ -333,7 +336,7 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Videot
 
         if(viewdata.getBioData()==null || viewdata.getBioData().equalsIgnoreCase("null"))
         {
-            biodata="Your biodata";
+            biodata="No bio data yet";
             viewdata.setBioData(biodata);
         }
 

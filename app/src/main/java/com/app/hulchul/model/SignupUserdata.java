@@ -23,6 +23,9 @@ public class SignupUserdata {
     @SerializedName("countryCode")
     @Expose
     private String countryCode;
+    @SerializedName("token")
+    @Expose
+    private String token;
     @SerializedName("otp")
     @Expose
     private String otp;
@@ -114,5 +117,13 @@ public class SignupUserdata {
 
     public void setV(Integer v) {
         this.v = v;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

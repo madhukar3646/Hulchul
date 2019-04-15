@@ -37,7 +37,7 @@ public class FileUploadService extends JobIntentService {
      * Unique job ID for this service.
      */
     private static final int JOB_ID = 102;
-    private String mFilePath,songid,userid;
+    private String mFilePath,songid,userid,hashtags;
     ResponseBody response;
 
     public static void enqueueWork(Context context, Intent intent) {
@@ -60,6 +60,7 @@ public class FileUploadService extends JobIntentService {
         mFilePath = intent.getStringExtra("mFilePath");
         songid = intent.getStringExtra("songid");
         userid = intent.getStringExtra("userid");
+        hashtags=intent.getStringExtra("hashtags");
         if (mFilePath == null) {
             Log.e(TAG, "onHandleWork: Invalid file URI");
             return;
@@ -146,7 +147,7 @@ public class FileUploadService extends JobIntentService {
 
     private void uploadeVideo(String userid, String videoid,String songid){
 
-        Call<SignupResponse> call= RetrofitApis.Factory.createTemp(this).uploadVideo(userid,songid,videoid);
+        Call<SignupResponse> call= RetrofitApis.Factory.createTemp(this).uploadVideo(userid,songid,videoid,hashtags);
         call.enqueue(new Callback<SignupResponse>() {
             @Override
             public void onResponse(Call<SignupResponse> call, Response<SignupResponse> response) {

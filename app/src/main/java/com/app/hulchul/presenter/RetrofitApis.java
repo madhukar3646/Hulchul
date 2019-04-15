@@ -5,6 +5,7 @@ import android.content.Context;
 import com.app.hulchul.model.NotificationsResponse;
 import com.app.hulchul.model.ProfilepicUpdateResponse;
 import com.app.hulchul.model.ViewProfileResponse;
+import com.app.hulchul.servicerequestmodels.ChangepasswordRequest;
 import com.app.hulchul.servicerequestmodels.CommentPostRequest;
 import com.app.hulchul.model.CommentPostResponse;
 import com.app.hulchul.model.CommentslistingResponse;
@@ -34,6 +35,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -112,7 +114,7 @@ public interface RetrofitApis {
 
     @FormUrlEncoded
     @POST("uploadVideo")
-    Call<SignupResponse> uploadVideo(@Field("userId") String userId,@Field("songId") String songId,@Field("videoId") String videoId);
+    Call<SignupResponse> uploadVideo(@Field("userId") String userId,@Field("songId") String songId,@Field("videoId") String videoId,@Field("hashtags") String hashtags);
 
     @FormUrlEncoded
     @POST("userVideos")
@@ -164,5 +166,7 @@ public interface RetrofitApis {
     @POST("viewprofile")
     Call<ViewProfileResponse> viewProfile(@Field("userId") String userid);
 
+    @POST("users/change-password")
+    Call<SignupResponse> changepassword(@Header("x-auth-code") String token,@Body ChangepasswordRequest changepasswordRequest);
 }
 

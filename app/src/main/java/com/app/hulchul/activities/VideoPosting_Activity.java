@@ -173,6 +173,7 @@ public class VideoPosting_Activity extends AppCompatActivity implements View.OnC
         mIntent.putExtra("mFilePath", draftpath);
         mIntent.putExtra("songid", songid);
         mIntent.putExtra("userid", userid);
+        mIntent.putExtra("hashtags",getHashTags());
         FileUploadService.enqueueWork(this, mIntent);
 
         Intent intent=new Intent(VideoPosting_Activity.this,MainActivity.class);

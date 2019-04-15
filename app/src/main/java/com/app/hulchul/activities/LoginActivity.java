@@ -404,6 +404,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Log.e("user id",""+data.getData().getId());
         sessionManagement.setBooleanValuetoPreference(SessionManagement.ISLOGIN,true);
         sessionManagement.setValuetoPreference(SessionManagement.USERID,data.getData().getId());
+        sessionManagement.setValuetoPreference(SessionManagement.USER_TOKEN,data.getData().getToken());
+        sessionManagement.setBooleanValuetoPreference(SessionManagement.IS_SOCIALLOGIN,false);
         Intent intent=new Intent(LoginActivity.this,MainActivity.class);
         startActivity(intent);
         finish();

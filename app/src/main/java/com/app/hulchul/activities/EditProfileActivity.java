@@ -49,6 +49,9 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     EditText et_biodata;
     @BindView(R.id.layout_save)
     RelativeLayout layout_save;
+    @BindView(R.id.layout_password)
+    RelativeLayout layout_password;
+
     private String name,biaodata,profilepicurl;
 
     private ConnectionDetector connectionDetector;
@@ -66,6 +69,11 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     {
         connectionDetector=new ConnectionDetector(EditProfileActivity.this);
         sessionManagement=new SessionManagement(EditProfileActivity.this);
+
+        if(sessionManagement.getBooleanValueFromPreference(SessionManagement.IS_SOCIALLOGIN))
+            layout_password.setVisibility(View.GONE);
+        else
+            layout_password.setVisibility(View.VISIBLE);
 
         name=getIntent().getStringExtra("name");
         biaodata=getIntent().getStringExtra("biodata");

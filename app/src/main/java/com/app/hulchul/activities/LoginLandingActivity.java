@@ -442,6 +442,7 @@ public class LoginLandingActivity extends AppCompatActivity implements View.OnCl
         if(data.getData()!=null) {
             sessionManagement.setValuetoPreference(SessionManagement.USERID, data.getData().getId());
             sessionManagement.setBooleanValuetoPreference(SessionManagement.ISLOGIN,true);
+            sessionManagement.setBooleanValuetoPreference(SessionManagement.IS_SOCIALLOGIN,true);
         }
         gotoHome();
     }

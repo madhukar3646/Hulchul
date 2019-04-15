@@ -14,6 +14,7 @@ public class SessionManagement {
     int PRIVATE_MODE = 0;
     private static final String PREF_NAME = "hulchul";
     public static final String USERID="userid";
+    public static final String USER_TOKEN="token";
     public static final String NAME="name";
     public static final String DEVICETOKEN="devicetoken";
     public static final String DEVICETYPE="devicetype";
@@ -21,6 +22,7 @@ public class SessionManagement {
     public static final String EMAIL="email";
     public static final String MOBILE="mobile";
     public static final String ISLOGIN="islogin";
+    public static final String IS_SOCIALLOGIN="sociallogin";
 
     public SessionManagement(Context context) {
         this._context = context;

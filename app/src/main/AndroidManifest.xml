@@ -22,6 +22,7 @@
 
     <application
         android:allowBackup="true"
+        android:appComponentFactory="whateverString"
         android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
         android:largeHeap="true"
@@ -29,11 +30,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:replace="android:appComponentFactory"
-        android:appComponentFactory="whateverString">
-
-        <activity android:name=".activities.DraftsActivity"
+        tools:replace="android:appComponentFactory">
+        <activity android:name=".activities.PlayvideosCategorywise_Activity"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.DraftsActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.VideoPosting_Activity"
             android:screenOrientation="portrait" />
@@ -110,9 +112,9 @@
         <activity
             android:name=".activities.SelectInterestsActivity"
             android:screenOrientation="portrait" />
-
-        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat"/>
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,11 +13,18 @@ import android.view.ViewGroup;
 
 import com.app.hulchul.R;
 import com.app.hulchul.activities.SearchActivity;
+import com.app.hulchul.adapters.HashtagSearchAdapter;
+import com.app.hulchul.adapters.SoundSearchAdapter;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
 public class SearchSound_fragment extends Fragment implements SearchActivity.OnSearchFragmentSelected {
+
+    @BindView(R.id.rv_sounds)
+    RecyclerView rv_sounds;
+    private SoundSearchAdapter soundSearchAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -29,7 +38,9 @@ public class SearchSound_fragment extends Fragment implements SearchActivity.OnS
 
     private void init(View view)
     {
-
+        soundSearchAdapter=new SoundSearchAdapter(getActivity());
+        rv_sounds.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
+        rv_sounds.setAdapter(soundSearchAdapter);
     }
 
     @Override

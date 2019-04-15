@@ -1,6 +1,7 @@
 package com.app.hulchul.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.app.hulchul.R;
+import com.app.hulchul.activities.PlayvideosCategorywise_Activity;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -45,6 +47,13 @@ public class HashtagsthumnailsAdapter extends RecyclerView.Adapter<Hashtagsthumn
         Picasso.with(context).load(R.mipmap.sampleimage)
                 .error(R.mipmap.placeholder)
                 .into(holder.iv_hashtagthumbnail);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                context.startActivity(new Intent(context, PlayvideosCategorywise_Activity.class));
+            }
+        });
     }
 
     @Override
