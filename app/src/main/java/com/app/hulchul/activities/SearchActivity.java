@@ -35,6 +35,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     EditText et_search;
     private ConnectionDetector connectionDetector;
     ViewPagerAdapter adapter;
+    private String search_key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +72,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             public void onPageSelected(int i) {
               fragment=adapter.getItem(i);
               if(fragment instanceof OnSearchFragmentSelected)
-                  ((OnSearchFragmentSelected) fragment).onSearchFragmentSelected();
+                  ((OnSearchFragmentSelected) fragment).onSearchFragmentSelected(search_key);
             }
 
             @Override
@@ -93,10 +94,10 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 if(searchkey.trim().length()==0)
                     Utils.callToast(SearchActivity.this,"Please type something and search");
                 else if(connectionDetector.isConnectingToInternet()){
-                     et_search.setText("");
+                    this.search_key=searchkey;
                      Fragment fragment=adapter.getItem(viewpager.getCurrentItem());
-                     if(fragment instanceof SearchUsers_Fragment)
-                         ((SearchUsers_Fragment) fragment).onPerformSearch(searchkey);
+                     if(fragment instanceof OnSearchFragmentSelected)
+                         ((OnSearchFragmentSelected) fragment).onPerformSearch(searchkey);
                 }
                 else
                     Utils.callToast(SearchActivity.this,getResources().getString(R.string.internet_toast));
@@ -106,6 +107,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     public interface OnSearchFragmentSelected
     {
-        void onSearchFragmentSelected();
+        void onSearchFragmentSelected(String searchkey);
+        void onPerformSearch(String searchkey);
     }
 }

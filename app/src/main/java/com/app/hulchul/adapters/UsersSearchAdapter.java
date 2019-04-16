@@ -25,11 +25,17 @@ public class UsersSearchAdapter extends RecyclerView.Adapter<UsersSearchAdapter.
 {
     private Context context;
     private ArrayList<UserSearchdata> userSearchdataArrayList;
+    private OnUserSelectionListener onUserSelectionListener;
 
     public UsersSearchAdapter(Context context,ArrayList<UserSearchdata> userSearchdataArrayList)
     {
         this.context=context;
         this.userSearchdataArrayList=userSearchdataArrayList;
+    }
+
+    public void setOnUserSelectionListener(OnUserSelectionListener onUserSelectionListener)
+    {
+        this.onUserSelectionListener=onUserSelectionListener;
     }
 
     @Override
@@ -63,6 +69,13 @@ public class UsersSearchAdapter extends RecyclerView.Adapter<UsersSearchAdapter.
         else
             holder.tv_biodata.setText("No bio data yet");
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              if(onUserSelectionListener!=null)
+                  onUserSelectionListener.onUserSelected(userSearchdataArrayList.get(position));
+            }
+        });
     }
 
     @Override
@@ -93,5 +106,10 @@ public class UsersSearchAdapter extends RecyclerView.Adapter<UsersSearchAdapter.
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
+    }
+
+    public interface OnUserSelectionListener
+    {
+        void onUserSelected(UserSearchdata userSearchdata);
     }
 }

@@ -41,7 +41,7 @@
                 android:id="@+id/tv_videoscount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="113.m"
+                android:text=""
                 android:layout_marginLeft="20dp"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 />

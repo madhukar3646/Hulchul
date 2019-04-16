@@ -11,7 +11,10 @@ import android.widget.ImageView;
 
 import com.app.hulchul.R;
 import com.app.hulchul.activities.PlayvideosCategorywise_Activity;
+import com.app.hulchul.model.VideoModel;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 /**
  * Created by admin on 4/20/2017.
@@ -21,13 +24,15 @@ public class HashtagsthumnailsAdapter extends RecyclerView.Adapter<Hashtagsthumn
 {
     private Context context;
     private int width,height;
+    private ArrayList<VideoModel> discoverhashtagvideosList;
 
-    public HashtagsthumnailsAdapter(Context context)
+    public HashtagsthumnailsAdapter(Context context,ArrayList<VideoModel> discoverhashtagvideosList)
     {
         this.context=context;
         DisplayMetrics metrics=context.getResources().getDisplayMetrics();
         width=metrics.widthPixels;
         height=metrics.heightPixels;
+        this.discoverhashtagvideosList=discoverhashtagvideosList;
     }
 
     @Override
@@ -51,7 +56,10 @@ public class HashtagsthumnailsAdapter extends RecyclerView.Adapter<Hashtagsthumn
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                context.startActivity(new Intent(context, PlayvideosCategorywise_Activity.class));
+               /* Intent intent=new Intent(context,PlayvideosCategorywise_Activity.class);
+                intent.putParcelableArrayListExtra("videos",discoverhashtagvideosList);
+                intent.putExtra("position",position);
+                context.startActivity(intent);*/
             }
         });
     }
@@ -59,7 +67,7 @@ public class HashtagsthumnailsAdapter extends RecyclerView.Adapter<Hashtagsthumn
     @Override
     public int getItemCount()
     {
-        return 30;
+        return discoverhashtagvideosList.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder

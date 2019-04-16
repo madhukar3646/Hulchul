@@ -11,6 +11,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.hulchul.R;
+import com.app.hulchul.model.Discoverhashtags;
+import com.app.hulchul.model.VideoModel;
+
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -21,14 +26,16 @@ public class HashtagsCategoriesAdapter extends RecyclerView.Adapter<HashtagsCate
 {
     private Context context;
     private int width,height;
-    private HashtagsthumnailsAdapter hashtagsthumnailsAdapter;
+    private ArrayList<Discoverhashtags> discoverhashtagsList;
+    private Discoverhashtags discoverhashtags;
 
-    public HashtagsCategoriesAdapter(Context context)
+    public HashtagsCategoriesAdapter(Context context,ArrayList<Discoverhashtags> discoverhashtagsList)
     {
         this.context=context;
         DisplayMetrics metrics=context.getResources().getDisplayMetrics();
         width=metrics.widthPixels;
         height=metrics.heightPixels;
+        this.discoverhashtagsList=discoverhashtagsList;
     }
 
     @Override
@@ -44,16 +51,22 @@ public class HashtagsCategoriesAdapter extends RecyclerView.Adapter<HashtagsCate
     public void onBindViewHolder(final HashtagsCategoriesAdapter.MyViewHolder holder, final int position)
     {
         final HashtagsCategoriesAdapter.MyViewHolder myViewHolder=holder;
-
+        discoverhashtags=discoverhashtagsList.get(position);
+        ArrayList<VideoModel> discoverhashtagvideosList=new ArrayList<>();
+        if(discoverhashtags.getVideos()!=null && discoverhashtags.getVideos().size()>0)
+          discoverhashtagvideosList.addAll(discoverhashtags.getVideos());
         holder.rv_hashtagscontainer.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false));
-        hashtagsthumnailsAdapter=new HashtagsthumnailsAdapter(context);
+        HashtagsthumnailsAdapter hashtagsthumnailsAdapter=new HashtagsthumnailsAdapter(context,discoverhashtagvideosList);
         holder.rv_hashtagscontainer.setAdapter(hashtagsthumnailsAdapter);
+
+        holder.tv_hashtagname.setText(discoverhashtags.getHashTag());
+        holder.tv_hashtagsviews.setText("");
     }
 
     @Override
     public int getItemCount()
     {
-        return 5;
+        return discoverhashtagsList.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder

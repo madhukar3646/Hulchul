@@ -58,22 +58,25 @@
             <RelativeLayout
                 android:id="@+id/videos_count"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/iv_videos"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@mipmap/videos"
-                    android:layout_marginLeft="10dp"/>
+                    android:layout_width="26dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@mipmap/videos" />
+
                 <TextView
                     android:id="@+id/tv_videoscount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/iv_videos"
-                    android:text="10"
                     android:layout_centerVertical="true"
-                    />
+                    android:layout_marginStart="0dp"
+                    android:layout_toEndOf="@+id/iv_videos"
+                    android:layout_toRightOf="@+id/iv_videos"
+                    android:text="10" />
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/layout_viewicon"

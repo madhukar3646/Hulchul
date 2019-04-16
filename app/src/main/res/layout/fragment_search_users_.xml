@@ -15,6 +15,13 @@
             android:id="@+id/rv_users">
 
         </android.support.v7.widget.RecyclerView>
+        <TextView
+            android:id="@+id/tv_nodata"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No data found"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_centerInParent="true"/>
 
     </RelativeLayout>
 

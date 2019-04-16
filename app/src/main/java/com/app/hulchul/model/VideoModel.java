@@ -1,11 +1,14 @@
 package com.app.hulchul.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class VideoModel {
+public class VideoModel implements Parcelable {
 
     @SerializedName("id")
     @Expose
@@ -13,6 +16,9 @@ public class VideoModel {
     @SerializedName("userId")
     @Expose
     private String userId;
+    @SerializedName("hashTag")
+    @Expose
+    private String hashTag;
     @SerializedName("video")
     @Expose
     private String video;
@@ -54,6 +60,39 @@ public class VideoModel {
     @SerializedName("comments")
     @Expose
     private List<HomescreenCommentModel> comments = null;
+
+    public VideoModel()
+    {
+
+    }
+
+    protected VideoModel(Parcel in) {
+        id = in.readString();
+        userId = in.readString();
+        hashTag = in.readString();
+        video = in.readString();
+        createdOn = in.readString();
+        songfile = in.readString();
+        songId = in.readString();
+        likes = in.readString();
+        likestatus = in.readString();
+        follwerstatus = in.readString();
+        followersCount = in.readString();
+        shareCount = in.readString();
+        commentCount = in.readString();
+    }
+
+    public static final Creator<VideoModel> CREATOR = new Creator<VideoModel>() {
+        @Override
+        public VideoModel createFromParcel(Parcel in) {
+            return new VideoModel(in);
+        }
+
+        @Override
+        public VideoModel[] newArray(int size) {
+            return new VideoModel[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -157,5 +196,35 @@ public class VideoModel {
 
     public void setComments(List<HomescreenCommentModel> comments) {
         this.comments = comments;
+    }
+
+    public String getHashTag() {
+        return hashTag;
+    }
+
+    public void setHashTag(String hashTag) {
+        this.hashTag = hashTag;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(userId);
+        parcel.writeString(hashTag);
+        parcel.writeString(video);
+        parcel.writeString(createdOn);
+        parcel.writeString(songfile);
+        parcel.writeString(songId);
+        parcel.writeString(likes);
+        parcel.writeString(likestatus);
+        parcel.writeString(follwerstatus);
+        parcel.writeString(followersCount);
+        parcel.writeString(shareCount);
+        parcel.writeString(commentCount);
     }
 }

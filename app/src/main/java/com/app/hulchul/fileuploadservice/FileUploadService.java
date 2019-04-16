@@ -122,8 +122,6 @@ public class FileUploadService extends JobIntentService {
     private RequestBody createRequestBodyFromText(String mText) {
         return RequestBody.create(MediaType.parse("text/plain"), mText);
     }
-
-
     /**
      * return multi part body in format of FlowableEmitter
      *

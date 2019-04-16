@@ -2,9 +2,12 @@ package com.app.hulchul.presenter;
 
 import android.content.Context;
 
+import com.app.hulchul.model.Discoverresponse;
+import com.app.hulchul.model.HashtagSearchResponse;
 import com.app.hulchul.model.NotificationsResponse;
 import com.app.hulchul.model.ProfilepicUpdateResponse;
 import com.app.hulchul.model.SearchUserResponse;
+import com.app.hulchul.model.Soundsearchresponse;
 import com.app.hulchul.model.ViewProfileResponse;
 import com.app.hulchul.servicerequestmodels.ChangepasswordRequest;
 import com.app.hulchul.servicerequestmodels.CommentPostRequest;
@@ -157,7 +160,7 @@ public interface RetrofitApis {
 
     @Multipart
     @POST("hprofilepic")
-    Call<ProfilepicUpdateResponse> uploadProfilepic(@Part MultipartBody.Part imageFile, @Part("userId") String userid);
+    Call<ProfilepicUpdateResponse> uploadProfilepic(@Part MultipartBody.Part imageFile,@Part("userId") RequestBody description);
 
     @FormUrlEncoded
     @POST("hprofileupdate")
@@ -175,12 +178,14 @@ public interface RetrofitApis {
     Call<SearchUserResponse> searchUser(@Field("search") String search);
 
     @FormUrlEncoded
-    @POST("hastTagSearch")
-    Call<SearchUserResponse> hastTagSearch(@Field("search") String search);
+    @POST("hashTagSearch")
+    Call<HashtagSearchResponse> hashTagSearch(@Field("search") String search);
 
     @FormUrlEncoded
     @POST("songSearch")
-    Call<SearchUserResponse> songSearch  (@Field("search") String search);
+    Call<Soundsearchresponse> songSearch(@Field("search") String search);
 
+    @GET("search")
+    Call<Discoverresponse> discoverService();
 }
 

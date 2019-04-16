@@ -96,7 +96,12 @@ public class PlayvideosCategorywise_Activity extends AppCompatActivity implement
 
         if(connectionDetector.isConnectingToInternet())
         {
-            setDataToContainer();
+            modelArrayList.clear();
+            modelArrayList.addAll(getIntent().getParcelableArrayListExtra("videos"));
+            adapter.setBasepaths("http://159.65.157.210:5080/LiveApp/streams/", "http://testingmadesimple.org/training_app/uploads/songs/");
+            adapter.notifyDataSetChanged();
+            container.scrollToPosition(getIntent().getIntExtra("position",0));
+            //setDataToContainer();
         }
         else
             Utils.callToast(PlayvideosCategorywise_Activity.this,getResources().getString(R.string.internet_toast));

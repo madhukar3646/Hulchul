@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="60dp">
+        >
 
         <RelativeLayout
             android:id="@+id/layout_titlebar"
@@ -66,12 +65,15 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/layout_titlebar"
             android:focusable="true"
-            android:focusableInTouchMode="true">
+            android:focusableInTouchMode="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:focusableInTouchMode="true"
+                android:focusable="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -138,6 +140,7 @@
                                 android:background="@drawable/border_primary"/>
                             
                             <ImageView
+                                android:id="@+id/iv_unfollow"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:paddingTop="5dp"
@@ -361,6 +364,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/recyclerview_videos"
                     android:visibility="visible"
+                    android:focusableInTouchMode="true"
+                    android:focusable="true"
                     />
 
             </LinearLayout>

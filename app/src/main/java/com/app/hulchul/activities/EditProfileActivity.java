@@ -175,9 +175,9 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         else {
             return;
         }
-        //RequestBody useid = RequestBody.create(MediaType.parse("text/plain"),sessionManagement.getValueFromPreference(SessionManagement.USERID));
+        RequestBody userid = RequestBody.create(MediaType.parse("text/plain"),sessionManagement.getValueFromPreference(SessionManagement.USERID));
 
-        Call<ProfilepicUpdateResponse> call= RetrofitApis.Factory.createTemp(EditProfileActivity.this).uploadProfilepic(fileToUpload,sessionManagement.getValueFromPreference(SessionManagement.USERID));
+        Call<ProfilepicUpdateResponse> call= RetrofitApis.Factory.createTemp(EditProfileActivity.this).uploadProfilepic(fileToUpload,userid);
         call.enqueue(new Callback<ProfilepicUpdateResponse>() {
             @Override
             public void onResponse(Call<ProfilepicUpdateResponse> call, Response<ProfilepicUpdateResponse> response) {
