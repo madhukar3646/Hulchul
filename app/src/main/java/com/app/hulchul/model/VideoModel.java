@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class VideoModel implements Parcelable {
+public class VideoModel implements Parcelable{
 
     @SerializedName("id")
     @Expose
@@ -80,6 +80,7 @@ public class VideoModel implements Parcelable {
         followersCount = in.readString();
         shareCount = in.readString();
         commentCount = in.readString();
+        comments = in.createTypedArrayList(HomescreenCommentModel.CREATOR);
     }
 
     public static final Creator<VideoModel> CREATOR = new Creator<VideoModel>() {
@@ -226,5 +227,6 @@ public class VideoModel implements Parcelable {
         parcel.writeString(followersCount);
         parcel.writeString(shareCount);
         parcel.writeString(commentCount);
+        parcel.writeTypedList(comments);
     }
 }

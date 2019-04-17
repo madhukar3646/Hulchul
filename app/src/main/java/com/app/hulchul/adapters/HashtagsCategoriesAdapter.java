@@ -1,6 +1,7 @@
 package com.app.hulchul.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -11,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.hulchul.R;
+import com.app.hulchul.activities.HashtagSearchresultsActivity;
 import com.app.hulchul.model.Discoverhashtags;
 import com.app.hulchul.model.VideoModel;
 
@@ -60,7 +62,15 @@ public class HashtagsCategoriesAdapter extends RecyclerView.Adapter<HashtagsCate
         holder.rv_hashtagscontainer.setAdapter(hashtagsthumnailsAdapter);
 
         holder.tv_hashtagname.setText(discoverhashtags.getHashTag());
-        holder.tv_hashtagsviews.setText("");
+        holder.tv_hashtagsviews.setText("124.1m");
+
+        holder.layout_viewall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                context.startActivity(new Intent(context, HashtagSearchresultsActivity.class));
+            }
+        });
     }
 
     @Override

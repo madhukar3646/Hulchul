@@ -185,7 +185,8 @@ public interface RetrofitApis {
     @POST("songSearch")
     Call<Soundsearchresponse> songSearch(@Field("search") String search);
 
-    @GET("search")
-    Call<Discoverresponse> discoverService();
+    @FormUrlEncoded
+    @POST("search")
+    Call<Discoverresponse> discoverService(@Field("userId") String userid);
 }
 

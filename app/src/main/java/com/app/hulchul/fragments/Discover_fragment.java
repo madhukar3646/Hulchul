@@ -44,6 +44,7 @@ public class Discover_fragment extends Fragment implements View.OnClickListener 
     private SessionManagement sessionManagement;
     private ConnectionDetector connectionDetector;
     private ArrayList<Discoverhashtags> discoverhashtagsList=new ArrayList<>();
+    private String userid="";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,6 +60,8 @@ public class Discover_fragment extends Fragment implements View.OnClickListener 
     {
         connectionDetector=new ConnectionDetector(getActivity());
         sessionManagement=new SessionManagement(getActivity());
+        if(sessionManagement.getValueFromPreference(SessionManagement.USERID)!=null)
+            userid=sessionManagement.getValueFromPreference(SessionManagement.USERID);
 
         layout_search.setOnClickListener(this);
         rv_trendinghashtags.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false));
@@ -88,7 +91,7 @@ public class Discover_fragment extends Fragment implements View.OnClickListener 
     public void getDiscoverhashtagsdata() {
         discoverhashtagsList.clear();
         Utils.showDialog(getActivity());
-        Call<Discoverresponse> call= RetrofitApis.Factory.createTemp(getActivity()).discoverService();
+        Call<Discoverresponse> call= RetrofitApis.Factory.createTemp(getActivity()).discoverService(userid);
         call.enqueue(new Callback<Discoverresponse>() {
             @Override
             public void onResponse(Call<Discoverresponse> call, Response<Discoverresponse> response) {

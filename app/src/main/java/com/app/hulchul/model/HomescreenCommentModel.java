@@ -1,9 +1,12 @@
 package com.app.hulchul.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class HomescreenCommentModel {
+public class HomescreenCommentModel implements Parcelable {
 
     @SerializedName("id")
     @Expose
@@ -20,6 +23,26 @@ public class HomescreenCommentModel {
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
+
+    protected HomescreenCommentModel(Parcel in) {
+        id = in.readString();
+        videoId = in.readString();
+        userId = in.readString();
+        comment = in.readString();
+        createdAt = in.readString();
+    }
+
+    public static final Creator<HomescreenCommentModel> CREATOR = new Creator<HomescreenCommentModel>() {
+        @Override
+        public HomescreenCommentModel createFromParcel(Parcel in) {
+            return new HomescreenCommentModel(in);
+        }
+
+        @Override
+        public HomescreenCommentModel[] newArray(int size) {
+            return new HomescreenCommentModel[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -59,5 +82,19 @@ public class HomescreenCommentModel {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(videoId);
+        parcel.writeString(userId);
+        parcel.writeString(comment);
+        parcel.writeString(createdAt);
     }
 }
