@@ -56,10 +56,10 @@ public class HashtagsthumnailsAdapter extends RecyclerView.Adapter<Hashtagsthumn
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               /* Intent intent=new Intent(context,PlayvideosCategorywise_Activity.class);
+                Intent intent=new Intent(context,PlayvideosCategorywise_Activity.class);
                 intent.putParcelableArrayListExtra("videos",discoverhashtagvideosList);
                 intent.putExtra("position",position);
-                context.startActivity(intent);*/
+                context.startActivity(intent);
             }
         });
     }

@@ -22,6 +22,7 @@ import com.app.hulchul.CommonEmptyActivity;
 import com.app.hulchul.R;
 import com.app.hulchul.activities.DraftsActivity;
 import com.app.hulchul.activities.EditProfileActivity;
+import com.app.hulchul.activities.FavouritesActivity;
 import com.app.hulchul.activities.LoginLandingActivity;
 import com.app.hulchul.adapters.VideothumbnailsAdapter;
 import com.app.hulchul.model.ProfileViewdata;
@@ -87,6 +88,10 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Videot
     TextView tv_myhearts;
     @BindView(R.id.recyclerview_videos)
     RecyclerView recyclerview_videos;
+    @BindView(R.id.layout_drafts)
+    LinearLayout layout_drafts;
+    @BindView(R.id.tv_drafts)
+    TextView tv_drafts;
 
     private SessionManagement sessionManagement;
     private ConnectionDetector connectionDetector;
@@ -114,6 +119,7 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Videot
         layout_editprofile.setOnClickListener(this);
         layout_yourvideos.setOnClickListener(this);
         layout_hearts.setOnClickListener(this);
+        layout_drafts.setOnClickListener(this);
 
         setClickableFocus(true);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),3);
@@ -121,8 +127,8 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Videot
         recyclerview_videos.setNestedScrollingEnabled(false);
         adapter=new VideothumbnailsAdapter(getContext());
         adapter.setOnVideoSelectedListener(this);
-        setDraftsEnableorDisable();
         recyclerview_videos.setAdapter(adapter);
+        tv_drafts.setText(getDraftsCount()+" Drafts Videos");
 
         if(connectionDetector.isConnectingToInternet())
             viewProfile(sessionManagement.getValueFromPreference(SessionManagement.USERID));
@@ -137,11 +143,7 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Videot
             case R.id.iv_favourite:
                 if(sessionManagement.getBooleanValueFromPreference(SessionManagement.ISLOGIN))
                 {
-                    /*Intent intent=new Intent(getActivity(), CommonEmptyActivity.class);
-                    intent.putExtra("common","Favourites");
-                    startActivity(intent);*/
-
-                    Intent intent=new Intent(getActivity(), DraftsActivity.class);
+                    Intent intent=new Intent(getActivity(), FavouritesActivity.class);
                     startActivity(intent);
                 }
                 else {
@@ -186,6 +188,18 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Videot
                 break;
             case R.id.layout_hearts:
                 setClickableFocus(false);
+                break;
+            case R.id.layout_drafts:
+                if(sessionManagement.getBooleanValueFromPreference(SessionManagement.ISLOGIN))
+                {
+                    if(getDraftsCount()>0) {
+                        Intent intent = new Intent(getActivity(), DraftsActivity.class);
+                        startActivity(intent);
+                    }
+                }
+                else {
+                    startActivity(new Intent(getActivity(), LoginLandingActivity.class));
+                }
                 break;
         }
     }
@@ -254,25 +268,20 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Videot
 
     }
 
-    @Override
-    public void onDraftsClicked() {
-      startActivity(new Intent(getActivity(), DraftsActivity.class));
-    }
-
-    private void setDraftsEnableorDisable()
+    private int getDraftsCount()
     {
+        int draftscount=0;
         String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() +
                 "/Hulchuldrafts";
         File dir = new File(file_path);
         if(dir.exists())
         {
             if(dir.listFiles().length>0)
-                adapter.setDraftEnabled(true);
+                draftscount=dir.listFiles().length;
             else
-                adapter.setDraftEnabled(false);
+                draftscount=0;
         }
-        else
-            adapter.setDraftEnabled(false);
+       return draftscount;
     }
 
     private void viewProfile(String userid){

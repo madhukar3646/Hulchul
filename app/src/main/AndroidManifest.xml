@@ -4,10 +4,8 @@
     package="com.app.hulchul">
 
     <uses-sdk tools:overrideLibrary="com.facebook" />
-
-    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera"/>
     <uses-feature android:name="android.hardware.camera.autofocus" />
-
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -31,8 +29,11 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".activities.HashtagSearchresultsActivity"
+        <activity android:name=".activities.FavouritesActivity"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.HashtagSearchresultsActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.SoundsSearchresultsActivity"
             android:screenOrientation="portrait" />

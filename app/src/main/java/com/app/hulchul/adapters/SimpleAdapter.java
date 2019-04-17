@@ -78,23 +78,28 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder>{
         }
 
         holder.tv_likescount.setText(modelArrayList.get(position).getLikes());
-        if(modelArrayList.get(position).getLikestatus().equalsIgnoreCase("0"))
-            holder.iv_like.setImageResource(R.mipmap.heart_white);
-        else
-            holder.iv_like.setImageResource(R.mipmap.heart);
+        if(modelArrayList.get(position).getLikestatus()!=null)
+        {
+            if (modelArrayList.get(position).getLikestatus().equalsIgnoreCase("0"))
+                holder.iv_like.setImageResource(R.mipmap.heart_white);
+            else
+                holder.iv_like.setImageResource(R.mipmap.heart);
+        }
 
         if((modelArrayList.get(position).getFollowersCount()==null || modelArrayList.get(position).getFollowersCount().equalsIgnoreCase("null")))
           holder.tv_profilelikescount.setText("0");
         else
           holder.tv_profilelikescount.setText(modelArrayList.get(position).getFollowersCount());
 
-        if(modelArrayList.get(position).getFollwerstatus().equalsIgnoreCase("0")) {
-            holder.iv_addfriend.setImageResource(R.mipmap.add_friendicon);
-            holder.iv_heart.setImageResource(R.mipmap.heart_white);
-        }
-        else {
-            holder.iv_addfriend.setImageResource(R.mipmap.follow_check);
-            holder.iv_heart.setImageResource(R.mipmap.heart);
+        if(modelArrayList.get(position).getFollwerstatus()!=null)
+        {
+            if (modelArrayList.get(position).getFollwerstatus().equalsIgnoreCase("0")) {
+                holder.iv_addfriend.setImageResource(R.mipmap.add_friendicon);
+                holder.iv_heart.setImageResource(R.mipmap.heart_white);
+            } else {
+                holder.iv_addfriend.setImageResource(R.mipmap.follow_check);
+                holder.iv_heart.setImageResource(R.mipmap.heart);
+            }
         }
 
         if(modelArrayList.get(position).getShareCount()==null || modelArrayList.get(position).getShareCount().equalsIgnoreCase("null"))
@@ -110,7 +115,7 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder>{
         holder.profile_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(videoActionsListener!=null)
+                if(videoActionsListener!=null && modelArrayList.get(position).getFollwerstatus()!=null)
                     videoActionsListener.onFollowClicked(holder,modelArrayList.get(position).getId(),position);
                     //videoActionsListener.onProfileClicked(modelArrayList.get(position));
             }
@@ -118,7 +123,7 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder>{
         holder.iv_addfriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(videoActionsListener!=null)
+                if(videoActionsListener!=null && modelArrayList.get(position).getFollwerstatus()!=null)
                     videoActionsListener.onFollowClicked(holder,modelArrayList.get(position).getId(),position);
             }
         });
@@ -133,7 +138,7 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder>{
         holder.layout_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(videoActionsListener!=null)
+                if(videoActionsListener!=null && modelArrayList.get(position).getLikestatus()!=null)
                 {
                   videoActionsListener.onLikeClicked(holder,modelArrayList.get(position).getId(),position);
                 }

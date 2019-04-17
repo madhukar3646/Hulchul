@@ -98,10 +98,8 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
         View view= inflater.inflate(R.layout.fragment_home_fragment, container, false);
         ButterKnife.bind(this,view);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
-
         init(view);
         return view;
     }

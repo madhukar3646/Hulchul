@@ -22,7 +22,6 @@ public class VideothumbnailsAdapter extends RecyclerView.Adapter<Videothumbnails
     private Context context;
     private int width;
     private OnVideoSelectedListener onVideoSelectedListener;
-    private boolean isDrafts=false;
 
     public VideothumbnailsAdapter(Context context)
     {
@@ -36,10 +35,6 @@ public class VideothumbnailsAdapter extends RecyclerView.Adapter<Videothumbnails
         this.onVideoSelectedListener=onVideoSelectedListener;
     }
 
-    public void setDraftEnabled(boolean isDrafts)
-    {
-      this.isDrafts=isDrafts;
-    }
     @Override
     public VideothumbnailsAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
@@ -61,15 +56,8 @@ public class VideothumbnailsAdapter extends RecyclerView.Adapter<Videothumbnails
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(position==0 && isDrafts)
-                {
-                   if(onVideoSelectedListener!=null)
-                       onVideoSelectedListener.onDraftsClicked();
-                }
-                else {
-                   if(onVideoSelectedListener!=null)
-                       onVideoSelectedListener.onVideoSelected();
-                }
+                if(onVideoSelectedListener!=null)
+                    onVideoSelectedListener.onVideoSelected();
             }
         });
     }
@@ -98,7 +86,6 @@ public class VideothumbnailsAdapter extends RecyclerView.Adapter<Videothumbnails
     public interface OnVideoSelectedListener
     {
         void onVideoSelected();
-        void onDraftsClicked();
     }
 
 }

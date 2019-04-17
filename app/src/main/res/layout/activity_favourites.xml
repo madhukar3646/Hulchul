@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.SearchActivity"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <RelativeLayout
+        android:id="@+id/layout_titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <ImageView
+            android:id="@+id/iv_backbtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="1dp"
+            android:layout_alignParentLeft="true"
+            android:padding="10dp"
+            android:src="@mipmap/back_icon"
+            android:visibility="visible"
+            android:layout_centerVertical="true"
+            />
+
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Favourites"
+               android:layout_toRightOf="@+id/iv_backbtn"
+               android:textColor="@android:color/white"
+               android:layout_margin="15dp"
+               android:textAppearance="?android:attr/textAppearanceMedium"
+               android:textStyle="bold"
+               android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layout_titlebar">
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabMode="fixed"
+            app:tabGravity="fill"
+            app:tabSelectedTextColor="@color/colorPrimary"/>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/tabs"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"  />
+
+    </RelativeLayout>
+</RelativeLayout>
