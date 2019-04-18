@@ -115,9 +115,8 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder>{
         holder.profile_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(videoActionsListener!=null && modelArrayList.get(position).getFollwerstatus()!=null)
-                    videoActionsListener.onFollowClicked(holder,modelArrayList.get(position).getId(),position);
-                    //videoActionsListener.onProfileClicked(modelArrayList.get(position));
+                if(videoActionsListener!=null)
+                    videoActionsListener.onProfileClicked(modelArrayList.get(position));
             }
         });
         holder.iv_addfriend.setOnClickListener(new View.OnClickListener() {

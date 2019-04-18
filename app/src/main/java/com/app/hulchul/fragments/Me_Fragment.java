@@ -5,13 +5,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -22,20 +23,26 @@ import com.app.hulchul.R;
 import com.app.hulchul.activities.DraftsActivity;
 import com.app.hulchul.activities.EditProfileActivity;
 import com.app.hulchul.activities.FavouritesActivity;
+import com.app.hulchul.activities.HashtagSearchresultsActivity;
 import com.app.hulchul.activities.LoginLandingActivity;
+import com.app.hulchul.activities.PlayvideosCategorywise_Activity;
 import com.app.hulchul.activities.SettingsActivity;
+import com.app.hulchul.adapters.HashtagsGridAdapter;
 import com.app.hulchul.adapters.VideothumbnailsAdapter;
 import com.app.hulchul.model.ProfileViewdata;
-import com.app.hulchul.model.ProfilepicUpdateResponse;
+import com.app.hulchul.model.VideoModel;
+import com.app.hulchul.model.VideosListingResponse;
 import com.app.hulchul.model.ViewProfileResponse;
 import com.app.hulchul.presenter.RetrofitApis;
 import com.app.hulchul.utils.ApiUrls;
 import com.app.hulchul.utils.ConnectionDetector;
+import com.app.hulchul.utils.EndlessParentScrollListener;
 import com.app.hulchul.utils.SessionManagement;
 import com.app.hulchul.utils.Utils;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,7 +51,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Me_Fragment extends Fragment implements View.OnClickListener,VideothumbnailsAdapter.OnVideoSelectedListener{
+public class Me_Fragment extends Fragment implements View.OnClickListener,HashtagsGridAdapter.OnHashtagItemClickListener{
 
     @BindView(R.id.iv_favourite)
     ImageView iv_favourite;
@@ -60,7 +67,6 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Videot
     CircleImageView profile_image;
     @BindView(R.id.layout_editprofile)
     RelativeLayout layout_editprofile;
-
     @BindView(R.id.tv_following)
     TextView tv_following;
     @BindView(R.id.tv_friends)
@@ -86,17 +92,26 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Videot
     ImageView iv_myhearts;
     @BindView(R.id.tv_myhearts)
     TextView tv_myhearts;
-    @BindView(R.id.recyclerview_videos)
-    RecyclerView recyclerview_videos;
     @BindView(R.id.layout_drafts)
     LinearLayout layout_drafts;
     @BindView(R.id.tv_drafts)
     TextView tv_drafts;
+    @BindView(R.id.recyclerview_videos)
+    RecyclerView recyclerview_videos;
+    @BindView(R.id.nestedsrollview)
+    NestedScrollView nestedsrollview;
+    @BindView(R.id.tv_nodata)
+    TextView tv_nodata;
 
     private SessionManagement sessionManagement;
     private ConnectionDetector connectionDetector;
-    private VideothumbnailsAdapter adapter;
+    private HashtagsGridAdapter profileadapter,likedadapter;
     private ProfileViewdata viewdata;
+    GridLayoutManager gridLayoutManager;
+    private boolean isProfilevideos=true;
+    private String userid="",videosbasepath,musicbasepath;
+    private ArrayList<VideoModel> profilevideoslist=new ArrayList<>();
+    private ArrayList<VideoModel> likedvideoslist=new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -112,6 +127,8 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Videot
     {
         connectionDetector=new ConnectionDetector(getActivity());
         sessionManagement=new SessionManagement(getActivity());
+        if(sessionManagement.getValueFromPreference(SessionManagement.USERID)!=null)
+            userid=sessionManagement.getValueFromPreference(SessionManagement.USERID);
 
         iv_favourite.setOnClickListener(this);
         iv_menuburger.setOnClickListener(this);
@@ -121,19 +138,50 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Videot
         layout_hearts.setOnClickListener(this);
         layout_drafts.setOnClickListener(this);
 
-        setClickableFocus(true);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),3);
+        gridLayoutManager = new GridLayoutManager(getActivity(),3);
         recyclerview_videos.setLayoutManager(gridLayoutManager);
         recyclerview_videos.setNestedScrollingEnabled(false);
-        adapter=new VideothumbnailsAdapter(getContext());
-        adapter.setOnVideoSelectedListener(this);
-        recyclerview_videos.setAdapter(adapter);
+
+        profileadapter=new HashtagsGridAdapter(getContext(),profilevideoslist);
+        profileadapter.setOnHashtagItemClickListener(this);
+        likedadapter=new HashtagsGridAdapter(getContext(),likedvideoslist);
+        likedadapter.setOnHashtagItemClickListener(this);
+        setClickableFocus(true);
+
         tv_drafts.setText(getDraftsCount()+" Drafts Videos");
 
-        if(connectionDetector.isConnectingToInternet())
+        if(connectionDetector.isConnectingToInternet()) {
             viewProfile(sessionManagement.getValueFromPreference(SessionManagement.USERID));
+        }
         else
             Utils.callToast(getActivity(),getResources().getString(R.string.internet_toast));
+
+        nestedsrollview.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if(v.getChildAt(v.getChildCount() - 1) != null) {
+                    if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) &&
+                            scrollY > oldScrollY) {
+                        int visibleItemCount = gridLayoutManager.getChildCount();
+                        int totalItemCount = gridLayoutManager.getItemCount();
+                        int pastVisiblesItems = gridLayoutManager.findFirstVisibleItemPosition();
+                        Log.e("pastvisible"+pastVisiblesItems,"total "+totalItemCount+" visible "+visibleItemCount);
+                        if(connectionDetector.isConnectingToInternet())
+                        {
+                            if(visibleItemCount+pastVisiblesItems>=totalItemCount)
+                            {
+                                if(isProfilevideos)
+                                    setProfilevideosDataToContainer("20",""+totalItemCount);
+                                 else
+                                     setLikedvideosDataToContainer("20",""+totalItemCount);
+                            }
+                        }
+                        else
+                            Utils.callToast(getActivity(), getResources().getString(R.string.internet_toast));
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -211,18 +259,30 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Videot
             tv_myvideos.setTextColor(Color.BLACK);
             iv_myhearts.setImageResource(R.mipmap.hearts_gray);
             tv_myhearts.setTextColor(Color.GRAY);
+            recyclerview_videos.setAdapter(profileadapter);
+            isProfilevideos=true;
+            if(profilevideoslist.size()==0)
+                tv_nodata.setVisibility(View.VISIBLE);
+            else
+                tv_nodata.setVisibility(View.GONE);
         }
         else {
             iv_myvideo.setImageResource(R.mipmap.list_video_gray);
             tv_myvideos.setTextColor(Color.GRAY);
             iv_myhearts.setImageResource(R.mipmap.hearts_black);
             tv_myhearts.setTextColor(Color.BLACK);
+            recyclerview_videos.setAdapter(likedadapter);
+            isProfilevideos=false;
+            if(likedvideoslist.size()>0)
+                tv_nodata.setVisibility(View.GONE);
+            if(likedvideoslist.size()==0)
+            {
+                if(connectionDetector.isConnectingToInternet())
+                    setLikedvideosDataToContainer("20","0");
+                else
+                    Utils.callToast(getActivity(), getResources().getString(R.string.internet_toast));
+            }
         }
-    }
-
-    @Override
-    public void onVideoSelected() {
-
     }
 
     private int getDraftsCount()
@@ -253,6 +313,7 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Videot
                     if (body.getStatus()==0) {
                        if(body.getData()!=null)
                            updateFields(body.getData());
+                       setProfilevideosDataToContainer("20","0");
                     } else {
                         Utils.callToast(getActivity(), body.getMessage());
                     }
@@ -324,5 +385,89 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Videot
                 .into(profile_image);
 
         this.viewdata=viewdata;
+    }
+
+    private void setProfilevideosDataToContainer(String limit,String offset){
+        Utils.showDialog(getActivity());
+        Call<VideosListingResponse> call= RetrofitApis.Factory.createTemp(getActivity()).profileVideos(userid,limit,offset);
+        call.enqueue(new Callback<VideosListingResponse>() {
+            @Override
+            public void onResponse(Call<VideosListingResponse> call, Response<VideosListingResponse> response) {
+                Utils.dismissDialog();
+                VideosListingResponse body=response.body();
+                if(body!=null) {
+                    if (body.getStatus() == 1) {
+                        if (body.getVideos() != null && body.getVideos().size() > 0) {
+                            profilevideoslist.addAll(body.getVideos());
+                            videosbasepath=body.getUrl();
+                            musicbasepath=body.getSongurl();
+                            profileadapter.notifyDataSetChanged();
+                            tv_nodata.setVisibility(View.GONE);
+                        }
+                    } else {
+                        if(profilevideoslist.size()==0) {
+                            tv_nodata.setVisibility(View.VISIBLE);
+                            Utils.callToast(getActivity(), body.getMessage());
+                        }
+                    }
+                }
+                else {
+                    Utils.callToast(getActivity(),"null response came");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VideosListingResponse> call, Throwable t) {
+                Utils.dismissDialog();
+                Log.e("videoslist onFailure",""+t.getMessage());
+            }
+        });
+    }
+
+    private void setLikedvideosDataToContainer(String limit,String offset){
+        Utils.showDialog(getActivity());
+        Call<VideosListingResponse> call= RetrofitApis.Factory.createTemp(getActivity()).userLikeVideos(userid,limit,offset);
+        call.enqueue(new Callback<VideosListingResponse>() {
+            @Override
+            public void onResponse(Call<VideosListingResponse> call, Response<VideosListingResponse> response) {
+                Utils.dismissDialog();
+                VideosListingResponse body=response.body();
+                if(body!=null) {
+                    if (body.getStatus() == 1) {
+                        if (body.getVideos() != null && body.getVideos().size() > 0) {
+                            likedvideoslist.addAll(body.getVideos());
+                            videosbasepath=body.getUrl();
+                            musicbasepath=body.getSongurl();
+                            likedadapter.notifyDataSetChanged();
+                            tv_nodata.setVisibility(View.GONE);
+                        }
+                    } else {
+                        if(likedvideoslist.size()==0) {
+                            tv_nodata.setVisibility(View.VISIBLE);
+                            Utils.callToast(getActivity(), body.getMessage());
+                        }
+                    }
+                }
+                else {
+                    Utils.callToast(getActivity(),"null response came");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VideosListingResponse> call, Throwable t) {
+                Utils.dismissDialog();
+                Log.e("videoslist onFailure",""+t.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void onHashtagitemClick(ArrayList<VideoModel> discoverhashtagvideosList, int pos) {
+        Intent intent=new Intent(getActivity(), PlayvideosCategorywise_Activity.class);
+        intent.putParcelableArrayListExtra("videos",discoverhashtagvideosList);
+        intent.putExtra("position",pos);
+        intent.putExtra("videosbasepath",videosbasepath);
+        intent.putExtra("musicbasepath",musicbasepath);
+        startActivity(intent);
     }
 }

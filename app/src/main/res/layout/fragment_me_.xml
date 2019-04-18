@@ -60,6 +60,7 @@
             </RelativeLayout>
         </RelativeLayout>
         <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nestedsrollview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/layout_titlebar"
@@ -349,14 +350,27 @@
                     android:layout_marginTop="5dp"
                     android:visibility="visible"></View>
 
-                <android.support.v7.widget.RecyclerView
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/recyclerview_videos"
-                    android:visibility="visible"
-                    android:focusableInTouchMode="true"
-                    android:focusable="true"
-                    />
+                    android:layout_height="match_parent">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/recyclerview_videos"
+                        android:visibility="visible"
+                        android:focusableInTouchMode="true"
+                        android:focusable="true"
+                        />
+                    <TextView
+                        android:id="@+id/tv_nodata"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No data Found"
+                        android:layout_centerInParent="true"
+                        android:visibility="gone"/>
+                </RelativeLayout>
+
 
             </LinearLayout>
 

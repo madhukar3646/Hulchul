@@ -196,5 +196,14 @@ public interface RetrofitApis {
     @FormUrlEncoded
     @POST("videoByHashTag")
     Call<VideosListingResponse> videoByHashTag(@Field("userId") String userid,@Field("hashTag") String hashtag,@Field("limit") String limit,@Field("offset") String offset);
+
+    @FormUrlEncoded
+    @POST("profileVideos")
+    Call<VideosListingResponse> profileVideos(@Field("userId") String userid,@Field("limit") String limit,@Field("offset") String offset);
+
+    @FormUrlEncoded
+    @POST("userLikeVideos")
+    Call<VideosListingResponse> userLikeVideos(@Field("userId") String userid,@Field("limit") String limit,@Field("offset") String offset);
+
 }
 

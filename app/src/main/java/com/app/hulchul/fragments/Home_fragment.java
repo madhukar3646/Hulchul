@@ -286,7 +286,9 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
 
     @Override
     public void onProfileClicked(VideoModel model) {
-        startActivity(new Intent(getActivity(), UserProfileActivity.class));
+        Intent intent=new Intent(getActivity(),UserProfileActivity.class);
+        intent.putExtra("othersuserid",model.getUserId());
+        startActivity(intent);
     }
 
     @Override
