@@ -24,6 +24,7 @@ import com.app.hulchul.activities.DraftsActivity;
 import com.app.hulchul.activities.EditProfileActivity;
 import com.app.hulchul.activities.FavouritesActivity;
 import com.app.hulchul.activities.LoginLandingActivity;
+import com.app.hulchul.activities.SettingsActivity;
 import com.app.hulchul.adapters.VideothumbnailsAdapter;
 import com.app.hulchul.model.ProfileViewdata;
 import com.app.hulchul.model.ProfilepicUpdateResponse;
@@ -166,7 +167,7 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Videot
             case R.id.iv_menuburger:
                 if(sessionManagement.getBooleanValueFromPreference(SessionManagement.ISLOGIN))
                 {
-                   displayExitDialog();
+                    startActivity(new Intent(getActivity(), SettingsActivity.class));
                 }
                 else {
                     startActivity(new Intent(getActivity(), LoginLandingActivity.class));
@@ -218,49 +219,6 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Videot
             iv_myhearts.setImageResource(R.mipmap.hearts_black);
             tv_myhearts.setTextColor(Color.BLACK);
         }
-    }
-
-
-    private void displayExitDialog()
-    {
-        final Dialog dialog=new Dialog(getActivity());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.exitdialog);
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.setCancelable(true);
-
-        RelativeLayout layout_yes=(RelativeLayout) dialog.findViewById(R.id.layout_yes);
-        RelativeLayout layout_no=(RelativeLayout)dialog.findViewById(R.id.layout_no);
-        TextView tv_title=(TextView)dialog.findViewById(R.id.tv_title);
-        tv_title.setText("Are you sure you want to logout?");
-        TextView tv_no=(TextView)dialog.findViewById(R.id.tv_no);
-        tv_no.setText("No");
-        TextView tv_yes=(TextView)dialog.findViewById(R.id.tv_yes);
-        tv_yes.setText("Yes");
-
-        layout_yes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                sessionManagement.logoutUser();
-                dialog.dismiss();
-                Intent intent=new Intent(getActivity(), LoginLandingActivity.class);
-                startActivity(intent);
-                getActivity().finish();
-                getActivity().finishAffinity();
-            }
-        });
-
-        layout_no.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
     @Override

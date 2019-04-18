@@ -157,6 +157,13 @@
            android:focusableInTouchMode="true"
            android:focusable="true"
            />
+        <TextView
+            android:id="@+id/tv_nodata"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No data Found"
+            android:layout_centerInParent="true"
+            android:visibility="gone"/>
     </RelativeLayout>
     <ImageView
         android:id="@+id/iv_gotorecord"

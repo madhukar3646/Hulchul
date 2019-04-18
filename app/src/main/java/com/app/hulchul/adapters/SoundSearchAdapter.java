@@ -26,10 +26,17 @@ public class SoundSearchAdapter extends RecyclerView.Adapter<SoundSearchAdapter.
 {
     private Context context;
     private ArrayList<SoundSearchdata> searchdataList;
+    private OnSoundSelectedListener onSoundSelectedListener;
+
     public SoundSearchAdapter(Context context,ArrayList<SoundSearchdata> searchdataList)
     {
         this.context=context;
         this.searchdataList=searchdataList;
+    }
+
+    public void setOnSoundSelectedListener(OnSoundSelectedListener onSoundSelectedListener)
+    {
+        this.onSoundSelectedListener=onSoundSelectedListener;
     }
 
     @Override
@@ -50,7 +57,8 @@ public class SoundSearchAdapter extends RecyclerView.Adapter<SoundSearchAdapter.
         holder.layout_viewicon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-             context.startActivity(new Intent(context, SoundsSearchresultsActivity.class));
+                if(onSoundSelectedListener!=null)
+                    onSoundSelectedListener.onSoundSelected(searchdataList.get(position));
             }
         });
     }
@@ -79,5 +87,10 @@ public class SoundSearchAdapter extends RecyclerView.Adapter<SoundSearchAdapter.
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
+    }
+
+    public interface OnSoundSelectedListener
+    {
+        void onSoundSelected(SoundSearchdata soundSearchdata);
     }
 }

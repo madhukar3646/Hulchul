@@ -30,6 +30,8 @@ public class HashtagsCategoriesAdapter extends RecyclerView.Adapter<HashtagsCate
     private int width,height;
     private ArrayList<Discoverhashtags> discoverhashtagsList;
     private Discoverhashtags discoverhashtags;
+    private OnHashtagViewAllListener onHashtagViewAllListener;
+    private HashtagsthumnailsAdapter.OnHashtagItemClickListener onHashtagItemClickListener;
 
     public HashtagsCategoriesAdapter(Context context,ArrayList<Discoverhashtags> discoverhashtagsList)
     {
@@ -39,6 +41,16 @@ public class HashtagsCategoriesAdapter extends RecyclerView.Adapter<HashtagsCate
         height=metrics.heightPixels;
         this.discoverhashtagsList=discoverhashtagsList;
     }
+
+    public void setOnHashtagViewAllListener(OnHashtagViewAllListener onHashtagViewAllListener)
+    {
+        this.onHashtagViewAllListener=onHashtagViewAllListener;
+    }
+    public void setOnHashtagItemClickListener(HashtagsthumnailsAdapter.OnHashtagItemClickListener onHashtagItemClickListener)
+    {
+        this.onHashtagItemClickListener=onHashtagItemClickListener;
+    }
+
 
     @Override
     public HashtagsCategoriesAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
@@ -59,6 +71,7 @@ public class HashtagsCategoriesAdapter extends RecyclerView.Adapter<HashtagsCate
           discoverhashtagvideosList.addAll(discoverhashtags.getVideos());
         holder.rv_hashtagscontainer.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false));
         HashtagsthumnailsAdapter hashtagsthumnailsAdapter=new HashtagsthumnailsAdapter(context,discoverhashtagvideosList);
+        hashtagsthumnailsAdapter.setOnHashtagItemClickListener(onHashtagItemClickListener);
         holder.rv_hashtagscontainer.setAdapter(hashtagsthumnailsAdapter);
 
         holder.tv_hashtagname.setText(discoverhashtags.getHashTag());
@@ -68,7 +81,8 @@ public class HashtagsCategoriesAdapter extends RecyclerView.Adapter<HashtagsCate
             @Override
             public void onClick(View view) {
 
-                context.startActivity(new Intent(context, HashtagSearchresultsActivity.class));
+                if(onHashtagViewAllListener!=null)
+                  onHashtagViewAllListener.onHashtagViewAll(discoverhashtagsList.get(position));
             }
         });
     }
@@ -95,6 +109,11 @@ public class HashtagsCategoriesAdapter extends RecyclerView.Adapter<HashtagsCate
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
+    }
+
+    public interface OnHashtagViewAllListener
+    {
+        void onHashtagViewAll(Discoverhashtags discoverhashtags);
     }
 
 }

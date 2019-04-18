@@ -8,12 +8,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -124,10 +126,30 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
 
         if(connectionDetector.isConnectingToInternet())
         {
-            setDataToContainer();
+            modelArrayList.clear();
+            setDataToContainer("5","0");
         }
         else
             Utils.callToast(getActivity(),getResources().getString(R.string.internet_toast));
+
+        container.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager layoutManager = ((LinearLayoutManager)recyclerView.getLayoutManager());
+                int pos = layoutManager.findLastCompletelyVisibleItemPosition();
+                int numItems = recyclerView.getAdapter().getItemCount();
+                Log.e("pos"+pos,"numitems "+numItems);
+                if((pos+1)>=numItems)
+                {
+                    if (connectionDetector.isConnectingToInternet()) {
+                        setDataToContainer("5", ""+numItems);
+                    } else
+                        Utils.callToast(getActivity(), getResources().getString(R.string.internet_toast));
+                }
+            }
+        });
     }
 
     @Override
@@ -140,7 +162,8 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
                 tv_trending.setTypeface(Typeface.DEFAULT);
                 if(connectionDetector.isConnectingToInternet())
                 {
-                    setDataToContainer();
+                    modelArrayList.clear();
+                    setDataToContainer("5","0");
                 }
                 else
                     Utils.callToast(getActivity(),getResources().getString(R.string.internet_toast));
@@ -154,13 +177,13 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
         }
     }
 
-    private void setDataToContainer(){
+    private void setDataToContainer(String limit,String offset){
         String userid="";
         if(sessionManagement.getBooleanValueFromPreference(SessionManagement.ISLOGIN))
            userid=sessionManagement.getValueFromPreference(SessionManagement.USERID);
 
         Utils.showDialog(getContext());
-        Call<VideosListingResponse> call= RetrofitApis.Factory.createTemp(getContext()).videosListingService(userid);
+        Call<VideosListingResponse> call= RetrofitApis.Factory.createTemp(getContext()).videosListingService(userid,limit,offset);
         call.enqueue(new Callback<VideosListingResponse>() {
             @Override
             public void onResponse(Call<VideosListingResponse> call, Response<VideosListingResponse> response) {
@@ -169,13 +192,13 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
                 if(body!=null) {
                     if (body.getStatus() == 1) {
                         if (body.getVideos() != null && body.getVideos().size() > 0) {
-                            modelArrayList.clear();
                             modelArrayList.addAll(body.getVideos());
+                            adapter.setBasepaths(body.getUrl(), body.getSongurl());
+                            adapter.notifyDataSetChanged();
                         }
-                        adapter.setBasepaths(body.getUrl(), body.getSongurl());
-                        adapter.notifyDataSetChanged();
                     } else {
-                        Utils.callToast(getActivity(), body.getMessage());
+                        if(modelArrayList.size()==0)
+                          Utils.callToast(getActivity(), body.getMessage());
                     }
                 }
                 else {

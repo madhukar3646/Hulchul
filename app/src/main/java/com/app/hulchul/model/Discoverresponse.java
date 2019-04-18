@@ -17,6 +17,14 @@ public class Discoverresponse {
     @Expose
     private List<Discoverhashtags> data = null;
 
+    @SerializedName("url")
+    @Expose
+    private String url;
+
+    @SerializedName("songurl")
+    @Expose
+    private String songurl;
+
     public Integer getStatus() {
         return status;
     }
@@ -39,5 +47,21 @@ public class Discoverresponse {
 
     public void setData(List<Discoverhashtags> data) {
         this.data = data;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getSongurl() {
+        return songurl;
+    }
+
+    public void setSongurl(String songurl) {
+        this.songurl = songurl;
     }
 }

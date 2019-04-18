@@ -27,11 +27,17 @@ public class HashtagSearchAdapter extends RecyclerView.Adapter<HashtagSearchAdap
 {
     private Context context;
     private ArrayList<Hashtagsearchdata> hashtagsearchdataList;
+    private OnHashtagClickListener onHashtagClickListener;
 
     public HashtagSearchAdapter(Context context,ArrayList<Hashtagsearchdata> hashtagsearchdataList)
     {
         this.context=context;
         this.hashtagsearchdataList=hashtagsearchdataList;
+    }
+
+    public void setOnHashtagClickListener(OnHashtagClickListener onHashtagClickListener)
+    {
+        this.onHashtagClickListener=onHashtagClickListener;
     }
 
     @Override
@@ -51,7 +57,8 @@ public class HashtagSearchAdapter extends RecyclerView.Adapter<HashtagSearchAdap
         holder.layout_viewicon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-             context.startActivity(new Intent(context, HashtagSearchresultsActivity.class));
+                if(onHashtagClickListener!=null)
+                    onHashtagClickListener.onHashtagClick(hashtagsearchdataList.get(position));
             }
         });
     }
@@ -76,5 +83,10 @@ public class HashtagSearchAdapter extends RecyclerView.Adapter<HashtagSearchAdap
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
+    }
+
+    public interface OnHashtagClickListener
+    {
+        void onHashtagClick(Hashtagsearchdata hashtagsearchdata);
     }
 }

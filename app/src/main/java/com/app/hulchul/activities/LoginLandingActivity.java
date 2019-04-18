@@ -206,11 +206,21 @@ public class LoginLandingActivity extends AppCompatActivity implements View.OnCl
                 break;
             case R.id.iv_fb:
                 //face book code
-                mAccessTokenTracker.startTracking();
-                mLoginManager.logInWithReadPermissions(LoginLandingActivity.this, Arrays.asList("public_profile", "email", "user_birthday"));
+                if(cd.isConnectingToInternet())
+                {
+                    mAccessTokenTracker.startTracking();
+                    mLoginManager.logInWithReadPermissions(LoginLandingActivity.this, Arrays.asList("public_profile", "email", "user_birthday"));
+                }
+                else
+                    Utils.callToast(LoginLandingActivity.this,getResources().getString(R.string.internet_toast));
                 break;
             case R.id.iv_google:
-               signIn();
+                if(cd.isConnectingToInternet())
+                {
+                    signIn();
+                }
+                else
+                    Utils.callToast(LoginLandingActivity.this,getResources().getString(R.string.internet_toast));
                 break;
             case R.id.iv_twitter:
                 if(cd.isConnectingToInternet())
@@ -227,6 +237,8 @@ public class LoginLandingActivity extends AppCompatActivity implements View.OnCl
                         }
                     });
                 }
+                else
+                    Utils.callToast(LoginLandingActivity.this,getResources().getString(R.string.internet_toast));
 
                 break;
             case R.id.layout_login:

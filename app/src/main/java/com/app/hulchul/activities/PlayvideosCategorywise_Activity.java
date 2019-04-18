@@ -97,7 +97,7 @@ public class PlayvideosCategorywise_Activity extends AppCompatActivity implement
         {
             modelArrayList.clear();
             modelArrayList.addAll(getIntent().getParcelableArrayListExtra("videos"));
-            adapter.setBasepaths("http://159.65.157.210:5080/LiveApp/streams/", "http://testingmadesimple.org/training_app/uploads/songs/");
+            adapter.setBasepaths(getIntent().getStringExtra("videosbasepath"), getIntent().getStringExtra("musicbasepath"));
             adapter.notifyDataSetChanged();
             container.scrollToPosition(getIntent().getIntExtra("position",0));
             //setDataToContainer();
@@ -106,7 +106,7 @@ public class PlayvideosCategorywise_Activity extends AppCompatActivity implement
             Utils.callToast(PlayvideosCategorywise_Activity.this,getResources().getString(R.string.internet_toast));
     }
 
-    private void setDataToContainer(){
+    /*private void setDataToContainer(){
         String userid="";
         if(sessionManagement.getBooleanValueFromPreference(SessionManagement.ISLOGIN))
             userid=sessionManagement.getValueFromPreference(SessionManagement.USERID);
@@ -141,7 +141,7 @@ public class PlayvideosCategorywise_Activity extends AppCompatActivity implement
                 Log.e("videoslist onFailure",""+t.getMessage());
             }
         });
-    }
+    }*/
 
     private void setLikeUnlike(final SimplePlayerViewHolder holder, String userid, String videoid, final int pos){
         Utils.showDialog(PlayvideosCategorywise_Activity.this);

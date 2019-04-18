@@ -122,7 +122,7 @@ public interface RetrofitApis {
 
     @FormUrlEncoded
     @POST("userVideos")
-    Call<VideosListingResponse> videosListingService(@Field("userId") String userid);
+    Call<VideosListingResponse> videosListingService(@Field("userId") String userid,@Field("limit") String limit,@Field("offset") String offset);
 
     @GET("listSongs")
     Call<ServerSoundsResponse> serverSoundsListingService();
@@ -188,5 +188,13 @@ public interface RetrofitApis {
     @FormUrlEncoded
     @POST("search")
     Call<Discoverresponse> discoverService(@Field("userId") String userid);
+
+    @FormUrlEncoded
+    @POST("videoBySong")
+    Call<VideosListingResponse> videoBySong(@Field("userId") String userid,@Field("songId") String songid,@Field("limit") String limit,@Field("offset") String offset);
+
+    @FormUrlEncoded
+    @POST("videoByHashTag")
+    Call<VideosListingResponse> videoByHashTag(@Field("userId") String userid,@Field("hashTag") String hashtag,@Field("limit") String limit,@Field("offset") String offset);
 }
 

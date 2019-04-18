@@ -10,14 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-
 import com.app.hulchul.R;
+import com.app.hulchul.activities.HashtagSearchresultsActivity;
+import com.app.hulchul.activities.PlayvideosCategorywise_Activity;
 import com.app.hulchul.activities.SearchActivity;
 import com.app.hulchul.adapters.HashtagsCategoriesAdapter;
+import com.app.hulchul.adapters.HashtagsthumnailsAdapter;
 import com.app.hulchul.adapters.TrendingHashtagsBannersAdapter;
 import com.app.hulchul.model.Discoverhashtags;
 import com.app.hulchul.model.Discoverresponse;
-import com.app.hulchul.model.SearchUserResponse;
+import com.app.hulchul.model.VideoModel;
 import com.app.hulchul.presenter.RetrofitApis;
 import com.app.hulchul.utils.ConnectionDetector;
 import com.app.hulchul.utils.SessionManagement;
@@ -31,7 +33,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Discover_fragment extends Fragment implements View.OnClickListener {
+public class Discover_fragment extends Fragment implements View.OnClickListener,HashtagsCategoriesAdapter.OnHashtagViewAllListener, HashtagsthumnailsAdapter.OnHashtagItemClickListener {
 
     @BindView(R.id.rv_trendinghashtags)
     RecyclerView rv_trendinghashtags;
@@ -44,7 +46,7 @@ public class Discover_fragment extends Fragment implements View.OnClickListener 
     private SessionManagement sessionManagement;
     private ConnectionDetector connectionDetector;
     private ArrayList<Discoverhashtags> discoverhashtagsList=new ArrayList<>();
-    private String userid="";
+    private String userid="",videosbasepath,musicbasepath;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,6 +72,8 @@ public class Discover_fragment extends Fragment implements View.OnClickListener 
 
         rv_hashtagslistcontainer.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL, false));
         hashtagsCategoriesAdapter=new HashtagsCategoriesAdapter(getActivity(),discoverhashtagsList);
+        hashtagsCategoriesAdapter.setOnHashtagItemClickListener(this);
+        hashtagsCategoriesAdapter.setOnHashtagViewAllListener(this);
         rv_hashtagslistcontainer.setAdapter(hashtagsCategoriesAdapter);
 
         if(connectionDetector.isConnectingToInternet())
@@ -99,8 +103,11 @@ public class Discover_fragment extends Fragment implements View.OnClickListener 
                 Discoverresponse body=response.body();
                 if(body!=null) {
                     if (body.getStatus()==0) {
-                        if(body.getData()!=null)
+                        if(body.getData()!=null  && body.getData().size() > 0) {
                             discoverhashtagsList.addAll(body.getData());
+                            videosbasepath = body.getUrl();
+                            musicbasepath = body.getSongurl();
+                        }
                     } else {
                         Utils.callToast(getActivity(), body.getMessage());
                     }
@@ -117,5 +124,24 @@ public class Discover_fragment extends Fragment implements View.OnClickListener 
                 Log.e("searchuser onFailure",""+t.getMessage());
             }
         });
+    }
+
+    @Override
+    public void onHashtagViewAll(Discoverhashtags discoverhashtags) {
+
+        Intent intent=new Intent(getActivity(), HashtagSearchresultsActivity.class);
+        intent.putExtra("hashtag",discoverhashtags.getHashTag());
+        startActivity(intent);
+    }
+
+    @Override
+    public void onHashtagitemClick(ArrayList<VideoModel> discoverhashtagvideosList,int position) {
+
+        Intent intent=new Intent(getActivity(), PlayvideosCategorywise_Activity.class);
+        intent.putParcelableArrayListExtra("videos",discoverhashtagvideosList);
+        intent.putExtra("position",position);
+        intent.putExtra("videosbasepath",videosbasepath);
+        intent.putExtra("musicbasepath",musicbasepath);
+        startActivity(intent);
     }
 }

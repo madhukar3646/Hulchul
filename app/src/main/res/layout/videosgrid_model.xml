@@ -17,14 +17,17 @@
            android:layout_margin="2dp"
            android:layout_centerInParent="true"
            android:scaleType="fitXY"/>
-       
+
        <ImageView
+           android:id="@+id/iv_playpauseimage"
            android:layout_width="20dp"
            android:layout_height="20dp"
-           android:src="@mipmap/play_video"
-           android:layout_centerInParent="true"/>
+           android:layout_centerHorizontal="true"
+           android:layout_centerVertical="true"
+           android:src="@mipmap/play_video" />
 
       <LinearLayout
+          android:id="@+id/layout_duration"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:orientation="horizontal"

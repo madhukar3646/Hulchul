@@ -1,5 +1,6 @@
 package com.app.hulchul.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.app.hulchul.R;
+import com.app.hulchul.activities.HashtagSearchresultsActivity;
 import com.app.hulchul.activities.MySoundsActivity;
 import com.app.hulchul.activities.SearchActivity;
 import com.app.hulchul.adapters.HashtagSearchAdapter;
@@ -31,7 +33,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class SearchHashtags_fragment extends Fragment implements SearchActivity.OnSearchFragmentSelected{
+public class SearchHashtags_fragment extends Fragment implements SearchActivity.OnSearchFragmentSelected,HashtagSearchAdapter.OnHashtagClickListener{
 
     @BindView(R.id.rv_hashtags)
     RecyclerView rv_hashtags;
@@ -56,6 +58,7 @@ public class SearchHashtags_fragment extends Fragment implements SearchActivity.
     {
         connectionDetector=new ConnectionDetector(getActivity());
         hashtagSearchAdapter=new HashtagSearchAdapter(getActivity(),hashtagsearchdataList);
+        hashtagSearchAdapter.setOnHashtagClickListener(this);
         rv_hashtags.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
         rv_hashtags.setAdapter(hashtagSearchAdapter);
     }
@@ -119,5 +122,12 @@ public class SearchHashtags_fragment extends Fragment implements SearchActivity.
                 Log.e("searchuser onFailure",""+t.getMessage());
             }
         });
+    }
+
+    @Override
+    public void onHashtagClick(Hashtagsearchdata hashtagsearchdata) {
+        Intent intent=new Intent(getActivity(), HashtagSearchresultsActivity.class);
+        intent.putExtra("hashtag",hashtagsearchdata.getHashTag());
+        startActivity(intent);
     }
 }

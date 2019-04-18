@@ -124,7 +124,7 @@
                         android:id="@+id/iv_favourite"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@mipmap/ic_launcher"
+                        android:src="@mipmap/fav_n_g"
                         android:layout_margin="5dp"
                         android:layout_centerVertical="true"/>
                     <TextView
@@ -156,6 +156,13 @@
             android:focusableInTouchMode="true"
             android:focusable="true"
             />
+        <TextView
+            android:id="@+id/tv_nodata"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No data Found"
+            android:layout_centerInParent="true"
+            android:visibility="gone"/>
     </RelativeLayout>
     <ImageView
         android:id="@+id/iv_gotorecord"

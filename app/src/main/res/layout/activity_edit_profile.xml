@@ -29,6 +29,7 @@
             android:text="Edit Profile"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
+            android:textStyle="bold"
             android:layout_centerInParent="true"
             android:textAppearance="?android:attr/textAppearanceMedium"/>
     </RelativeLayout>
@@ -126,11 +127,12 @@
             </View>
 
             <LinearLayout
+                android:id="@+id/layout_changphonenumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:focusableInTouchMode="true"
                 android:focusable="true"
-                android:visibility="gone">
+                android:visibility="visible">
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -138,17 +140,14 @@
                     android:layout_margin="10dp"
                     android:src="@mipmap/mobile_black"/>
 
-                <EditText
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="80****14"
                     android:layout_margin="10dp"
                     android:layout_gravity="center"
-                    android:inputType="text"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:background="@android:color/transparent"
-                    android:focusableInTouchMode="true"
-                    android:focusable="true"/>
+                    />
 
             </LinearLayout>
             <View
@@ -156,7 +155,7 @@
                 android:layout_height="1dp"
                 android:background="#1A000000"
                 android:layout_marginTop="5dp"
-                android:visibility="gone">
+                android:visibility="visible">
             </View>
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -244,7 +243,7 @@
 
                 <EditText
                     android:id="@+id/et_biodata"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/iv_biodata"
                     android:hint="Enter your bio data"
@@ -270,7 +269,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone">
+                android:visibility="visible">
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -319,13 +318,13 @@
                 android:layout_height="1dp"
                 android:background="#1A000000"
                 android:layout_marginTop="5dp"
-                android:visibility="gone">
+                android:visibility="visible">
             </View>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone">
+                android:visibility="visible">
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -374,13 +373,13 @@
                 android:layout_height="1dp"
                 android:background="#1A000000"
                 android:layout_marginTop="5dp"
-                android:visibility="gone">
+                android:visibility="visible">
             </View>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone">
+                android:visibility="visible">
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -429,7 +428,7 @@
                 android:layout_height="1dp"
                 android:background="#1A000000"
                 android:layout_marginTop="5dp"
-                android:visibility="gone">
+                android:visibility="visible">
             </View>
 
             <RelativeLayout

@@ -16,6 +16,9 @@ public class VideosListingResponse {
     @SerializedName("videos")
     @Expose
     private List<VideoModel> videos = null;
+    @SerializedName("totalcount")
+    @Expose
+    private Integer totalcount;
     @SerializedName("url")
     @Expose
     private String url;
@@ -62,5 +65,13 @@ public class VideosListingResponse {
 
     public void setSongurl(String songurl) {
         this.songurl = songurl;
+    }
+
+    public Integer getTotalcount() {
+        return totalcount;
+    }
+
+    public void setTotalcount(Integer totalcount) {
+        this.totalcount = totalcount;
     }
 }

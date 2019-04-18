@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -97,6 +98,13 @@ public class VideoPosting_Activity extends AppCompatActivity implements View.OnC
         iv_gmail.setOnClickListener(this);
         iv_twitter.setOnClickListener(this);
         iv_instagram.setOnClickListener(this);
+
+        switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+            }
+        });
     }
 
     @Override

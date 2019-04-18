@@ -30,7 +30,6 @@ import retrofit2.Response;
 
 public class Notification_fragment extends Fragment {
 
-
     @BindView(R.id.rv_notifications)
     RecyclerView rv_notifications;
     private NotificationsAdapter notificationsAdapter;

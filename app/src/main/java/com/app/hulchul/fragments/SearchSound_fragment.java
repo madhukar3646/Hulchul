@@ -1,6 +1,7 @@
 package com.app.hulchul.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.app.hulchul.R;
 import com.app.hulchul.activities.SearchActivity;
+import com.app.hulchul.activities.SoundsSearchresultsActivity;
 import com.app.hulchul.adapters.HashtagSearchAdapter;
 import com.app.hulchul.adapters.SoundSearchAdapter;
 import com.app.hulchul.model.HashtagSearchResponse;
@@ -32,7 +34,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class SearchSound_fragment extends Fragment implements SearchActivity.OnSearchFragmentSelected {
+public class SearchSound_fragment extends Fragment implements SearchActivity.OnSearchFragmentSelected,SoundSearchAdapter.OnSoundSelectedListener{
 
     @BindView(R.id.rv_sounds)
     RecyclerView rv_sounds;
@@ -57,6 +59,7 @@ public class SearchSound_fragment extends Fragment implements SearchActivity.OnS
     {
         connectionDetector=new ConnectionDetector(getActivity());
         soundSearchAdapter=new SoundSearchAdapter(getActivity(),searchdataList);
+        soundSearchAdapter.setOnSoundSelectedListener(this);
         rv_sounds.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
         rv_sounds.setAdapter(soundSearchAdapter);
     }
@@ -119,5 +122,13 @@ public class SearchSound_fragment extends Fragment implements SearchActivity.OnS
                 Log.e("searchuser onFailure",""+t.getMessage());
             }
         });
+    }
+
+    @Override
+    public void onSoundSelected(SoundSearchdata soundSearchdata) {
+        Intent intent=new Intent(getActivity(), SoundsSearchresultsActivity.class);
+        intent.putExtra("soundname",soundSearchdata.getName());
+        intent.putExtra("songid",soundSearchdata.getSongId());
+        startActivity(intent);
     }
 }

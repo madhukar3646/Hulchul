@@ -2,6 +2,7 @@ package com.app.hulchul.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +44,9 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
         final NotificationsAdapter.MyViewHolder myViewHolder=holder;
         NotificationModel model=notificationModelArrayList.get(position);
         String userid=model.getUserId();
-        holder.tv_notification.setText("@User"+userid.substring(userid.length()-4)+" posted a video");
+       // holder.tv_notification.setText("@User"+userid.substring(userid.length()-4)+" posted a video");
+        holder.tv_notification.setText(Html.fromHtml("" + "<font color=\"#000000\">" + "@User"+userid.substring(userid.length()-4) + "</font>"
+                +" posted a video"));
     }
 
     @Override

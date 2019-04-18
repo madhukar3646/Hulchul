@@ -259,14 +259,16 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold"
                 android:text="Share in social media"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:visibility="gone"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
                 android:orientation="horizontal"
-                android:weightSum="5">
+                android:weightSum="5"
+                android:visibility="gone">
 
                 <RelativeLayout
                     android:layout_width="0dp"
