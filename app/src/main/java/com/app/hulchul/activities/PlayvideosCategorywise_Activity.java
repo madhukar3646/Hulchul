@@ -106,43 +106,6 @@ public class PlayvideosCategorywise_Activity extends AppCompatActivity implement
             Utils.callToast(PlayvideosCategorywise_Activity.this,getResources().getString(R.string.internet_toast));
     }
 
-    /*private void setDataToContainer(){
-        String userid="";
-        if(sessionManagement.getBooleanValueFromPreference(SessionManagement.ISLOGIN))
-            userid=sessionManagement.getValueFromPreference(SessionManagement.USERID);
-
-        Utils.showDialog(PlayvideosCategorywise_Activity.this);
-        Call<VideosListingResponse> call= RetrofitApis.Factory.createTemp(PlayvideosCategorywise_Activity.this).videosListingService(userid);
-        call.enqueue(new Callback<VideosListingResponse>() {
-            @Override
-            public void onResponse(Call<VideosListingResponse> call, Response<VideosListingResponse> response) {
-                Utils.dismissDialog();
-                VideosListingResponse body=response.body();
-                if(body!=null) {
-                    if (body.getStatus() == 1) {
-                        if (body.getVideos() != null && body.getVideos().size() > 0) {
-                            modelArrayList.clear();
-                            modelArrayList.addAll(body.getVideos());
-                        }
-                        adapter.setBasepaths(body.getUrl(), body.getSongurl());
-                        adapter.notifyDataSetChanged();
-                    } else {
-                        Utils.callToast(PlayvideosCategorywise_Activity.this, body.getMessage());
-                    }
-                }
-                else {
-                    Utils.callToast(PlayvideosCategorywise_Activity.this,"null response came");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<VideosListingResponse> call, Throwable t) {
-                Utils.dismissDialog();
-                Log.e("videoslist onFailure",""+t.getMessage());
-            }
-        });
-    }*/
-
     private void setLikeUnlike(final SimplePlayerViewHolder holder, String userid, String videoid, final int pos){
         Utils.showDialog(PlayvideosCategorywise_Activity.this);
         Call<SignupResponse> call= RetrofitApis.Factory.createTemp(PlayvideosCategorywise_Activity.this).likeUnlikeVideoService(userid,videoid);
@@ -167,9 +130,9 @@ public class PlayvideosCategorywise_Activity extends AppCompatActivity implement
         });
     }
 
-    private void setFollowUnFollow(final SimplePlayerViewHolder holder, String userid, String videoid, final int pos){
+    private void setFollowUnFollow(final SimplePlayerViewHolder holder, String userid, String fromid, final int pos){
         Utils.showDialog(PlayvideosCategorywise_Activity.this);
-        Call<SignupResponse> call= RetrofitApis.Factory.createTemp(PlayvideosCategorywise_Activity.this).followUnfollowUserService(userid,videoid);
+        Call<SignupResponse> call= RetrofitApis.Factory.createTemp(PlayvideosCategorywise_Activity.this).followUnfollowUserService(userid,fromid);
         call.enqueue(new Callback<SignupResponse>() {
             @Override
             public void onResponse(Call<SignupResponse> call, Response<SignupResponse> response) {
@@ -203,10 +166,10 @@ public class PlayvideosCategorywise_Activity extends AppCompatActivity implement
     }
 
     @Override
-    public void onFollowClicked(SimplePlayerViewHolder holder, String videoid, int pos) {
+    public void onFollowClicked(SimplePlayerViewHolder holder, String fromid, int pos) {
         if(sessionManagement.getBooleanValueFromPreference(SessionManagement.ISLOGIN))
         {
-            setFollowUnFollow(holder,sessionManagement.getValueFromPreference(SessionManagement.USERID),videoid,pos);
+            setFollowUnFollow(holder,sessionManagement.getValueFromPreference(SessionManagement.USERID),fromid,pos);
         }
         else {
             startActivity(new Intent(PlayvideosCategorywise_Activity.this, LoginLandingActivity.class));
@@ -277,6 +240,14 @@ public class PlayvideosCategorywise_Activity extends AppCompatActivity implement
         Intent abuse=new Intent(PlayvideosCategorywise_Activity.this, AbuseSelectionActivity.class);
         abuse.putExtra("common","Abuse Reason selection screen");
         startActivity(abuse);
+    }
+
+    @Override
+    public void onHashtagclicked(String hashtag) {
+
+        Intent intent=new Intent(PlayvideosCategorywise_Activity.this, HashtagSearchresultsActivity.class);
+        intent.putExtra("hashtag",hashtag);
+        startActivity(intent);
     }
 
     public void shareVideo(String videopath) {

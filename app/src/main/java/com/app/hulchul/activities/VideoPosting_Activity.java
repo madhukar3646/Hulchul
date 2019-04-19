@@ -159,6 +159,7 @@ public class VideoPosting_Activity extends AppCompatActivity implements View.OnC
     {
         String hashtags="";
         String hashes=et_hashtags.getText().toString().trim();
+        hashes=hashes.replace(","," ");
         String arr[]=hashes.split("#");
         hashes="";
         for(int i=0;i<arr.length;i++)

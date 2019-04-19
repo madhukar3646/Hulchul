@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import com.app.hulchul.R;
 import com.app.hulchul.activities.PlayvideosCategorywise_Activity;
 import com.app.hulchul.model.VideoModel;
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ public class HashtagsthumnailsAdapter extends RecyclerView.Adapter<Hashtagsthumn
     private int width,height;
     private ArrayList<VideoModel> discoverhashtagvideosList;
     private OnHashtagItemClickListener onHashtagItemClickListener;
+    private String videobasepath;
 
     public HashtagsthumnailsAdapter(Context context,ArrayList<VideoModel> discoverhashtagvideosList)
     {
@@ -34,6 +37,11 @@ public class HashtagsthumnailsAdapter extends RecyclerView.Adapter<Hashtagsthumn
         width=metrics.widthPixels;
         height=metrics.heightPixels;
         this.discoverhashtagvideosList=discoverhashtagvideosList;
+    }
+
+    public void setVideobasepath(String videobasepath)
+    {
+        this.videobasepath=videobasepath;
     }
 
     @Override
@@ -55,7 +63,11 @@ public class HashtagsthumnailsAdapter extends RecyclerView.Adapter<Hashtagsthumn
     {
         final HashtagsthumnailsAdapter.MyViewHolder myViewHolder=holder;
 
-        Picasso.with(context).load(R.mipmap.sampleimage)
+        VideoModel model=discoverhashtagvideosList.get(position);
+        String gif=model.getVideo().substring(0,model.getVideo().length()-3);
+        gif=videobasepath+gif+"gif";
+
+        Glide.with(context).load(gif)
                 .error(R.mipmap.placeholder)
                 .into(holder.iv_hashtagthumbnail);
 

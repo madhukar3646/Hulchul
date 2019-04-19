@@ -303,7 +303,7 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Hashta
 
     private void viewProfile(String userid){
         Utils.showDialog(getActivity());
-        Call<ViewProfileResponse> call= RetrofitApis.Factory.createTemp(getActivity()).viewProfile(userid);
+        Call<ViewProfileResponse> call= RetrofitApis.Factory.createTemp(getActivity()).viewProfile(userid,userid);
         call.enqueue(new Callback<ViewProfileResponse>() {
             @Override
             public void onResponse(Call<ViewProfileResponse> call, Response<ViewProfileResponse> response) {
@@ -401,6 +401,7 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Hashta
                             profilevideoslist.addAll(body.getVideos());
                             videosbasepath=body.getUrl();
                             musicbasepath=body.getSongurl();
+                            profileadapter.setVideobasepath(videosbasepath);
                             profileadapter.notifyDataSetChanged();
                             tv_nodata.setVisibility(View.GONE);
                         }
@@ -438,6 +439,7 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Hashta
                             likedvideoslist.addAll(body.getVideos());
                             videosbasepath=body.getUrl();
                             musicbasepath=body.getSongurl();
+                            likedadapter.setVideobasepath(videosbasepath);
                             likedadapter.notifyDataSetChanged();
                             tv_nodata.setVisibility(View.GONE);
                         }

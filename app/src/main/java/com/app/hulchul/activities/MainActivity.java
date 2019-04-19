@@ -32,6 +32,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.hulchul.R;
+import com.app.hulchul.fileuploadservice.FileUploadService;
 import com.app.hulchul.fragments.Discover_fragment;
 import com.app.hulchul.fragments.Home_fragment;
 import com.app.hulchul.fragments.Me_Fragment;
@@ -187,6 +188,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setVisibleFragmentFocus();
         IntentFilter intentFilter = new IntentFilter("my.own.broadcast");
         LocalBroadcastManager.getInstance(this).registerReceiver(myLocalBroadcastReceiver, intentFilter);
+        if(!FileUploadService.isProcessing || tv_uploadpercentage.getText().toString().trim().length()>6) {
+            uploadingbmp=null;
+            isUploading=false;
+            layout_uploadinglayout.setVisibility(View.GONE);
+        }
     }
 
     private BroadcastReceiver myLocalBroadcastReceiver = new BroadcastReceiver() {
@@ -201,6 +207,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 isUploading=false;
                 layout_uploadinglayout.setVisibility(View.GONE);
                 uploadingbmp=null;
+            }
+            else if(result.trim().length()>5)
+            {
+                isUploading=false;
+                layout_uploadinglayout.setVisibility(View.GONE);
+                uploadingbmp=null;
+                Utils.callToast(MainActivity.this,"Your file uploading failed. Please try again from drafts");
             }
             else {
                 if(uploadingbmp==null) {

@@ -16,8 +16,8 @@ import android.widget.TextView;
 
 import com.app.hulchul.R;
 import com.app.hulchul.adapters.HashtagsGridAdapter;
-import com.app.hulchul.adapters.VideothumbnailsAdapter;
 import com.app.hulchul.model.ProfileViewdata;
+import com.app.hulchul.model.SignupResponse;
 import com.app.hulchul.model.VideoModel;
 import com.app.hulchul.model.VideosListingResponse;
 import com.app.hulchul.model.ViewProfileResponse;
@@ -27,7 +27,6 @@ import com.app.hulchul.utils.ConnectionDetector;
 import com.app.hulchul.utils.SessionManagement;
 import com.app.hulchul.utils.Utils;
 import com.squareup.picasso.Picasso;
-import com.twitter.sdk.android.core.models.User;
 
 import java.util.ArrayList;
 
@@ -52,6 +51,8 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     ImageView iv_unfollow;
     @BindView(R.id.layout_follow)
     RelativeLayout layout_follow;
+    @BindView(R.id.layout_messageunfollow)
+    RelativeLayout layout_messageunfollow;
     @BindView(R.id.tv_following)
     TextView tv_following;
     @BindView(R.id.tv_followers)
@@ -131,7 +132,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         setClickableFocus(true);
 
         if(connectionDetector.isConnectingToInternet()) {
-            viewProfile(othersuserid);
+            viewProfile(userid,othersuserid);
         }
         else
             Utils.callToast(UserProfileActivity.this,getResources().getString(R.string.internet_toast));
@@ -202,10 +203,26 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         switch (view.getId())
         {
             case R.id.layout_follow:
+                if(!userid.equalsIgnoreCase(othersuserid)) {
+                    if (connectionDetector.isConnectingToInternet())
+                        setFollowUnFollow(userid, othersuserid);
+                    else
+                        Utils.callToast(UserProfileActivity.this, getResources().getString(R.string.internet_toast));
+                }
+                else
+                    Utils.callToast(UserProfileActivity.this,"This is your profile only.");
                 break;
             case R.id.tv_message:
                 break;
             case R.id.iv_unfollow:
+                if(!userid.equalsIgnoreCase(othersuserid)) {
+                    if (connectionDetector.isConnectingToInternet())
+                        setFollowUnFollow(userid, othersuserid);
+                    else
+                        Utils.callToast(UserProfileActivity.this, getResources().getString(R.string.internet_toast));
+                }
+                else
+                    Utils.callToast(UserProfileActivity.this,"This is your profile only.");
                 break;
             case R.id.layout_yourvideos:
                 setClickableFocus(true);
@@ -219,9 +236,9 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    private void viewProfile(String othersuserid){
+    private void viewProfile(String userid,String othersuserid){
         Utils.showDialog(UserProfileActivity.this);
-        Call<ViewProfileResponse> call= RetrofitApis.Factory.createTemp(UserProfileActivity.this).viewProfile(othersuserid);
+        Call<ViewProfileResponse> call= RetrofitApis.Factory.createTemp(UserProfileActivity.this).viewProfile(userid,othersuserid);
         call.enqueue(new Callback<ViewProfileResponse>() {
             @Override
             public void onResponse(Call<ViewProfileResponse> call, Response<ViewProfileResponse> response) {
@@ -258,6 +275,16 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         tv_hearts.setText("15 Hearts");
         tv_videos.setText("10 Videos");
         tv_followers.setText("15 Followers");*/
+
+        if((viewdata.getFollwerstatus()!=null) && (viewdata.getFollwerstatus().equalsIgnoreCase("0")|| viewdata.getFollwerstatus().equalsIgnoreCase("null")))
+        {
+            layout_follow.setVisibility(View.VISIBLE);
+            layout_messageunfollow.setVisibility(View.GONE);
+        }
+        else {
+            layout_follow.setVisibility(View.GONE);
+            layout_messageunfollow.setVisibility(View.VISIBLE);
+        }
 
         tv_name.setText(viewdata.getFullName());
         tv_title.setText(viewdata.getFullName());
@@ -319,6 +346,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                             profilevideoslist.addAll(body.getVideos());
                             videosbasepath=body.getUrl();
                             musicbasepath=body.getSongurl();
+                            profileadapter.setVideobasepath(videosbasepath);
                             profileadapter.notifyDataSetChanged();
                             tv_nodata.setVisibility(View.GONE);
                         }
@@ -356,6 +384,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                             likedvideoslist.addAll(body.getVideos());
                             videosbasepath=body.getUrl();
                             musicbasepath=body.getSongurl();
+                            likedadapter.setVideobasepath(videosbasepath);
                             likedadapter.notifyDataSetChanged();
                             tv_nodata.setVisibility(View.GONE);
                         }
@@ -387,5 +416,37 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         intent.putExtra("videosbasepath",videosbasepath);
         intent.putExtra("musicbasepath",musicbasepath);
         startActivity(intent);
+    }
+
+    private void setFollowUnFollow(String userid, String fromid){
+        Utils.showDialog(UserProfileActivity.this);
+        Call<SignupResponse> call= RetrofitApis.Factory.createTemp(UserProfileActivity.this).followUnfollowUserService(userid,fromid);
+        call.enqueue(new Callback<SignupResponse>() {
+            @Override
+            public void onResponse(Call<SignupResponse> call, Response<SignupResponse> response) {
+                Utils.dismissDialog();
+                SignupResponse body=response.body();
+                if(body.getStatus()==1){
+                    if(layout_follow.getVisibility()==View.VISIBLE)
+                    {
+                        layout_follow.setVisibility(View.GONE);
+                        layout_messageunfollow.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        layout_follow.setVisibility(View.VISIBLE);
+                        layout_messageunfollow.setVisibility(View.GONE);
+                    }
+                }
+                else {
+                    //Utils.callToast(getActivity(),body.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SignupResponse> call, Throwable t) {
+                Utils.dismissDialog();
+                Log.e("follow onFailure",""+t.getMessage());
+            }
+        });
     }
 }

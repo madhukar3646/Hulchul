@@ -59,7 +59,7 @@
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:src="@mipmap/ic_launcher"
+                        android:src="@mipmap/notifications"
                         android:layout_gravity="center"
                         android:layout_margin="10dp"/>
                     <TextView
@@ -79,7 +79,7 @@
                         <ImageView
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:src="@mipmap/ic_launcher"
+                            android:src="@mipmap/right_arrow_gray"
                             android:layout_gravity="center"/>
                     </RelativeLayout>
                 </LinearLayout>
@@ -104,7 +104,7 @@
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:src="@mipmap/ic_launcher"
+                        android:src="@mipmap/aboutus"
                         android:layout_gravity="center"
                         android:layout_margin="10dp"/>
                     <TextView
@@ -124,7 +124,7 @@
                         <ImageView
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:src="@mipmap/ic_launcher"
+                            android:src="@mipmap/right_arrow_gray"
                             android:layout_gravity="center"/>
                     </RelativeLayout>
                 </LinearLayout>
@@ -149,7 +149,7 @@
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:src="@mipmap/ic_launcher"
+                        android:src="@mipmap/privacy_safety"
                         android:layout_gravity="center"
                         android:layout_margin="10dp"/>
                     <TextView
@@ -169,7 +169,7 @@
                         <ImageView
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:src="@mipmap/ic_launcher"
+                            android:src="@mipmap/right_arrow_gray"
                             android:layout_gravity="center"/>
                     </RelativeLayout>
                 </LinearLayout>
@@ -194,7 +194,7 @@
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:src="@mipmap/ic_launcher"
+                        android:src="@mipmap/help"
                         android:layout_gravity="center"
                         android:layout_margin="10dp"/>
                     <TextView
@@ -214,7 +214,7 @@
                         <ImageView
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:src="@mipmap/ic_launcher"
+                            android:src="@mipmap/right_arrow_gray"
                             android:layout_gravity="center"/>
                     </RelativeLayout>
                 </LinearLayout>
@@ -239,7 +239,7 @@
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:src="@mipmap/ic_launcher"
+                        android:src="@mipmap/termsuse"
                         android:layout_gravity="center"
                         android:layout_margin="10dp"/>
                     <TextView
@@ -259,7 +259,7 @@
                         <ImageView
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:src="@mipmap/ic_launcher"
+                            android:src="@mipmap/right_arrow_gray"
                             android:layout_gravity="center"/>
                     </RelativeLayout>
                 </LinearLayout>
@@ -284,7 +284,7 @@
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:src="@mipmap/ic_launcher"
+                        android:src="@mipmap/privacy"
                         android:layout_gravity="center"
                         android:layout_margin="10dp"/>
                     <TextView
@@ -304,7 +304,7 @@
                         <ImageView
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:src="@mipmap/ic_launcher"
+                            android:src="@mipmap/right_arrow_gray"
                             android:layout_gravity="center"/>
                     </RelativeLayout>
                 </LinearLayout>
@@ -329,7 +329,7 @@
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:src="@mipmap/ic_launcher"
+                        android:src="@mipmap/copyright"
                         android:layout_gravity="center"
                         android:layout_margin="10dp"/>
                     <TextView
@@ -349,7 +349,7 @@
                         <ImageView
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:src="@mipmap/ic_launcher"
+                            android:src="@mipmap/right_arrow_gray"
                             android:layout_gravity="center"/>
                     </RelativeLayout>
                 </LinearLayout>
@@ -374,7 +374,7 @@
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:src="@mipmap/ic_launcher"
+                        android:src="@mipmap/logout"
                         android:layout_gravity="center"
                         android:layout_margin="10dp"/>
                     <TextView
@@ -391,11 +391,14 @@
                         android:layout_gravity="center"
                         android:gravity="right"
                         android:layout_margin="10dp">
+
                         <ImageView
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:src="@mipmap/ic_launcher"
-                            android:layout_gravity="center"/>
+                            android:layout_alignParentTop="true"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="0dp"
+                            android:src="@mipmap/right_arrow_gray" />
                     </RelativeLayout>
                 </LinearLayout>
                 <View

@@ -57,10 +57,6 @@ public class SimplePlayerViewHolder extends RecyclerView.ViewHolder implements T
     TextView tv_profilename;
     @BindView(R.id.tv_profilelikescount)
     TextView tv_profilelikescount;
-    @BindView(R.id.tv_hashtag2)
-    TextView tv_hashtag2;
-    @BindView(R.id.tv_hashtag1)
-    TextView tv_hashtag1;
     @BindView(R.id.iv_like)
     ImageView iv_like;
     @BindView(R.id.tv_likescount)
@@ -80,6 +76,9 @@ public class SimplePlayerViewHolder extends RecyclerView.ViewHolder implements T
     private MediaPlayer musicplayer;
     private String musicpath;
     private int musicposition=0;
+
+    @BindView(R.id.rv_hashtagslist)
+    RecyclerView rv_hashtagslist;
 
     public SimplePlayerViewHolder(View itemView) {
         super(itemView);

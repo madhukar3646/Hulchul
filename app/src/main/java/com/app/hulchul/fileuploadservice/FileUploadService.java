@@ -9,6 +9,8 @@ import android.util.Log;
 
 import com.app.hulchul.model.AntMediaUploadResponse;
 import com.app.hulchul.model.SignupResponse;
+import com.app.hulchul.model.VideoUploadedResponse;
+import com.app.hulchul.model.VideoUploadingResponse;
 import com.app.hulchul.presenter.RetrofitApis;
 import com.google.gson.Gson;
 
@@ -38,6 +40,7 @@ public class FileUploadService extends JobIntentService {
      */
     private static final int JOB_ID = 102;
     private String mFilePath,songid,userid,hashtags;
+    public static boolean isProcessing=false;
     ResponseBody response;
 
     public static void enqueueWork(Context context, Intent intent) {
@@ -65,10 +68,11 @@ public class FileUploadService extends JobIntentService {
             Log.e(TAG, "onHandleWork: Invalid file URI");
             return;
         }
+        isProcessing=true;
         RestApiService apiService = RetrofitInstance.getApiService();
         Flowable<Double> fileObservable = Flowable.create(emitter -> {
             //response=apiService.onFileUpload(createMultipartBody(mFilePath, emitter),createRequestBodyFromText(userid), createRequestBodyFromText(songid)).blockingGet();
-            response=apiService.onFileUpload(createMultipartBody(mFilePath, emitter)).blockingGet();
+            response=apiService.onFileUpload(createMultipartBody(mFilePath, emitter),createRequestBodyFromText(userid)).blockingGet();
             emitter.onComplete();
         }, BackpressureStrategy.LATEST);
 
@@ -80,6 +84,7 @@ public class FileUploadService extends JobIntentService {
     private void onErrors(Throwable throwable) {
         sendBroadcastMeaasge("Error in file upload " + throwable.getMessage());
         Log.e(TAG, "onErrors: ", throwable);
+        isProcessing=false;
     }
 
     private void onProgress(Double progress) {
@@ -94,9 +99,9 @@ public class FileUploadService extends JobIntentService {
                 String data=response.string();
                 Log.e("uploded response",""+data);
                 Gson gson = new Gson();
-                AntMediaUploadResponse antMediaUploadResponse = gson.fromJson(data, AntMediaUploadResponse.class);
-                Log.e("video id is",""+antMediaUploadResponse.getDataId());
-                uploadeVideo(userid,antMediaUploadResponse.getDataId(),songid);
+                VideoUploadingResponse antMediaUploadResponse = gson.fromJson(data, VideoUploadingResponse.class);
+                Log.e("video id is",""+antMediaUploadResponse.getData().getVideo());
+                uploadeVideo(userid,antMediaUploadResponse.getData().getVideo(),songid);
             } catch (IOException e) {
                 e.printStackTrace();
             } /*catch (JSONException e) {
@@ -131,8 +136,8 @@ public class FileUploadService extends JobIntentService {
      */
     private MultipartBody.Part createMultipartBody(String filePath, FlowableEmitter<Double> emitter) {
         File file = new File(filePath);
-        //return MultipartBody.Part.createFormData("video", file.getName(), createCountingRequestBody(file, MIMEType.VIDEO.value, emitter));
-        return MultipartBody.Part.createFormData("file", file.getName(), createCountingRequestBody(file, MIMEType.VIDEO.value, emitter));
+        return MultipartBody.Part.createFormData("video", file.getName(), createCountingRequestBody(file, MIMEType.VIDEO.value, emitter));
+        //return MultipartBody.Part.createFormData("file", file.getName(), createCountingRequestBody(file, MIMEType.VIDEO.value, emitter));
     }
 
     private RequestBody createCountingRequestBody(File file, String mimeType, FlowableEmitter<Double> emitter) {
@@ -153,6 +158,7 @@ public class FileUploadService extends JobIntentService {
                 if(body.getStatus()==1){
                     if(new File(mFilePath).exists())
                         new File(mFilePath).delete();
+                    isProcessing=false;
                     sendBroadcastMeaasge("101");
                     Log.e(TAG, "onSuccess: File Uploaded");
                 }

@@ -27,7 +27,8 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@mipmap/menu_burger"
-                    android:padding="10dp"/>
+                    android:padding="10dp"
+                    android:visibility="gone"/>
             </LinearLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -115,7 +116,7 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/rounded_rectangle_primary"
                             android:layout_gravity="center"
-                            android:visibility="gone">
+                            android:visibility="visible">
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -128,6 +129,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:visibility="gone"
                             >
 
                             <TextView
@@ -138,7 +140,8 @@
                                 android:textColor="@color/colorPrimary"
                                 android:padding="5dp"
                                 android:gravity="center"
-                                android:background="@drawable/border_primary"/>
+                                android:background="@drawable/border_primary"
+                                android:visibility="gone"/>
                             
                             <ImageView
                                 android:id="@+id/iv_unfollow"
@@ -231,7 +234,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:layout_marginTop="15dp">
+                            android:layout_marginTop="15dp"
+                            android:visibility="gone">
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"

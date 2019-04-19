@@ -33,6 +33,10 @@ public class ProfileViewdata {
     @Expose
     private String following;
 
+    @SerializedName("follwerstatus")
+    @Expose
+    private String follwerstatus;
+
     public String getId() {
         return id;
     }
@@ -103,5 +107,13 @@ public class ProfileViewdata {
 
     public void setFollowing(String following) {
         this.following = following;
+    }
+
+    public String getFollwerstatus() {
+        return follwerstatus;
+    }
+
+    public void setFollwerstatus(String follwerstatus) {
+        this.follwerstatus = follwerstatus;
     }
 }

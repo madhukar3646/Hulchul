@@ -32,6 +32,7 @@ public class HashtagsCategoriesAdapter extends RecyclerView.Adapter<HashtagsCate
     private Discoverhashtags discoverhashtags;
     private OnHashtagViewAllListener onHashtagViewAllListener;
     private HashtagsthumnailsAdapter.OnHashtagItemClickListener onHashtagItemClickListener;
+    private String videobasepath;
 
     public HashtagsCategoriesAdapter(Context context,ArrayList<Discoverhashtags> discoverhashtagsList)
     {
@@ -40,6 +41,11 @@ public class HashtagsCategoriesAdapter extends RecyclerView.Adapter<HashtagsCate
         width=metrics.widthPixels;
         height=metrics.heightPixels;
         this.discoverhashtagsList=discoverhashtagsList;
+    }
+
+    public void setVideobasepath(String videobasepath)
+    {
+        this.videobasepath=videobasepath;
     }
 
     public void setOnHashtagViewAllListener(OnHashtagViewAllListener onHashtagViewAllListener)
@@ -71,6 +77,7 @@ public class HashtagsCategoriesAdapter extends RecyclerView.Adapter<HashtagsCate
           discoverhashtagvideosList.addAll(discoverhashtags.getVideos());
         holder.rv_hashtagscontainer.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false));
         HashtagsthumnailsAdapter hashtagsthumnailsAdapter=new HashtagsthumnailsAdapter(context,discoverhashtagvideosList);
+        hashtagsthumnailsAdapter.setVideobasepath(videobasepath);
         hashtagsthumnailsAdapter.setOnHashtagItemClickListener(onHashtagItemClickListener);
         holder.rv_hashtagscontainer.setAdapter(hashtagsthumnailsAdapter);
 

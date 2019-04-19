@@ -124,6 +124,11 @@ public interface RetrofitApis {
     @POST("userVideos")
     Call<VideosListingResponse> videosListingService(@Field("userId") String userid,@Field("limit") String limit,@Field("offset") String offset);
 
+    @FormUrlEncoded
+    @POST("userFollowerVideos")
+    Call<VideosListingResponse> userFollowerVideos(@Field("userId") String userid,@Field("limit") String limit,@Field("offset") String offset);
+
+
     @GET("listSongs")
     Call<ServerSoundsResponse> serverSoundsListingService();
 
@@ -141,7 +146,7 @@ public interface RetrofitApis {
 
     @FormUrlEncoded
     @POST("videoFollowers")
-    Call<SignupResponse> followUnfollowUserService(@Field("userId") String userid, @Field("videoId") String videoid);
+    Call<SignupResponse> followUnfollowUserService(@Field("userId") String userid, @Field("fromId") String fromid);
 
     @GET("comments/{videoId}")
     Call<CommentslistingResponse> commentsListingService(@Path("videoId") String videoid);
@@ -168,14 +173,14 @@ public interface RetrofitApis {
 
     @FormUrlEncoded
     @POST("viewprofile")
-    Call<ViewProfileResponse> viewProfile(@Field("userId") String userid);
+    Call<ViewProfileResponse> viewProfile(@Field("userId") String userid,@Field("fromId") String fromid);
 
     @POST("users/change-password")
     Call<SignupResponse> changepassword(@Header("x-auth-code") String token,@Body ChangepasswordRequest changepasswordRequest);
 
     @FormUrlEncoded
     @POST("userSearch")
-    Call<SearchUserResponse> searchUser(@Field("search") String search);
+    Call<SearchUserResponse> searchUser(@Field("search") String search,@Field("userId") String userid);
 
     @FormUrlEncoded
     @POST("hashTagSearch")

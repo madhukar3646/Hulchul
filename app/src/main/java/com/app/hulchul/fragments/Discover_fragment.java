@@ -107,6 +107,7 @@ public class Discover_fragment extends Fragment implements View.OnClickListener,
                             discoverhashtagsList.addAll(body.getData());
                             videosbasepath = body.getUrl();
                             musicbasepath = body.getSongurl();
+                            hashtagsCategoriesAdapter.setVideobasepath(videosbasepath);
                         }
                     } else {
                         Utils.callToast(getActivity(), body.getMessage());

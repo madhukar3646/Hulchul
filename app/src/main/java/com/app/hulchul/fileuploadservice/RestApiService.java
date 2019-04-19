@@ -22,7 +22,11 @@ public interface RestApiService {
     Single<ResponseBody> onFileUpload(@Part MultipartBody.Part file, @Part("userId") RequestBody userId, @Part("songId") RequestBody songId);
    */
 
-    @Multipart
+    /*@Multipart
     @POST("uploadVoDFile/one.mp4")
-    Single<ResponseBody> onFileUpload(@Part MultipartBody.Part file);
+    Single<ResponseBody> onFileUpload(@Part MultipartBody.Part file);*/
+
+    @Multipart
+    @POST("videos")
+    Single<ResponseBody> onFileUpload(@Part MultipartBody.Part file,@Part("userId") RequestBody userId);
 }

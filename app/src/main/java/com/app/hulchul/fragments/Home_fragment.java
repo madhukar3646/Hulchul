@@ -24,14 +24,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.app.hulchul.CommonEmptyActivity;
 import com.app.hulchul.R;
 import com.app.hulchul.activities.AbuseSelectionActivity;
 import com.app.hulchul.activities.CommentsActivity;
+import com.app.hulchul.activities.HashtagSearchresultsActivity;
 import com.app.hulchul.activities.LoginLandingActivity;
 import com.app.hulchul.activities.MainActivity;
-import com.app.hulchul.activities.MakingVideoActivity;
-import com.app.hulchul.activities.ServerSoundsCompletelistingActivity;
 import com.app.hulchul.activities.UserProfileActivity;
 import com.app.hulchul.adapters.SimpleAdapter;
 import com.app.hulchul.adapters.SimplePlayerViewHolder;
@@ -71,7 +69,10 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
     TextView tv_trending;
     @BindView(R.id.player_container)
     Container container;
+    @BindView(R.id.tv_nofollowtext)
+    TextView tv_nofollowtext;
     private Dialog dialog;
+    private boolean isRecommended=false;
 
     /*String urls[]={"http://testingmadesimple.org/samplevideo.mp4",
             "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
@@ -115,6 +116,9 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
         tv_recommended.setOnClickListener(this);
         tv_trending.setOnClickListener(this);
 
+        tv_recommended.setTypeface(Typeface.DEFAULT);
+        tv_trending.setTypeface(Typeface.DEFAULT_BOLD);
+
         layoutManager = new LinearLayoutManager(getActivity());
         SnapHelper snapHelper = new PagerSnapHelper();
         container.setLayoutManager(layoutManager);
@@ -127,7 +131,7 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
         if(connectionDetector.isConnectingToInternet())
         {
             modelArrayList.clear();
-            setDataToContainer("5","0");
+            setDataTrendingToContainer("10","0");
         }
         else
             Utils.callToast(getActivity(),getResources().getString(R.string.internet_toast));
@@ -144,7 +148,10 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
                 if((pos+1)>=numItems)
                 {
                     if (connectionDetector.isConnectingToInternet()) {
-                        setDataToContainer("5", ""+numItems);
+                        if(isRecommended)
+                          setRecommendedContainer("10", ""+numItems);
+                        else
+                            setDataTrendingToContainer("10",""+numItems);
                     } else
                         Utils.callToast(getActivity(), getResources().getString(R.string.internet_toast));
                 }
@@ -157,30 +164,84 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
         switch (view.getId())
         {
             case R.id.tv_recommended:
-                Utils.callToast(getContext(),"Recommend");
-                tv_recommended.setTypeface(Typeface.DEFAULT_BOLD);
-                tv_trending.setTypeface(Typeface.DEFAULT);
-                if(connectionDetector.isConnectingToInternet())
-                {
-                    modelArrayList.clear();
-                    setDataToContainer("5","0");
+                if(sessionManagement.getValueFromPreference(SessionManagement.USERID)!=null) {
+                    //Utils.callToast(getContext(), "Recommend");
+                    tv_recommended.setTypeface(Typeface.DEFAULT_BOLD);
+                    tv_trending.setTypeface(Typeface.DEFAULT);
+                    if (connectionDetector.isConnectingToInternet()) {
+                        isRecommended = true;
+                        modelArrayList.clear();
+                        setRecommendedContainer("10", "0");
+                    } else
+                        Utils.callToast(getActivity(), getResources().getString(R.string.internet_toast));
                 }
                 else
-                    Utils.callToast(getActivity(),getResources().getString(R.string.internet_toast));
+                    startActivity(new Intent(getActivity(),LoginLandingActivity.class));
 
                 break;
             case R.id.tv_trending:
-                Utils.callToast(getContext(),"trending");
                 tv_recommended.setTypeface(Typeface.DEFAULT);
                 tv_trending.setTypeface(Typeface.DEFAULT_BOLD);
+                tv_nofollowtext.setVisibility(View.GONE);
+                if (connectionDetector.isConnectingToInternet()) {
+                    isRecommended = false;
+                    modelArrayList.clear();
+                    setDataTrendingToContainer("10", "0");
+                } else
+                    Utils.callToast(getActivity(), getResources().getString(R.string.internet_toast));
+
                 break;
         }
     }
 
-    private void setDataToContainer(String limit,String offset){
+    private void setRecommendedContainer(String limit,String offset){
         String userid="";
         if(sessionManagement.getBooleanValueFromPreference(SessionManagement.ISLOGIN))
            userid=sessionManagement.getValueFromPreference(SessionManagement.USERID);
+
+        Utils.showDialog(getContext());
+        Call<VideosListingResponse> call= RetrofitApis.Factory.createTemp(getContext()).userFollowerVideos(userid,limit,offset);
+        call.enqueue(new Callback<VideosListingResponse>() {
+            @Override
+            public void onResponse(Call<VideosListingResponse> call, Response<VideosListingResponse> response) {
+                Utils.dismissDialog();
+                VideosListingResponse body=response.body();
+                if(body!=null) {
+                    if (body.getStatus() == 1) {
+                        if (body.getVideos() != null && body.getVideos().size() > 0) {
+                            modelArrayList.addAll(body.getVideos());
+                            adapter.setBasepaths(body.getUrl(), body.getSongurl());
+                            tv_nofollowtext.setVisibility(View.GONE);
+                        }
+                    } else {
+                        if(modelArrayList.size()==0) {
+                            tv_nofollowtext.setVisibility(View.VISIBLE);
+                            Utils.callToast(getActivity(), body.getMessage());
+                            Utils.dismissDialog();
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+                else {
+                    Utils.dismissDialog();
+                    Utils.callToast(getActivity(),"null response came");
+                    adapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VideosListingResponse> call, Throwable t) {
+                Utils.dismissDialog();
+                adapter.notifyDataSetChanged();
+                Log.e("videoslist onFailure",""+t.getMessage());
+            }
+        });
+    }
+
+    private void setDataTrendingToContainer(String limit,String offset){
+        String userid="";
+        if(sessionManagement.getBooleanValueFromPreference(SessionManagement.ISLOGIN))
+            userid=sessionManagement.getValueFromPreference(SessionManagement.USERID);
 
         Utils.showDialog(getContext());
         Call<VideosListingResponse> call= RetrofitApis.Factory.createTemp(getContext()).videosListingService(userid,limit,offset);
@@ -194,14 +255,15 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
                         if (body.getVideos() != null && body.getVideos().size() > 0) {
                             modelArrayList.addAll(body.getVideos());
                             adapter.setBasepaths(body.getUrl(), body.getSongurl());
-                            adapter.notifyDataSetChanged();
                         }
                     } else {
                         if(modelArrayList.size()==0)
-                          Utils.callToast(getActivity(), body.getMessage());
+                            Utils.callToast(getActivity(), body.getMessage());
                     }
+                    adapter.notifyDataSetChanged();
                 }
                 else {
+                    adapter.notifyDataSetChanged();
                     Utils.callToast(getActivity(),"null response came");
                 }
             }
@@ -209,6 +271,7 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
             @Override
             public void onFailure(Call<VideosListingResponse> call, Throwable t) {
                 Utils.dismissDialog();
+                adapter.notifyDataSetChanged();
                 Log.e("videoslist onFailure",""+t.getMessage());
             }
         });
@@ -238,9 +301,9 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
         });
     }
 
-    private void setFollowUnFollow(final SimplePlayerViewHolder holder, String userid, String videoid, final int pos){
+    private void setFollowUnFollow(final SimplePlayerViewHolder holder, String userid, String fromid, final int pos){
         Utils.showDialog(getContext());
-        Call<SignupResponse> call= RetrofitApis.Factory.createTemp(getContext()).followUnfollowUserService(userid,videoid);
+        Call<SignupResponse> call= RetrofitApis.Factory.createTemp(getContext()).followUnfollowUserService(userid,fromid);
         call.enqueue(new Callback<SignupResponse>() {
             @Override
             public void onResponse(Call<SignupResponse> call, Response<SignupResponse> response) {
@@ -286,9 +349,14 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
 
     @Override
     public void onProfileClicked(VideoModel model) {
-        Intent intent=new Intent(getActivity(),UserProfileActivity.class);
-        intent.putExtra("othersuserid",model.getUserId());
-        startActivity(intent);
+        if(sessionManagement.getBooleanValueFromPreference(SessionManagement.ISLOGIN)) {
+            Intent intent = new Intent(getActivity(), UserProfileActivity.class);
+            intent.putExtra("othersuserid", model.getUserId());
+            startActivity(intent);
+        }
+        else {
+            startActivity(new Intent(getActivity(), LoginLandingActivity.class));
+        }
     }
 
     @Override
@@ -351,6 +419,13 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
         startActivity(abuse);
     }
 
+    @Override
+    public void onHashtagclicked(String hashtag) {
+        Intent intent=new Intent(getActivity(), HashtagSearchresultsActivity.class);
+        intent.putExtra("hashtag",hashtag);
+        startActivity(intent);
+    }
+
     public void shareVideo(String videopath) {
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("*/*");
@@ -362,6 +437,7 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
 
     void downloadFile(String serverFileUrl){
         try {
+            Log.e("share path",""+videoServerUrl);
             URL url = new URL(serverFileUrl);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 
@@ -398,12 +474,30 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
         } catch (final MalformedURLException e) {
             showError("Error : MalformedURLException " + e);
             e.printStackTrace();
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    dialog.dismiss();
+                }
+            });
         } catch (final IOException e) {
             showError("Error : IOException " + e);
             e.printStackTrace();
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    dialog.dismiss();
+                }
+            });
         }
         catch (final Exception e) {
             showError("Error : Please check your internet connection " + e);
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    dialog.dismiss();
+                }
+            });
         }
     }
 

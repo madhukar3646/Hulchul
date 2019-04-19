@@ -1,23 +1,28 @@
 package com.app.hulchul.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.app.hulchul.R;
-import com.app.hulchul.activities.LoginLandingActivity;
+import com.app.hulchul.activities.HomeScreenHashtagsAdapter;
 import com.app.hulchul.model.HomescreenCommentModel;
 import com.app.hulchul.model.VideoModel;
+import com.app.hulchul.utils.ApiUrls;
 import com.app.hulchul.utils.SessionManagement;
 import com.app.hulchul.utils.Utils;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
-public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder>{
+import static com.app.hulchul.utils.ApiUrls.VIDEOSHAREBASEPATH;
+
+public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> implements HomeScreenHashtagsAdapter.OnHashtagClickListener {
 
     private ArrayList<VideoModel> modelArrayList;
     private Context context;
@@ -51,6 +56,12 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder>{
             holder.bindMusic(null);
         else
             holder.bindMusic(audiobasepath+ modelArrayList.get(position).getSongfile());
+
+        ArrayList<String> tagslist=getHashtagslist(modelArrayList.get(position).getHashTag());
+        HomeScreenHashtagsAdapter hashtagsAdapter=new HomeScreenHashtagsAdapter(context,tagslist);
+        hashtagsAdapter.setOnHashtagClickListener(this);
+        holder.rv_hashtagslist.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+        holder.rv_hashtagslist.setAdapter(hashtagsAdapter);
 
         holder.tv_profilename.setText("@User"+modelArrayList.get(position).getUserId().substring(modelArrayList.get(position).getUserId().length()-4));
 
@@ -123,7 +134,7 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder>{
             @Override
             public void onClick(View view) {
                 if(videoActionsListener!=null && modelArrayList.get(position).getFollwerstatus()!=null)
-                    videoActionsListener.onFollowClicked(holder,modelArrayList.get(position).getId(),position);
+                    videoActionsListener.onFollowClicked(holder,modelArrayList.get(position).getUserId(),position);
             }
         });
         holder.layout_comments.setOnClickListener(new View.OnClickListener() {
@@ -147,10 +158,12 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder>{
         holder.layout_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /*"http://testingmadesimple.org/training_app/uploads/userVideos/"*/
                 if(videoActionsListener!=null)
-                    videoActionsListener.onShareClicked("http://testingmadesimple.org/training_app/uploads/userVideos/"+modelArrayList.get(position).getVideo(),holder,modelArrayList.get(position).getId(),position);
+                    videoActionsListener.onShareClicked(VIDEOSHAREBASEPATH + modelArrayList.get(position).getVideo(), holder, modelArrayList.get(position).getId(), position);
             }
         });
+
         holder.layout_sendcomment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -254,6 +267,12 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder>{
         modelArrayList.get(pos).setCommentCount(commentscount);
     }
 
+    @Override
+    public void onHashtagclicked(String hashtag) {
+       if(videoActionsListener!=null)
+           videoActionsListener.onHashtagclicked(hashtag);
+    }
+
     public interface VideoActionsListener
     {
         void onLikeClicked(SimplePlayerViewHolder holder,String videoid,int pos);
@@ -262,5 +281,19 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder>{
         void onCommentsClicked(SimplePlayerViewHolder holder,int pos,String videoid,String commentscount);
         void onShareClicked(String videourl,SimplePlayerViewHolder holder,String videoid,int pos);
         void onAbuseClicked();
+        void onHashtagclicked(String hashtag);
+    }
+
+    private ArrayList<String> getHashtagslist(String tagsdata)
+    {
+        ArrayList<String> tagslist=new ArrayList<>();
+        if(tagsdata!=null && !tagsdata.equalsIgnoreCase("null"))
+        {
+            StringTokenizer stringTokenizer=new StringTokenizer(tagsdata,",# ");
+            while (stringTokenizer.hasMoreTokens())
+                tagslist.add("#"+stringTokenizer.nextToken());
+        }
+
+        return tagslist;
     }
 }

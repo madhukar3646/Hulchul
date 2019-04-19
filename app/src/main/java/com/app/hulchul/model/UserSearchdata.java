@@ -22,7 +22,11 @@ public class UserSearchdata {
     private String bioData;
     @SerializedName("photo")
     @Expose
-    private Object photo;
+    private String photo;
+
+    @SerializedName("follwerstatus")
+    @Expose
+    private String follwerstatus;
 
     public String getId() {
         return id;
@@ -64,11 +68,19 @@ public class UserSearchdata {
         this.bioData = bioData;
     }
 
-    public Object getPhoto() {
+    public String getPhoto() {
         return photo;
     }
 
-    public void setPhoto(Object photo) {
+    public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public String getFollwerstatus() {
+        return follwerstatus;
+    }
+
+    public void setFollwerstatus(String follwerstatus) {
+        this.follwerstatus = follwerstatus;
     }
 }

@@ -11,6 +11,7 @@
         android:id="@+id/layout_player"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@android:color/black"
         >
 
         <im.ene.toro.widget.Container
@@ -19,6 +20,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             />
+
+        <TextView
+            android:id="@+id/tv_nofollowtext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_margin="10dp"
+            android:text="You are not following any user. Please follow users by your interset and try again or see trending videos by click on trending"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 

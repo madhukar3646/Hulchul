@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.app.hulchul.R;
 import com.app.hulchul.model.VideoModel;
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class HashtagsGridAdapter extends RecyclerView.Adapter<HashtagsGridAdapte
     private int width,height;
     private ArrayList<VideoModel> discoverhashtagvideosList;
     private OnHashtagItemClickListener onHashtagItemClickListener;
+    private String videobasepath;
 
     public HashtagsGridAdapter(Context context, ArrayList<VideoModel> discoverhashtagvideosList)
     {
@@ -34,6 +36,11 @@ public class HashtagsGridAdapter extends RecyclerView.Adapter<HashtagsGridAdapte
         width=metrics.widthPixels;
         height=metrics.heightPixels;
         this.discoverhashtagvideosList=discoverhashtagvideosList;
+    }
+
+    public void setVideobasepath(String path)
+    {
+        this.videobasepath=path;
     }
 
     @Override
@@ -54,8 +61,11 @@ public class HashtagsGridAdapter extends RecyclerView.Adapter<HashtagsGridAdapte
     public void onBindViewHolder(final HashtagsGridAdapter.MyViewHolder holder, final int position)
     {
         final HashtagsGridAdapter.MyViewHolder myViewHolder=holder;
+        VideoModel model=discoverhashtagvideosList.get(position);
+        String gif=model.getVideo().substring(0,model.getVideo().length()-3);
+        gif=videobasepath+gif+"gif";
 
-        Picasso.with(context).load(R.mipmap.sampleimage)
+        Glide.with(context).load(gif)
                 .error(R.mipmap.placeholder)
                 .into(holder.iv_catimage);
 

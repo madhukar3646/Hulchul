@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.app.hulchul.R;
 import com.app.hulchul.model.UserSearchdata;
@@ -69,11 +70,37 @@ public class UsersSearchAdapter extends RecyclerView.Adapter<UsersSearchAdapter.
         else
             holder.tv_biodata.setText("No bio data yet");
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        if(model.getFollwerstatus()!=null && (model.getFollwerstatus().equalsIgnoreCase("0") || model.getFollwerstatus().equalsIgnoreCase("null")))
+        {
+            holder.tv_follow.setVisibility(View.VISIBLE);
+            holder.tv_following.setVisibility(View.GONE);
+        }
+        else {
+            holder.tv_follow.setVisibility(View.GONE);
+            holder.tv_following.setVisibility(View.VISIBLE);
+        }
+
+        holder.layout_content.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
               if(onUserSelectionListener!=null)
                   onUserSelectionListener.onUserSelected(userSearchdataArrayList.get(position));
+            }
+        });
+
+        holder.tv_follow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              if(onUserSelectionListener!=null)
+                  onUserSelectionListener.onFollowClicked(userSearchdataArrayList.get(position),position);
+            }
+        });
+
+        holder.tv_following.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              if(onUserSelectionListener!=null)
+                  onUserSelectionListener.onFollowingClicked(userSearchdataArrayList.get(position),position);
             }
         });
     }
@@ -100,6 +127,8 @@ public class UsersSearchAdapter extends RecyclerView.Adapter<UsersSearchAdapter.
         TextView tv_follow;
         @BindView(R.id.tv_friend)
         TextView tv_friend;
+        @BindView(R.id.layout_content)
+        LinearLayout layout_content;
 
         public MyViewHolder(View itemView)
         {
@@ -111,5 +140,7 @@ public class UsersSearchAdapter extends RecyclerView.Adapter<UsersSearchAdapter.
     public interface OnUserSelectionListener
     {
         void onUserSelected(UserSearchdata userSearchdata);
+        void onFollowClicked(UserSearchdata userSearchdata,int position);
+        void onFollowingClicked(UserSearchdata userSearchdata,int position);
     }
 }
