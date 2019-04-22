@@ -210,5 +210,9 @@ public interface RetrofitApis {
     @POST("userLikeVideos")
     Call<VideosListingResponse> userLikeVideos(@Field("userId") String userid,@Field("limit") String limit,@Field("offset") String offset);
 
+    @FormUrlEncoded
+    @POST("listFavourites")
+    Call<VideosListingResponse> listFavouritesVideos(@Field("userId") String userid,@Field("type") String type,@Field("limit") String limit,@Field("offset") String offset);
+
 }
 

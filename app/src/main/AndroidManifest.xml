@@ -31,7 +31,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".activities.SelectSoundsActivity"></activity>
+        <activity android:name=".activities.SelectSoundsActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".activities.ChangePhoneNumberActivity"
             android:screenOrientation="portrait" />
