@@ -13,8 +13,6 @@ import android.widget.TextView;
 
 import com.app.hulchul.R;
 import com.app.hulchul.activities.FavouritesActivity;
-import com.app.hulchul.activities.HashtagSearchresultsActivity;
-import com.app.hulchul.activities.UserProfileActivity;
 import com.app.hulchul.adapters.HashtagsGridAdapter;
 import com.app.hulchul.adapters.VideothumbnailsAdapter;
 import com.app.hulchul.model.VideoModel;
@@ -32,7 +30,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FavouriteVideos extends Fragment implements FavouritesActivity.OnFavouritesFragmentSelected{
+public class FavouriteVideos extends Fragment implements FavouritesActivity.OnFavouritesFragmentSelected,HashtagsGridAdapter.OnHashtagItemClickListener{
 
     @BindView(R.id.rv_favouritevideos)
     RecyclerView rv_favouritevideos;
@@ -132,5 +130,10 @@ public class FavouriteVideos extends Fragment implements FavouritesActivity.OnFa
                 Log.e("videoslist onFailure",""+t.getMessage());
             }
         });
+    }
+
+    @Override
+    public void onHashtagitemClick(ArrayList<VideoModel> discoverhashtagvideosList, int pos) {
+
     }
 }
