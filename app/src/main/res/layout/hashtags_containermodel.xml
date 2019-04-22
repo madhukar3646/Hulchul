@@ -38,6 +38,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/tv_hashtagname"
                     android:text=" 124.1m "
+                    android:visibility="gone"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     />

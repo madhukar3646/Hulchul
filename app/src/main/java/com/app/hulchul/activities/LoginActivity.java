@@ -220,7 +220,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                break;
            case R.id.tv_forgotpwd:
-               startActivity(new Intent(LoginActivity.this,ForgotPasswordActivity.class));
+               //startActivity(new Intent(LoginActivity.this,ForgotPasswordActivity.class));
                break;
            case R.id.tv_loginwith:
                et_email.setText("");

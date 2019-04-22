@@ -29,7 +29,6 @@ public class RetrofitInstance {
                 }).build();
 
         if (retrofit == null) {
-
             retrofit = new Retrofit
                     .Builder()
                     /*.baseUrl("http://testingmadesimple.org/training_app/api/service/")*/
@@ -39,10 +38,7 @@ public class RetrofitInstance {
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();
-
         }
-
         return retrofit.create(RestApiService.class);
     }
-
 }

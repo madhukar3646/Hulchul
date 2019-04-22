@@ -169,6 +169,7 @@ public class SoundsSearchresultsActivity extends AppCompatActivity implements Vi
                             discoverhashtagvideosList.addAll(body.getVideos());
                             videosbasepath=body.getUrl();
                             musicbasepath=body.getSongurl();
+                            tv_videoscount.setText(""+body.getTotalcount());
                             adapter.setVideobasepath(videosbasepath);
                             adapter.notifyDataSetChanged();
                             tv_nodata.setVisibility(View.GONE);

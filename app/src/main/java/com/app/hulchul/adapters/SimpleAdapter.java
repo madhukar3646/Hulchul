@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.app.hulchul.R;
 import com.app.hulchul.activities.HomeScreenHashtagsAdapter;
@@ -17,6 +16,8 @@ import com.app.hulchul.model.VideoModel;
 import com.app.hulchul.utils.ApiUrls;
 import com.app.hulchul.utils.SessionManagement;
 import com.app.hulchul.utils.Utils;
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -63,7 +64,13 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> 
         holder.rv_hashtagslist.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         holder.rv_hashtagslist.setAdapter(hashtagsAdapter);
 
-        holder.tv_profilename.setText("@User"+modelArrayList.get(position).getUserId().substring(modelArrayList.get(position).getUserId().length()-4));
+        Picasso.with(context).load(ApiUrls.PROFILEBASEPATH+modelArrayList.get(position).getPhoto()).placeholder(R.mipmap.placeholder)
+                .error(R.mipmap.placeholder)
+                .into(holder.profile_image);
+        if(modelArrayList.get(position).getFullName()!=null && !modelArrayList.get(position).getFullName().equalsIgnoreCase("null"))
+            holder.tv_profilename.setText(modelArrayList.get(position).getFullName());
+        else
+          holder.tv_profilename.setText("@User"+modelArrayList.get(position).getUserId().substring(modelArrayList.get(position).getUserId().length()-4));
 
         if(modelArrayList.get(position).getComments()!=null && modelArrayList.get(position).getComments().size()>0)
         {

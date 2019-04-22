@@ -139,6 +139,7 @@ public class HashtagSearchresultsActivity extends AppCompatActivity implements V
                             discoverhashtagvideosList.addAll(body.getVideos());
                             videosbasepath=body.getUrl();
                             musicbasepath=body.getSongurl();
+                            tv_videoscount.setText(""+body.getTotalcount());
                             adapter.setVideobasepath(videosbasepath);
                             adapter.notifyDataSetChanged();
                             tv_nodata.setVisibility(View.GONE);

@@ -11,6 +11,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.hulchul.R;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Timeline;
+import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 
 import java.io.IOException;
@@ -32,7 +38,6 @@ public class SimplePlayerViewHolder extends RecyclerView.ViewHolder implements T
     RelativeLayout card;
     @BindView(R.id.iv_pauseresume)
     ImageView iv_pauseresume;
-
     @BindView(R.id.latest1_commentfrom)
     TextView latest1_commentfrom;
     @BindView(R.id.latest2_commentfrom)
@@ -93,7 +98,7 @@ public class SimplePlayerViewHolder extends RecyclerView.ViewHolder implements T
                 {
                     isPlay=false;
                     helper.pause();
-                    iv_pauseresume.setVisibility(View.VISIBLE);
+                    //iv_pauseresume.setVisibility(View.VISIBLE);
                     if(musicplayer!=null) {
                         musicplayer.pause();
                         musicposition = musicplayer.getCurrentPosition();
@@ -102,7 +107,7 @@ public class SimplePlayerViewHolder extends RecyclerView.ViewHolder implements T
                 else {
                     isPlay=true;
                     helper.play();
-                    iv_pauseresume.setVisibility(View.GONE);
+                    //iv_pauseresume.setVisibility(View.GONE);
                     if(musicplayer!=null) {
                         musicplayer.seekTo(musicposition);
                         musicplayer.start();
@@ -124,9 +129,51 @@ public class SimplePlayerViewHolder extends RecyclerView.ViewHolder implements T
     public void initialize(Container container, PlaybackInfo playbackInfo) {
         if (helper == null) {
             helper = new SimpleExoPlayerViewHelper(container, this, mediaUri);
+            helper.setEventListener(new ExoPlayer.EventListener() {
+                @Override
+                public void onTimelineChanged(Timeline timeline, Object manifest) {
+
+                }
+
+                @Override
+                public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+
+                }
+
+                @Override
+                public void onLoadingChanged(boolean isLoading) {
+
+                }
+
+                @Override
+                public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                                 if(playWhenReady){
+                                     iv_pauseresume.setVisibility(View.GONE);
+                                 }else {
+                                     iv_pauseresume.setVisibility(View.VISIBLE);
+                                 }
+
+                }
+
+                @Override
+                public void onPlayerError(ExoPlaybackException error) {
+
+                }
+
+                @Override
+                public void onPositionDiscontinuity() {
+
+                }
+
+                @Override
+                public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+
+                }
+            });
         }
         helper.initialize(playbackInfo);
         helper.addPlayerEventListener(this);
+
     }
 
     @Override public void play() {

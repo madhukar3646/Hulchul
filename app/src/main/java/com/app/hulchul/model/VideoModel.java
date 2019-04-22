@@ -57,6 +57,14 @@ public class VideoModel implements Parcelable{
     @Expose
     private String commentCount;
 
+    @SerializedName("fullName")
+    @Expose
+    private String fullName;
+
+    @SerializedName("photo")
+    @Expose
+    private String photo;
+
     @SerializedName("comments")
     @Expose
     private List<HomescreenCommentModel> comments = null;
@@ -80,6 +88,8 @@ public class VideoModel implements Parcelable{
         followersCount = in.readString();
         shareCount = in.readString();
         commentCount = in.readString();
+        fullName = in.readString();
+        photo = in.readString();
         comments = in.createTypedArrayList(HomescreenCommentModel.CREATOR);
     }
 
@@ -207,6 +217,22 @@ public class VideoModel implements Parcelable{
         this.hashTag = hashTag;
     }
 
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -227,6 +253,10 @@ public class VideoModel implements Parcelable{
         parcel.writeString(followersCount);
         parcel.writeString(shareCount);
         parcel.writeString(commentCount);
+        parcel.writeString(fullName);
+        parcel.writeString(photo);
         parcel.writeTypedList(comments);
     }
+
+
 }

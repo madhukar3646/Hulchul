@@ -57,8 +57,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:src="@mipmap/notifications"
                         android:layout_gravity="center"
                         android:layout_margin="10dp"/>
@@ -77,8 +77,8 @@
                         android:gravity="right"
                         android:layout_margin="10dp">
                         <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:src="@mipmap/right_arrow_gray"
                             android:layout_gravity="center"/>
                     </RelativeLayout>
@@ -102,8 +102,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:src="@mipmap/aboutus"
                         android:layout_gravity="center"
                         android:layout_margin="10dp"/>
@@ -122,8 +122,8 @@
                         android:gravity="right"
                         android:layout_margin="10dp">
                         <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:src="@mipmap/right_arrow_gray"
                             android:layout_gravity="center"/>
                     </RelativeLayout>
@@ -147,8 +147,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:src="@mipmap/privacy_safety"
                         android:layout_gravity="center"
                         android:layout_margin="10dp"/>
@@ -167,8 +167,8 @@
                         android:gravity="right"
                         android:layout_margin="10dp">
                         <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:src="@mipmap/right_arrow_gray"
                             android:layout_gravity="center"/>
                     </RelativeLayout>
@@ -192,8 +192,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:src="@mipmap/help"
                         android:layout_gravity="center"
                         android:layout_margin="10dp"/>
@@ -212,8 +212,8 @@
                         android:gravity="right"
                         android:layout_margin="10dp">
                         <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:src="@mipmap/right_arrow_gray"
                             android:layout_gravity="center"/>
                     </RelativeLayout>
@@ -237,8 +237,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:src="@mipmap/termsuse"
                         android:layout_gravity="center"
                         android:layout_margin="10dp"/>
@@ -257,8 +257,8 @@
                         android:gravity="right"
                         android:layout_margin="10dp">
                         <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:src="@mipmap/right_arrow_gray"
                             android:layout_gravity="center"/>
                     </RelativeLayout>
@@ -282,8 +282,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:src="@mipmap/privacy"
                         android:layout_gravity="center"
                         android:layout_margin="10dp"/>
@@ -302,8 +302,8 @@
                         android:gravity="right"
                         android:layout_margin="10dp">
                         <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:src="@mipmap/right_arrow_gray"
                             android:layout_gravity="center"/>
                     </RelativeLayout>
@@ -327,8 +327,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:src="@mipmap/copyright"
                         android:layout_gravity="center"
                         android:layout_margin="10dp"/>
@@ -347,8 +347,8 @@
                         android:gravity="right"
                         android:layout_margin="10dp">
                         <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:src="@mipmap/right_arrow_gray"
                             android:layout_gravity="center"/>
                     </RelativeLayout>
@@ -372,8 +372,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:src="@mipmap/logout"
                         android:layout_gravity="center"
                         android:layout_margin="10dp"/>
@@ -393,8 +393,8 @@
                         android:layout_margin="10dp">
 
                         <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:layout_alignParentTop="true"
                             android:layout_gravity="center"
                             android:layout_marginTop="0dp"

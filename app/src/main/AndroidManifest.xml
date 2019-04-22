@@ -31,8 +31,10 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".activities.ChangePhoneNumberActivity"
-            android:screenOrientation="portrait"></activity>
+        <activity android:name=".activities.SelectSoundsActivity"></activity>
+        <activity
+            android:name=".activities.ChangePhoneNumberActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.PushnotificationsettingsActivity"
             android:screenOrientation="portrait" />
@@ -120,7 +122,9 @@
         <activity
             android:name=".activities.CreatePasswordActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activities.OtpActivity" />
+        <activity
+            android:name=".activities.OtpActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.LoginActivity"
             android:screenOrientation="portrait" />
