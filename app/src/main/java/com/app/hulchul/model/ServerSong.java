@@ -10,6 +10,9 @@ public class ServerSong {
     @SerializedName("songId")
     @Expose
     private String songId;
+    @SerializedName("categoryId")
+    @Expose
+    private String categoryId;
     @SerializedName("name")
     @Expose
     private String name;
@@ -22,6 +25,12 @@ public class ServerSong {
     @SerializedName("createAt")
     @Expose
     private String createAt;
+    @SerializedName("id")
+    @Expose
+    private String id;
+    @SerializedName("createdAt")
+    @Expose
+    private String createdAt;
 
     @SerializedName("duration")
     @Expose
@@ -81,5 +90,29 @@ public class ServerSong {
 
     public void setDuration(String duration) {
         this.duration = duration;
+    }
+
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 }

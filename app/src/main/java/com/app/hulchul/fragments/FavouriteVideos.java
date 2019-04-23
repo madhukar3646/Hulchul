@@ -1,4 +1,5 @@
 package com.app.hulchul.fragments;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 
 import com.app.hulchul.R;
 import com.app.hulchul.activities.FavouritesActivity;
+import com.app.hulchul.activities.HashtagSearchresultsActivity;
+import com.app.hulchul.activities.PlayvideosCategorywise_Activity;
 import com.app.hulchul.adapters.HashtagsGridAdapter;
 import com.app.hulchul.adapters.VideothumbnailsAdapter;
 import com.app.hulchul.model.VideoModel;
@@ -36,7 +39,6 @@ public class FavouriteVideos extends Fragment implements FavouritesActivity.OnFa
     RecyclerView rv_favouritevideos;
     @BindView(R.id.tv_nodata)
     TextView tv_nodata;
-    private VideothumbnailsAdapter adapter;
     private ConnectionDetector connectionDetector;
     private SessionManagement sessionManagement;
     private String userid,videosbasepath,musicbasepath;
@@ -59,9 +61,9 @@ public class FavouriteVideos extends Fragment implements FavouritesActivity.OnFa
         connectionDetector=new ConnectionDetector(getActivity());
         sessionManagement=new SessionManagement(getActivity());
         userid=sessionManagement.getValueFromPreference(SessionManagement.USERID);
-        adapter=new VideothumbnailsAdapter(getActivity());
+        videosadapter=new HashtagsGridAdapter(getActivity(),videoslist);
         rv_favouritevideos.setLayoutManager(new GridLayoutManager(getActivity(),3));
-        rv_favouritevideos.setAdapter(adapter);
+        rv_favouritevideos.setAdapter(videosadapter);
 
        rv_favouritevideos.setOnScrollListener(new RecyclerView.OnScrollListener() {
            @Override
@@ -135,5 +137,11 @@ public class FavouriteVideos extends Fragment implements FavouritesActivity.OnFa
     @Override
     public void onHashtagitemClick(ArrayList<VideoModel> discoverhashtagvideosList, int pos) {
 
+        Intent intent=new Intent(getActivity(), PlayvideosCategorywise_Activity.class);
+        intent.putParcelableArrayListExtra("videos",discoverhashtagvideosList);
+        intent.putExtra("position",pos);
+        intent.putExtra("videosbasepath",videosbasepath);
+        intent.putExtra("musicbasepath",musicbasepath);
+        startActivity(intent);
     }
 }

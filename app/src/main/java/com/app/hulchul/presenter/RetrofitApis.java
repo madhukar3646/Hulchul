@@ -214,5 +214,9 @@ public interface RetrofitApis {
     @POST("listFavourites")
     Call<VideosListingResponse> listFavouritesVideos(@Field("userId") String userid,@Field("type") String type,@Field("limit") String limit,@Field("offset") String offset);
 
+    @FormUrlEncoded
+    @POST("songCategoryList")
+    Call<VideosListingResponse> songCategoryList(@Field("userId") String userid,@Field("limit") String limit,@Field("offset") String offset);
+
 }
 

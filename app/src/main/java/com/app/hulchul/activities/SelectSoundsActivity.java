@@ -13,7 +13,6 @@ import android.widget.RelativeLayout;
 import com.app.hulchul.R;
 import com.app.hulchul.adapters.PlaylistCategoriesAdapter;
 import com.app.hulchul.adapters.SongslistContainerAdapter;
-import com.app.hulchul.adapters.TrendingHashtagsBannersAdapter;
 import com.app.hulchul.adapters.TrendingSoundsBannersAdapter;
 import com.app.hulchul.utils.ConnectionDetector;
 import com.app.hulchul.utils.SessionManagement;
@@ -77,7 +76,47 @@ public class SelectSoundsActivity extends AppCompatActivity implements View.OnCl
         {
             case R.id.iv_mysounds:
                 startActivity(new Intent(SelectSoundsActivity.this,MySoundsActivity.class));
+                //startActivity(new Intent(SelectSoundsActivity.this,ServerSoundsCompletelistingActivity.class));
                 break;
         }
     }
+
+    /*private void setDataToContainer(String limit,String offset){
+        String userid="";
+        if(sessionManagement.getBooleanValueFromPreference(SessionManagement.ISLOGIN))
+            userid=sessionManagement.getValueFromPreference(SessionManagement.USERID);
+
+        Utils.showDialog(SelectSoundsActivity.this);
+        Call<VideosListingResponse> call= RetrofitApis.Factory.createTemp(SelectSoundsActivity.this).videosListingService(userid,limit,offset);
+        call.enqueue(new Callback<VideosListingResponse>() {
+            @Override
+            public void onResponse(Call<VideosListingResponse> call, Response<VideosListingResponse> response) {
+                Utils.dismissDialog();
+                VideosListingResponse body=response.body();
+                if(body!=null) {
+                    if (body.getStatus() == 1) {
+                        if (body.getVideos() != null && body.getVideos().size() > 0) {
+                            modelArrayList.addAll(body.getVideos());
+                            adapter.setBasepaths(body.getUrl(), body.getSongurl());
+                        }
+                    } else {
+                        if(modelArrayList.size()==0)
+                            Utils.callToast(getActivity(), body.getMessage());
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+                else {
+                    adapter.notifyDataSetChanged();
+                    Utils.callToast(getActivity(),"null response came");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VideosListingResponse> call, Throwable t) {
+                Utils.dismissDialog();
+                adapter.notifyDataSetChanged();
+                Log.e("videoslist onFailure",""+t.getMessage());
+            }
+        });
+    }*/
 }
