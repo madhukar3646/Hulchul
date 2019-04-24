@@ -5,27 +5,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/parent_layout"
+    <RelativeLayout
+        android:id="@+id/layout_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="2dp"
-        app:cardUseCompatPadding="true"
-        android:layout_marginTop="10dp"
-        >
+        android:visibility="visible">
 
-        <LinearLayout
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="5dp">
-
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            >
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
 
                 <TextView
-                    android:id="@+id/tv_songtitle"
+                    android:id="@+id/tv_songplaylist"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Sports"
@@ -57,13 +56,119 @@
                         android:src="@mipmap/right_arrow_black"/>
                 </RelativeLayout>
             </RelativeLayout>
+        </android.support.v7.widget.CardView>
+    </RelativeLayout>
 
-            <android.support.v7.widget.RecyclerView
+    <android.support.v7.widget.CardView
+        android:id="@+id/layout_child"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="5dp">
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/rv_songslist"
-                android:layout_margin="5dp"
-                />
+                android:visibility="visible"
+                >
+                <RelativeLayout
+                    android:id="@+id/layout_checked"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    >
+
+                    <ImageView
+                        android:id="@+id/iv_favourite"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@mipmap/fav_n_g"
+                        android:padding="5dp"
+                        android:layout_margin="5dp"
+                        />
+
+                    <ImageView
+                        android:id="@+id/iv_checked"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_toRightOf="@+id/iv_favourite"
+                        android:src="@mipmap/check_n"
+                        android:layout_margin="5dp"
+                        android:padding="5dp"
+                        />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/layout_songdetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/layout_checked"
+                    android:layout_margin="10dp">
+
+                    <RelativeLayout
+                        android:id="@+id/layout_thumbnail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        >
+                        <ImageView
+                            android:id="@+id/iv_songthumbnail"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:background="@color/colorPrimary"
+                            android:layout_centerVertical="true"/>
+
+                        <ImageView
+                            android:id="@+id/iv_playpauseimage"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_centerInParent="true"
+                            android:background="@mipmap/play_video"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/layout_thumbnail">
+
+                        <TextView
+                            android:id="@+id/tv_songtitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="01-Jagananda karaka"
+                            android:textColor="@android:color/black"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:layout_marginLeft="10dp"
+                            android:singleLine="true"/>
+
+                        <TextView
+                            android:id="@+id/tv_artistname"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_songtitle"
+                            android:text="01-Jagananda karaka"
+                            android:textColor="@android:color/darker_gray"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="5dp"
+                            android:singleLine="true"/>
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/layout_songdetails"
+                    android:background="#1A000000"></View>
+            </RelativeLayout>
         </LinearLayout>
 
     </android.support.v7.widget.CardView>

@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 public class ServerSong {
 
     private boolean isPlaying = false;
-
+    private boolean isHeader=false;
     @SerializedName("songId")
     @Expose
     private String songId;
@@ -114,5 +114,13 @@ public class ServerSong {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public boolean isHeader() {
+        return isHeader;
+    }
+
+    public void setHeader(boolean header) {
+        isHeader = header;
     }
 }

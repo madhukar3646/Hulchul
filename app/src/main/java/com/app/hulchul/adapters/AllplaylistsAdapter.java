@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.app.hulchul.R;
 import com.app.hulchul.model.PlaylistModel;
-import com.app.hulchul.model.SongsModel;
 
 import java.util.ArrayList;
 

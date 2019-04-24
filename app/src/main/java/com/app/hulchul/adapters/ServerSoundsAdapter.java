@@ -15,8 +15,6 @@ import android.widget.TextView;
 
 import com.app.hulchul.R;
 import com.app.hulchul.model.ServerSong;
-import com.app.hulchul.model.SongsModel;
-
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -79,8 +77,8 @@ public class ServerSoundsAdapter extends RecyclerView.Adapter<ServerSoundsAdapte
     private void setUpData(ViewHolder holder, int position) {
 
         ServerSong recording = songsModelArrayList.get(position);
-        holder.tv_songtitle.setText(recording.getFile());
-        holder.tv_artistname.setText("");
+        holder.tv_songtitle.setText(recording.getName());
+        holder.tv_artistname.setText(recording.getFile());
         holder.iv_songthumbnail.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
 
         if( recording.isPlaying()){

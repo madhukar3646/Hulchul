@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import com.app.hulchul.R;
 import com.app.hulchul.adapters.PlaylistCategoriesAdapter;
-import com.app.hulchul.adapters.SongListitemAdapter;
 import com.app.hulchul.adapters.SongslistContainerAdapter;
 import com.app.hulchul.adapters.TrendingSoundsBannersAdapter;
 import com.app.hulchul.model.ServerSong;
@@ -37,6 +36,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -44,8 +45,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SelectSoundsActivity extends AppCompatActivity implements View.OnClickListener,TrendingSoundsBannersAdapter.OnBannerClickListener,
-        PlaylistCategoriesAdapter.OnPlaylistItemClickListener,SongslistContainerAdapter.OnviewAllsongsClickListener,
-        SongListitemAdapter.OnSoundSelectionListener{
+        PlaylistCategoriesAdapter.OnPlaylistItemClickListener,SongslistContainerAdapter.OnviewAllsongsClickListener{
 
     private ConnectionDetector connectionDetector;
     private SessionManagement sessionManagement;
@@ -71,7 +71,7 @@ public class SelectSoundsActivity extends AppCompatActivity implements View.OnCl
     private SongslistContainerAdapter songslistContainerAdapter;
 
     private ArrayList<Soundbanners> soundbannerslist=new ArrayList<>();
-    private ArrayList<Songlistmodel> songsContainerlist=new ArrayList<>();
+    private ArrayList<ServerSong> songsArraylist=new ArrayList<>();
     private ArrayList<SoundsCategorylist> soundsCategorylist=new ArrayList<>();
     private String musicbasepath;
     private Dialog dialog;
@@ -91,6 +91,7 @@ public class SelectSoundsActivity extends AppCompatActivity implements View.OnCl
         iv_mysounds.setOnClickListener(this);
         layout_search.setOnClickListener(this);
         layout_viewall.setOnClickListener(this);
+        iv_close.setOnClickListener(this);
 
         rv_soundgroups.setLayoutManager(new LinearLayoutManager(SelectSoundsActivity.this,LinearLayoutManager.HORIZONTAL, false));
         banneradapter=new TrendingSoundsBannersAdapter(SelectSoundsActivity.this,soundbannerslist);
@@ -104,9 +105,8 @@ public class SelectSoundsActivity extends AppCompatActivity implements View.OnCl
         rv_playlistcategory.setAdapter(playlistCategoriesAdapter);
 
         rv_songslistcontainer.setLayoutManager(new LinearLayoutManager(SelectSoundsActivity.this,LinearLayoutManager.VERTICAL, false));
-        songslistContainerAdapter=new SongslistContainerAdapter(SelectSoundsActivity.this,songsContainerlist);
+        songslistContainerAdapter=new SongslistContainerAdapter(SelectSoundsActivity.this,songsArraylist);
         songslistContainerAdapter.setOnviewAllsongsClickListener(this);
-        songslistContainerAdapter.setSoundSelectionListener(this);
         rv_songslistcontainer.setAdapter(songslistContainerAdapter);
 
         if(connectionDetector.isConnectingToInternet())
@@ -129,6 +129,9 @@ public class SelectSoundsActivity extends AppCompatActivity implements View.OnCl
                 break;
             case R.id.layout_viewall:
                 startActivity(new Intent(SelectSoundsActivity.this,PlaylistActivity.class));
+                break;
+            case R.id.iv_close:
+                onBackPressed();
                 break;
         }
     }
@@ -155,7 +158,7 @@ public class SelectSoundsActivity extends AppCompatActivity implements View.OnCl
                       if(body.getData().getCategoryList()!=null)
                           soundsCategorylist.addAll(body.getData().getCategoryList());
                       if(body.getData().getSonglist()!=null)
-                          songsContainerlist.addAll(body.getData().getSonglist());
+                          songsArraylist.addAll(getCompleteSongslist(body.getData().getSonglist()));
                     } else {
                         Utils.callToast(SelectSoundsActivity.this,""+body.getMessage());
                     }
@@ -182,6 +185,21 @@ public class SelectSoundsActivity extends AppCompatActivity implements View.OnCl
         });
     }
 
+    private ArrayList<ServerSong> getCompleteSongslist(List<Songlistmodel> list)
+    {
+        ArrayList<ServerSong> songslist=new ArrayList<>();
+        for(int i=0;i<list.size();i++)
+        {
+            ServerSong song=new ServerSong();
+            song.setHeader(true);
+            song.setSongId(list.get(i).getId());
+            song.setName(list.get(i).getName());
+            songslist.add(song);
+            songslist.addAll(list.get(i).getSongs());
+        }
+        return songslist;
+    }
+
     @Override
     public void onBannerClick(Soundbanners model) {
         Intent intent=new Intent(SelectSoundsActivity.this, SoundsSearchresultsActivity.class);
@@ -199,9 +217,9 @@ public class SelectSoundsActivity extends AppCompatActivity implements View.OnCl
     }
 
     @Override
-    public void onViewAllSongs(Songlistmodel model) {
+    public void onViewAllSongs(ServerSong model) {
         Intent intent=new Intent(SelectSoundsActivity.this,ServerSoundsCompletelistingActivity.class);
-        intent.putExtra("songcategoryid",model.getId());
+        intent.putExtra("songcategoryid",model.getSongId());
         intent.putExtra("songcategoryname",model.getName());
         startActivity(intent);
     }
@@ -214,6 +232,11 @@ public class SelectSoundsActivity extends AppCompatActivity implements View.OnCl
                 downloadFile(songsModel);
             }
         }).start();
+    }
+
+    @Override
+    public void onFavouriteClick(ServerSong song) {
+
     }
 
     void showProgress(){
@@ -316,5 +339,23 @@ public class SelectSoundsActivity extends AppCompatActivity implements View.OnCl
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        songslistContainerAdapter.stopPlayerFromActivity();
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy() {
+        songslistContainerAdapter.stopPlayerFromActivity();
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        songslistContainerAdapter.stopPlayerFromActivity();
+        super.onStop();
     }
 }
