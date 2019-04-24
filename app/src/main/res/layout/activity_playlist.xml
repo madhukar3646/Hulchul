@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    tools:context=".activities.PlaylistActivity">
 
     <RelativeLayout
         android:id="@+id/title_layout"
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/back_btn"
             android:layout_marginLeft="10dp"
-            android:text="My Sounds"
+            android:text="All Playlists"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:layout_centerInParent="true"
@@ -39,12 +39,12 @@
         android:layout_below="@+id/title_layout">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_mysounds"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp">
+            android:id="@+id/rv_playlists">
 
         </android.support.v7.widget.RecyclerView>
+
         <TextView
             android:id="@+id/tv_nodata"
             android:layout_width="wrap_content"
@@ -55,5 +55,4 @@
             android:visibility="gone"/>
 
     </RelativeLayout>
-
 </RelativeLayout>

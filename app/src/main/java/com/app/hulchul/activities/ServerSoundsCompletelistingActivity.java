@@ -1,10 +1,9 @@
 package com.app.hulchul.activities;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,17 +22,13 @@ import com.app.hulchul.presenter.RetrofitApis;
 import com.app.hulchul.utils.ConnectionDetector;
 import com.app.hulchul.utils.SessionManagement;
 import com.app.hulchul.utils.Utils;
-
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -48,12 +43,17 @@ public class ServerSoundsCompletelistingActivity extends AppCompatActivity imple
     ImageView back_btn;
     @BindView(R.id.rv_mysounds)
     RecyclerView rv_mysounds;
+    @BindView(R.id.tv_nodata)
+    TextView tv_nodata;
+    @BindView(R.id.tv_title)
+    TextView tv_title;
     private ArrayList<ServerSong> songsModelArrayList=new ArrayList<>();
     private ServerSoundsAdapter serverSoundsAdapter;
     private String songsBasepath;
     private ConnectionDetector connectionDetector;
     private SessionManagement sessionManagement;
     private Dialog dialog;
+    private String songcategoryid,songcategoryname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +65,11 @@ public class ServerSoundsCompletelistingActivity extends AppCompatActivity imple
 
     private void init()
     {
+        tv_nodata.setVisibility(View.GONE);
+        songcategoryid=getIntent().getStringExtra("songcategoryid");
+        songcategoryname=getIntent().getStringExtra("songcategoryname");
+        tv_title.setText(songcategoryname);
+
         connectionDetector=new ConnectionDetector(ServerSoundsCompletelistingActivity.this);
         sessionManagement=new SessionManagement(ServerSoundsCompletelistingActivity.this);
 
@@ -81,10 +86,29 @@ public class ServerSoundsCompletelistingActivity extends AppCompatActivity imple
 
         if(connectionDetector.isConnectingToInternet())
         {
-            setDataToContainer();
+            setDataToContainer("20","0");
         }
         else
             Utils.callToast(ServerSoundsCompletelistingActivity.this,getResources().getString(R.string.internet_toast));
+
+        rv_mysounds.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager layoutManager = ((LinearLayoutManager)recyclerView.getLayoutManager());
+                int pos = layoutManager.findLastCompletelyVisibleItemPosition();
+                int numItems = recyclerView.getAdapter().getItemCount();
+                Log.e("pos"+pos,"numitems "+numItems);
+                if((pos+1)>=numItems)
+                {
+                    if (connectionDetector.isConnectingToInternet()) {
+                        setDataToContainer("20", ""+numItems);
+                    } else
+                        Utils.callToast(ServerSoundsCompletelistingActivity.this, getResources().getString(R.string.internet_toast));
+                }
+            }
+        });
     }
 
     @Override
@@ -98,9 +122,9 @@ public class ServerSoundsCompletelistingActivity extends AppCompatActivity imple
         }).start();
     }
 
-    private void setDataToContainer(){
+    private void setDataToContainer(String limit,String offset){
         Utils.showDialog(ServerSoundsCompletelistingActivity.this);
-        Call<ServerSoundsResponse> call= RetrofitApis.Factory.createTemp(ServerSoundsCompletelistingActivity.this).serverSoundsListingService();
+        Call<ServerSoundsResponse> call= RetrofitApis.Factory.createTemp(ServerSoundsCompletelistingActivity.this).songsByCategoryId(limit,offset,songcategoryid);
         call.enqueue(new Callback<ServerSoundsResponse>() {
             @Override
             public void onResponse(Call<ServerSoundsResponse> call, Response<ServerSoundsResponse> response) {
@@ -109,15 +133,19 @@ public class ServerSoundsCompletelistingActivity extends AppCompatActivity imple
                 if(body.getStatus()==1){
                     songsBasepath=body.getUrl();
                     if(body.getSongs()!=null && body.getSongs().size()>0) {
-                        songsModelArrayList.clear();
                         songsModelArrayList.addAll(body.getSongs());
                     }
                     serverSoundsAdapter.setSongsBasepath(songsBasepath);
                     serverSoundsAdapter.notifyDataSetChanged();
                 }
                 else {
-                    Utils.callToast(ServerSoundsCompletelistingActivity.this,body.getMessage());
+                    //Utils.callToast(ServerSoundsCompletelistingActivity.this,body.getMessage());
                 }
+                serverSoundsAdapter.notifyDataSetChanged();
+                if(songsModelArrayList.size()==0)
+                    tv_nodata.setVisibility(View.VISIBLE);
+                else
+                    tv_nodata.setVisibility(View.GONE);
             }
 
             @Override

@@ -9,8 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.app.hulchul.R;
+import com.app.hulchul.model.Soundbanners;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 /**
  * Created by admin on 4/20/2017.
  */
@@ -19,13 +21,21 @@ public class TrendingSoundsBannersAdapter extends RecyclerView.Adapter<TrendingS
 {
     private Context context;
     private int width,height;
+    private ArrayList<Soundbanners> soundbannerslist;
+    private OnBannerClickListener onBannerClickListener;
 
-    public TrendingSoundsBannersAdapter(Context context)
+    public TrendingSoundsBannersAdapter(Context context,ArrayList<Soundbanners> soundbannerslist)
     {
         this.context=context;
+        this.soundbannerslist=soundbannerslist;
         DisplayMetrics metrics=context.getResources().getDisplayMetrics();
         width=metrics.widthPixels;
         height=metrics.heightPixels;
+    }
+
+    public void setOnBannerClickListener(OnBannerClickListener onBannerClickListener)
+    {
+        this.onBannerClickListener=onBannerClickListener;
     }
 
     @Override
@@ -45,12 +55,20 @@ public class TrendingSoundsBannersAdapter extends RecyclerView.Adapter<TrendingS
         Picasso.with(context).load(R.mipmap.sampleimage)
                 .error(R.mipmap.placeholder)
                 .into(holder.iv_hashtagthumbnail);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(onBannerClickListener!=null)
+                    onBannerClickListener.onBannerClick(soundbannerslist.get(position));
+            }
+        });
     }
 
     @Override
     public int getItemCount()
     {
-        return 10;
+        return soundbannerslist.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder
@@ -65,4 +83,8 @@ public class TrendingSoundsBannersAdapter extends RecyclerView.Adapter<TrendingS
         }
     }
 
+    public interface OnBannerClickListener
+    {
+        void onBannerClick(Soundbanners model);
+    }
 }

@@ -8,7 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.app.hulchul.R;
-
+import com.app.hulchul.model.SoundsCategorylist;
+import java.util.ArrayList;
 /**
  * Created by admin on 4/20/2017.
  */
@@ -17,13 +18,21 @@ public class PlaylistCategoriesAdapter extends RecyclerView.Adapter<PlaylistCate
 {
     private Context context;
     private int width,height;
+    private ArrayList<SoundsCategorylist> soundsCategorylist;
+    private OnPlaylistItemClickListener onPlaylistItemClickListener;
 
-    public PlaylistCategoriesAdapter(Context context)
+    public PlaylistCategoriesAdapter(Context context,ArrayList<SoundsCategorylist> soundsCategorylist)
     {
+        this.soundsCategorylist=soundsCategorylist;
         this.context=context;
         DisplayMetrics metrics=context.getResources().getDisplayMetrics();
         width=metrics.widthPixels;
         height=metrics.heightPixels;
+    }
+
+    public void setOnPlaylistItemClickListener(OnPlaylistItemClickListener onPlaylistItemClickListener)
+    {
+        this.onPlaylistItemClickListener=onPlaylistItemClickListener;
     }
 
     @Override
@@ -39,12 +48,22 @@ public class PlaylistCategoriesAdapter extends RecyclerView.Adapter<PlaylistCate
     public void onBindViewHolder(final PlaylistCategoriesAdapter.MyViewHolder holder, final int position)
     {
         final PlaylistCategoriesAdapter.MyViewHolder myViewHolder=holder;
+        SoundsCategorylist model=soundsCategorylist.get(position);
+        holder.tv_category.setText(model.getName());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              if(onPlaylistItemClickListener!=null)
+                  onPlaylistItemClickListener.onPlayListitemclick(soundsCategorylist.get(position));
+            }
+        });
     }
 
     @Override
     public int getItemCount()
     {
-        return 9;
+        return soundsCategorylist.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder
@@ -56,5 +75,10 @@ public class PlaylistCategoriesAdapter extends RecyclerView.Adapter<PlaylistCate
             itemView.getLayoutParams().width=width/3;
             tv_category=(TextView) itemView.findViewById(R.id.tv_category);
         }
+    }
+
+    public interface OnPlaylistItemClickListener
+    {
+        void onPlayListitemclick(SoundsCategorylist playlistitem);
     }
 }

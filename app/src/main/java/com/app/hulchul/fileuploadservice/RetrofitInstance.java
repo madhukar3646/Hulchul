@@ -33,7 +33,7 @@ public class RetrofitInstance {
                     .Builder()
                     /*.baseUrl("http://testingmadesimple.org/training_app/api/service/")*/
                     /*.baseUrl("http://159.65.157.210:5080/LiveApp/rest/broadcast/")*/
-                    .baseUrl("http://68.183.81.213:4200/api/v1/")
+                    .baseUrl("http://159.65.157.210:4200/api/v1/")
                     .client(client)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

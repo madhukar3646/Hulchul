@@ -15,6 +15,10 @@ public class SoundsModuleResponse {
     @Expose
     private SoundsContainer data;
 
+    @SerializedName("songurl")
+    @Expose
+    private String songurl;
+
     public String getMessage() {
         return message;
     }
@@ -37,5 +41,13 @@ public class SoundsModuleResponse {
 
     public void setData(SoundsContainer data) {
         this.data = data;
+    }
+
+    public String getSongurl() {
+        return songurl;
+    }
+
+    public void setSongurl(String songurl) {
+        this.songurl = songurl;
     }
 }

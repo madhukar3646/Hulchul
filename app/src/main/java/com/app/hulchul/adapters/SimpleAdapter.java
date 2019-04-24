@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.app.hulchul.R;
-import com.app.hulchul.activities.HomeScreenHashtagsAdapter;
 import com.app.hulchul.model.HomescreenCommentModel;
 import com.app.hulchul.model.VideoModel;
 import com.app.hulchul.utils.ApiUrls;

@@ -2,11 +2,13 @@ package com.app.hulchul.presenter;
 
 import android.content.Context;
 
+import com.app.hulchul.model.Allplaylistresponse;
 import com.app.hulchul.model.Discoverresponse;
 import com.app.hulchul.model.HashtagSearchResponse;
 import com.app.hulchul.model.NotificationsResponse;
 import com.app.hulchul.model.ProfilepicUpdateResponse;
 import com.app.hulchul.model.SearchUserResponse;
+import com.app.hulchul.model.SoundsModuleResponse;
 import com.app.hulchul.model.Soundsearchresponse;
 import com.app.hulchul.model.ViewProfileResponse;
 import com.app.hulchul.servicerequestmodels.ChangepasswordRequest;
@@ -65,7 +67,6 @@ public interface RetrofitApis {
                 Gson gson = new GsonBuilder()
                         .setLenient()
                         .create();
-
 
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl(ApiUrls.BASEURL)
@@ -216,7 +217,14 @@ public interface RetrofitApis {
 
     @FormUrlEncoded
     @POST("songCategoryList")
-    Call<VideosListingResponse> songCategoryList(@Field("userId") String userid,@Field("limit") String limit,@Field("offset") String offset);
+    Call<SoundsModuleResponse> songCategoryList(@Field("userId") String userid, @Field("limit") String limit, @Field("offset") String offset);
 
+    @FormUrlEncoded
+    @POST("CategoryList")
+    Call<Allplaylistresponse> songsAllplaylist(@Field("limit") String limit, @Field("offset") String offset);
+
+    @FormUrlEncoded
+    @POST("songsByCategoryId")
+    Call<ServerSoundsResponse> songsByCategoryId(@Field("limit") String limit, @Field("offset") String offset,@Field("categoryId") String categoryId);
 }
 

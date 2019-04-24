@@ -1,4 +1,4 @@
-package com.app.hulchul.activities;
+package com.app.hulchul.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.app.hulchul.R;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 /**

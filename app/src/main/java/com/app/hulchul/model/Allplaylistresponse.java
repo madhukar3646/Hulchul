@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class ServerSoundsResponse {
+public class Allplaylistresponse {
 
     @SerializedName("message")
     @Expose
@@ -15,13 +15,10 @@ public class ServerSoundsResponse {
     private Integer status;
     @SerializedName("data")
     @Expose
-    private List<ServerSong> songs = null;
-    @SerializedName("songurl")
-    @Expose
-    private String url;
+    private List<PlaylistModel> data = null;
     @SerializedName("totalCount")
     @Expose
-    private String totalCount;
+    private Integer totalCount;
 
     public String getMessage() {
         return message;
@@ -39,27 +36,19 @@ public class ServerSoundsResponse {
         this.status = status;
     }
 
-    public List<ServerSong> getSongs() {
-        return songs;
+    public List<PlaylistModel> getData() {
+        return data;
     }
 
-    public void setSongs(List<ServerSong> songs) {
-        this.songs = songs;
+    public void setData(List<PlaylistModel> data) {
+        this.data = data;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getTotalCount() {
+    public Integer getTotalCount() {
         return totalCount;
     }
 
-    public void setTotalCount(String totalCount) {
+    public void setTotalCount(Integer totalCount) {
         this.totalCount = totalCount;
     }
 }
