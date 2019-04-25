@@ -188,7 +188,7 @@ public class SongslistContainerAdapter extends RecyclerView.Adapter<SongslistCon
                     int position = getAdapterPosition();
                     ServerSong songsModel = songsArraylist.get(position);
                   if(onviewAllsongsClickListener!=null)
-                      onviewAllsongsClickListener.onFavouriteClick(songsModel);
+                      onviewAllsongsClickListener.onFavouriteClick(songsModel,position);
                 }
             });
         }
@@ -261,10 +261,15 @@ public class SongslistContainerAdapter extends RecyclerView.Adapter<SongslistCon
             myholder.stopPlaying();
     }
 
+    public void updateFavourite(int pos)
+    {
+
+    }
+
     public interface OnviewAllsongsClickListener
     {
         void onViewAllSongs(ServerSong model);
         void onSoundSelected(ServerSong songsModel);
-        void onFavouriteClick(ServerSong song);
+        void onFavouriteClick(ServerSong song,int pos);
     }
 }

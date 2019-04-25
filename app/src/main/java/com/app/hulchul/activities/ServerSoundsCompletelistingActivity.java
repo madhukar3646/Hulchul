@@ -18,6 +18,7 @@ import com.app.hulchul.R;
 import com.app.hulchul.adapters.ServerSoundsAdapter;
 import com.app.hulchul.model.ServerSong;
 import com.app.hulchul.model.ServerSoundsResponse;
+import com.app.hulchul.model.SignupResponse;
 import com.app.hulchul.presenter.RetrofitApis;
 import com.app.hulchul.utils.ConnectionDetector;
 import com.app.hulchul.utils.SessionManagement;
@@ -274,5 +275,42 @@ public class ServerSoundsCompletelistingActivity extends AppCompatActivity imple
 
         File file = new File(dir, "hulchulsounds" + ".mp3");
         return file.getAbsolutePath();
+    }
+
+    @Override
+    public void onFavouriteClick(ServerSong song, int pos) {
+        if(connectionDetector.isConnectingToInternet())
+        {
+            if(sessionManagement.getValueFromPreference(SessionManagement.USERID)!=null)
+                addTofavourites(sessionManagement.getValueFromPreference(SessionManagement.USERID),"song",song.getSongId(),pos);
+            else
+                startActivity(new Intent(ServerSoundsCompletelistingActivity.this,LoginLandingActivity.class));
+        }
+        else
+            Utils.callToast(ServerSoundsCompletelistingActivity.this,getResources().getString(R.string.internet_toast));
+    }
+
+    private void addTofavourites(String userid, String type, String favouriteid,int pos){
+        Utils.showDialog(ServerSoundsCompletelistingActivity.this);
+        Call<SignupResponse> call= RetrofitApis.Factory.createTemp(ServerSoundsCompletelistingActivity.this).addFavourite(userid,type,favouriteid);
+        call.enqueue(new Callback<SignupResponse>() {
+            @Override
+            public void onResponse(Call<SignupResponse> call, Response<SignupResponse> response) {
+                Utils.dismissDialog();
+                SignupResponse body=response.body();
+                if(body.getStatus()==1){
+                    serverSoundsAdapter.updateFavourite(pos);
+                }
+                else {
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SignupResponse> call, Throwable t) {
+                Utils.dismissDialog();
+                Log.e("addfav onFailure",""+t.getMessage());
+            }
+        });
     }
 }

@@ -30,6 +30,7 @@ import com.app.hulchul.activities.CommentsActivity;
 import com.app.hulchul.activities.HashtagSearchresultsActivity;
 import com.app.hulchul.activities.LoginLandingActivity;
 import com.app.hulchul.activities.MainActivity;
+import com.app.hulchul.activities.SoundsSearchresultsActivity;
 import com.app.hulchul.activities.UserProfileActivity;
 import com.app.hulchul.adapters.SimpleAdapter;
 import com.app.hulchul.adapters.SimplePlayerViewHolder;
@@ -338,7 +339,13 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
 
     @Override
     public void onFavouriteClicked(SimplePlayerViewHolder holder, String videoid, int pos) {
-
+        if(sessionManagement.getBooleanValueFromPreference(SessionManagement.ISLOGIN))
+        {
+            addTofavourites(holder,pos,sessionManagement.getValueFromPreference(SessionManagement.USERID),"video",videoid);
+        }
+        else {
+            startActivity(new Intent(getActivity(), LoginLandingActivity.class));
+        }
     }
 
     @Override
@@ -600,6 +607,30 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
             public void onFailure(Call<SignupResponse> call, Throwable t) {
                 Utils.dismissDialog();
                 Log.e("videoshare onFailure",""+t.getMessage());
+            }
+        });
+    }
+
+    private void addTofavourites(final SimplePlayerViewHolder holder,final int pos,String userid, String type, String favouriteid){
+        Utils.showDialog(getActivity());
+        Call<SignupResponse> call= RetrofitApis.Factory.createTemp(getActivity()).addFavourite(userid,type,favouriteid);
+        call.enqueue(new Callback<SignupResponse>() {
+            @Override
+            public void onResponse(Call<SignupResponse> call, Response<SignupResponse> response) {
+                Utils.dismissDialog();
+                SignupResponse body=response.body();
+                if(body.getStatus()==1){
+                    adapter.updateFavourite(holder,pos);
+                }
+                else {
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SignupResponse> call, Throwable t) {
+                Utils.dismissDialog();
+                Log.e("addfav onFailure",""+t.getMessage());
             }
         });
     }

@@ -12,11 +12,22 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp">
         <ImageView
+            android:id="@+id/iv_favourite"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@mipmap/fav_n_g"
+            android:padding="5dp"
+            android:layout_margin="5dp"
+            />
+
+        <ImageView
             android:id="@+id/iv_checked"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_toRightOf="@+id/iv_favourite"
             android:src="@mipmap/check_n"
             android:layout_margin="5dp"
+            android:padding="5dp"
             />
     </RelativeLayout>
     <RelativeLayout

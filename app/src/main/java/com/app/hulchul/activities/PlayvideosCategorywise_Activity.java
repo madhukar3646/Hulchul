@@ -167,7 +167,13 @@ public class PlayvideosCategorywise_Activity extends AppCompatActivity implement
 
     @Override
     public void onFavouriteClicked(SimplePlayerViewHolder holder, String videoid, int pos) {
-
+        if(sessionManagement.getBooleanValueFromPreference(SessionManagement.ISLOGIN))
+        {
+            addTofavourites(holder,pos,sessionManagement.getValueFromPreference(SessionManagement.USERID),"video",videoid);
+        }
+        else {
+            startActivity(new Intent(PlayvideosCategorywise_Activity.this, LoginLandingActivity.class));
+        }
     }
 
     @Override
@@ -405,6 +411,30 @@ public class PlayvideosCategorywise_Activity extends AppCompatActivity implement
             public void onFailure(Call<SignupResponse> call, Throwable t) {
                 Utils.dismissDialog();
                 Log.e("videoshare onFailure",""+t.getMessage());
+            }
+        });
+    }
+
+    private void addTofavourites(final SimplePlayerViewHolder holder,final int pos,String userid, String type, String favouriteid){
+        Utils.showDialog(PlayvideosCategorywise_Activity.this);
+        Call<SignupResponse> call= RetrofitApis.Factory.createTemp(PlayvideosCategorywise_Activity.this).addFavourite(userid,type,favouriteid);
+        call.enqueue(new Callback<SignupResponse>() {
+            @Override
+            public void onResponse(Call<SignupResponse> call, Response<SignupResponse> response) {
+                Utils.dismissDialog();
+                SignupResponse body=response.body();
+                if(body.getStatus()==1){
+                    adapter.updateFavourite(holder,pos);
+                }
+                else {
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SignupResponse> call, Throwable t) {
+                Utils.dismissDialog();
+                Log.e("addfav onFailure",""+t.getMessage());
             }
         });
     }

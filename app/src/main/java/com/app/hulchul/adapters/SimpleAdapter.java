@@ -103,6 +103,14 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> 
                 holder.iv_like.setImageResource(R.mipmap.heart);
         }
 
+        if(modelArrayList.get(position).getFavouritestatus()!=null || !modelArrayList.get(position).getFavouritestatus().equalsIgnoreCase("null"))
+        {
+            if (modelArrayList.get(position).getFavouritestatus().equalsIgnoreCase("0"))
+                holder.iv_favourite.setImageResource(R.mipmap.fav_a_w);
+            else
+                holder.iv_favourite.setImageResource(R.mipmap.fav_a_r);
+        }
+
         if((modelArrayList.get(position).getFollowersCount()==null || modelArrayList.get(position).getFollowersCount().equalsIgnoreCase("null")))
           holder.tv_profilelikescount.setText("0");
         else
@@ -219,6 +227,20 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> 
             modelArrayList.get(pos).setLikestatus("0");
             holder.iv_like.setImageResource(R.mipmap.heart_white);
             holder.tv_likescount.setText(""+(likescount-1));
+        }
+    }
+
+    public void updateFavourite(SimplePlayerViewHolder holder,int pos)
+    {
+        if(modelArrayList.get(pos).getFavouritestatus()==null || modelArrayList.get(pos).getFavouritestatus().equalsIgnoreCase("null"))
+            modelArrayList.get(pos).setFavouritestatus("0");
+        if(modelArrayList.get(pos).getFavouritestatus().equalsIgnoreCase("0")) {
+            modelArrayList.get(pos).setFavouritestatus("1");
+            holder.iv_favourite.setImageResource(R.mipmap.fav_a_r);
+        }
+        else {
+            modelArrayList.get(pos).setFavouritestatus("0");
+            holder.iv_favourite.setImageResource(R.mipmap.fav_a_w);
         }
     }
 

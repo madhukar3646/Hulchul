@@ -16,9 +16,11 @@ import android.widget.Toast;
 
 import com.app.hulchul.R;
 import com.app.hulchul.adapters.PlaylistCategoriesAdapter;
+import com.app.hulchul.adapters.SimplePlayerViewHolder;
 import com.app.hulchul.adapters.SongslistContainerAdapter;
 import com.app.hulchul.adapters.TrendingSoundsBannersAdapter;
 import com.app.hulchul.model.ServerSong;
+import com.app.hulchul.model.SignupResponse;
 import com.app.hulchul.model.Songlistmodel;
 import com.app.hulchul.model.Soundbanners;
 import com.app.hulchul.model.SoundsCategorylist;
@@ -234,11 +236,6 @@ public class SelectSoundsActivity extends AppCompatActivity implements View.OnCl
         }).start();
     }
 
-    @Override
-    public void onFavouriteClick(ServerSong song) {
-
-    }
-
     void showProgress(){
         dialog = new Dialog(SelectSoundsActivity.this,
                 android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
@@ -332,7 +329,6 @@ public class SelectSoundsActivity extends AppCompatActivity implements View.OnCl
     public void goToVideoScreen(ServerSong songsModel)
     {
         Intent intent=new Intent(SelectSoundsActivity.this,MakingVideoActivity.class);
-        //intent.putExtra("songpath",songsBasepath+songsModel.getFile());
         intent.putExtra("songpath",getSoundsDownloadpath());
         intent.putExtra("songid",songsModel.getSongId());
         intent.putExtra("duration",songsModel.getDuration());
@@ -357,5 +353,43 @@ public class SelectSoundsActivity extends AppCompatActivity implements View.OnCl
     protected void onStop() {
         songslistContainerAdapter.stopPlayerFromActivity();
         super.onStop();
+    }
+
+    @Override
+    public void onFavouriteClick(ServerSong song,int pos) {
+
+        if(connectionDetector.isConnectingToInternet())
+        {
+            if(sessionManagement.getValueFromPreference(SessionManagement.USERID)!=null)
+              addTofavourites(sessionManagement.getValueFromPreference(SessionManagement.USERID),"song",song.getSongId(),pos);
+            else
+                startActivity(new Intent(SelectSoundsActivity.this,LoginLandingActivity.class));
+        }
+        else
+            Utils.callToast(SelectSoundsActivity.this,getResources().getString(R.string.internet_toast));
+    }
+
+    private void addTofavourites(String userid, String type, String favouriteid,int pos){
+        Utils.showDialog(SelectSoundsActivity.this);
+        Call<SignupResponse> call= RetrofitApis.Factory.createTemp(SelectSoundsActivity.this).addFavourite(userid,type,favouriteid);
+        call.enqueue(new Callback<SignupResponse>() {
+            @Override
+            public void onResponse(Call<SignupResponse> call, Response<SignupResponse> response) {
+                Utils.dismissDialog();
+                SignupResponse body=response.body();
+                if(body.getStatus()==1){
+                    songslistContainerAdapter.updateFavourite(pos);
+                }
+                else {
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SignupResponse> call, Throwable t) {
+                Utils.dismissDialog();
+                Log.e("addfav onFailure",""+t.getMessage());
+            }
+        });
     }
 }

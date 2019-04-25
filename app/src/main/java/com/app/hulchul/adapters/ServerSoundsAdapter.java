@@ -83,11 +83,11 @@ public class ServerSoundsAdapter extends RecyclerView.Adapter<ServerSoundsAdapte
 
         if( recording.isPlaying()){
             holder.iv_playpauseimage.setImageResource(R.drawable.ic_pause);
-            holder.iv_checked.setVisibility(View.VISIBLE);
+            holder.layout_checked.setVisibility(View.VISIBLE);
             TransitionManager.beginDelayedTransition((ViewGroup) holder.itemView);
         }else{
             holder.iv_playpauseimage.setImageResource(R.mipmap.play_video);
-            holder.iv_checked.setVisibility(View.GONE);
+            holder.layout_checked.setVisibility(View.GONE);
             TransitionManager.beginDelayedTransition((ViewGroup) holder.itemView);
         }
     }
@@ -104,6 +104,8 @@ public class ServerSoundsAdapter extends RecyclerView.Adapter<ServerSoundsAdapte
         RelativeLayout layout_checked;
         @BindView(R.id.iv_checked)
         ImageView iv_checked;
+        @BindView(R.id.iv_favourite)
+        ImageView iv_favourite;
         @BindView(R.id.layout_songdetails)
         RelativeLayout layout_songdetails;
         @BindView(R.id.iv_songthumbnail)
@@ -157,13 +159,23 @@ public class ServerSoundsAdapter extends RecyclerView.Adapter<ServerSoundsAdapte
                     }
             });
 
-            layout_checked.setOnClickListener(new View.OnClickListener() {
+            iv_checked.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     ServerSong songsModel = songsModelArrayList.get(position);
                     if(onSoundSelectionListener!=null)
                         onSoundSelectionListener.onSoundSelected(songsModel);
+                }
+            });
+
+            iv_favourite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    ServerSong songsModel = songsModelArrayList.get(position);
+                  if(onSoundSelectionListener!=null)
+                      onSoundSelectionListener.onFavouriteClick(songsModel,position);
                 }
             });
         }
@@ -219,8 +231,14 @@ public class ServerSoundsAdapter extends RecyclerView.Adapter<ServerSoundsAdapte
         }
     }
 
+    public void updateFavourite(int pos)
+    {
+
+    }
+
     public interface OnSoundSelectionListener
     {
         void onSoundSelected(ServerSong songsModel);
+        void onFavouriteClick(ServerSong song,int pos);
     }
 }

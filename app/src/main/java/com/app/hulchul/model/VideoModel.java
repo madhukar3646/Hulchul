@@ -1,5 +1,4 @@
 package com.app.hulchul.model;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -8,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class VideoModel implements Parcelable{
+public class VideoModel implements Parcelable {
 
     @SerializedName("id")
     @Expose
@@ -49,6 +48,10 @@ public class VideoModel implements Parcelable{
     @Expose
     private String followersCount;
 
+    @SerializedName("favouritestatus")
+    @Expose
+    private String favouritestatus;
+
     @SerializedName("shareCount")
     @Expose
     private String shareCount;
@@ -86,6 +89,7 @@ public class VideoModel implements Parcelable{
         likestatus = in.readString();
         follwerstatus = in.readString();
         followersCount = in.readString();
+        favouritestatus = in.readString();
         shareCount = in.readString();
         commentCount = in.readString();
         fullName = in.readString();
@@ -233,6 +237,14 @@ public class VideoModel implements Parcelable{
         this.photo = photo;
     }
 
+    public String getFavouritestatus() {
+        return favouritestatus;
+    }
+
+    public void setFavouritestatus(String favouritestatus) {
+        this.favouritestatus = favouritestatus;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -251,12 +263,11 @@ public class VideoModel implements Parcelable{
         parcel.writeString(likestatus);
         parcel.writeString(follwerstatus);
         parcel.writeString(followersCount);
+        parcel.writeString(favouritestatus);
         parcel.writeString(shareCount);
         parcel.writeString(commentCount);
         parcel.writeString(fullName);
         parcel.writeString(photo);
         parcel.writeTypedList(comments);
     }
-
-
 }
