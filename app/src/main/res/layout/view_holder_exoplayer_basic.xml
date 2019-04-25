@@ -149,6 +149,20 @@
             android:layout_alignParentRight="true"
             >
 
+
+            <LinearLayout
+                android:id="@+id/layout_favourites"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="5dp">
+                <ImageView
+                    android:id="@+id/iv_favourite"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@mipmap/fav_a_w"
+                    android:layout_marginTop="10dp"/>
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/layout_like"
                 android:layout_width="wrap_content"

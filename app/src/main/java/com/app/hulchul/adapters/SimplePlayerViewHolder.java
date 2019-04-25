@@ -74,6 +74,10 @@ public class SimplePlayerViewHolder extends RecyclerView.ViewHolder implements T
     LinearLayout layout_abuse;
     @BindView(R.id.iv_heart)
     ImageView iv_heart;
+    @BindView(R.id.layout_favourites)
+    LinearLayout layout_favourites;
+    @BindView(R.id.iv_favourite)
+    ImageView iv_favourite;
 
     SimpleExoPlayerViewHelper helper;
     Uri mediaUri;

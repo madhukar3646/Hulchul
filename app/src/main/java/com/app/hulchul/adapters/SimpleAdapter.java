@@ -161,6 +161,16 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> 
             }
         });
 
+        holder.layout_favourites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(videoActionsListener!=null)
+                {
+                    videoActionsListener.onFavouriteClicked(holder,modelArrayList.get(position).getId(),position);
+                }
+            }
+        });
+
         holder.layout_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -282,6 +292,7 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> 
     public interface VideoActionsListener
     {
         void onLikeClicked(SimplePlayerViewHolder holder,String videoid,int pos);
+        void onFavouriteClicked(SimplePlayerViewHolder holder,String videoid,int pos);
         void onFollowClicked(SimplePlayerViewHolder holder,String videoid,int pos);
         void onProfileClicked(VideoModel model);
         void onCommentsClicked(SimplePlayerViewHolder holder,int pos,String videoid,String commentscount);

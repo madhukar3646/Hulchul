@@ -337,6 +337,11 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
     }
 
     @Override
+    public void onFavouriteClicked(SimplePlayerViewHolder holder, String videoid, int pos) {
+
+    }
+
+    @Override
     public void onFollowClicked(SimplePlayerViewHolder holder,String videoid,int pos) {
         if(sessionManagement.getBooleanValueFromPreference(SessionManagement.ISLOGIN))
         {

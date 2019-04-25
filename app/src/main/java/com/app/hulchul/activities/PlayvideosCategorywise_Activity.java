@@ -166,6 +166,11 @@ public class PlayvideosCategorywise_Activity extends AppCompatActivity implement
     }
 
     @Override
+    public void onFavouriteClicked(SimplePlayerViewHolder holder, String videoid, int pos) {
+
+    }
+
+    @Override
     public void onFollowClicked(SimplePlayerViewHolder holder, String fromid, int pos) {
         if(sessionManagement.getBooleanValueFromPreference(SessionManagement.ISLOGIN))
         {

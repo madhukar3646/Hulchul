@@ -44,6 +44,7 @@ public class FavouriteVideos extends Fragment implements FavouritesActivity.OnFa
     private String userid,videosbasepath,musicbasepath;
     private ArrayList<VideoModel> videoslist=new ArrayList<>();
     private HashtagsGridAdapter videosadapter;
+    private int totalcount;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,8 +63,17 @@ public class FavouriteVideos extends Fragment implements FavouritesActivity.OnFa
         sessionManagement=new SessionManagement(getActivity());
         userid=sessionManagement.getValueFromPreference(SessionManagement.USERID);
         videosadapter=new HashtagsGridAdapter(getActivity(),videoslist);
+        videosadapter.setOnHashtagItemClickListener(this);
         rv_favouritevideos.setLayoutManager(new GridLayoutManager(getActivity(),3));
         rv_favouritevideos.setAdapter(videosadapter);
+
+        if(videoslist.size()==0) {
+            if (connectionDetector.isConnectingToInternet()) {
+                videoslist.clear();
+                setDataToContainer("video", "20", "0");
+            } else
+                Utils.callToast(getActivity(), getResources().getString(R.string.internet_toast));
+        }
 
        rv_favouritevideos.setOnScrollListener(new RecyclerView.OnScrollListener() {
            @Override
@@ -74,12 +84,13 @@ public class FavouriteVideos extends Fragment implements FavouritesActivity.OnFa
                int pos = layoutManager.findLastCompletelyVisibleItemPosition();
                int numItems = recyclerView.getAdapter().getItemCount();
                Log.e("pos"+pos,"numitems "+numItems);
-               if((pos+1)>=numItems)
-               {
-                   if (connectionDetector.isConnectingToInternet()) {
-                       setDataToContainer("video","10", ""+numItems);
-                   } else
-                       Utils.callToast(getActivity(), getResources().getString(R.string.internet_toast));
+               if(pos>0 && totalcount!=numItems) {
+                   if ((pos + 1) >= numItems) {
+                       if (connectionDetector.isConnectingToInternet()) {
+                           setDataToContainer("video", "20", "" + numItems);
+                       } else
+                           Utils.callToast(getActivity(), getResources().getString(R.string.internet_toast));
+                   }
                }
            }
        });
@@ -90,7 +101,7 @@ public class FavouriteVideos extends Fragment implements FavouritesActivity.OnFa
     {
         if(connectionDetector.isConnectingToInternet()) {
             videoslist.clear();
-            setDataToContainer("video","10","0");
+            setDataToContainer("video","20","0");
         }
         else
             Utils.callToast(getActivity(),getResources().getString(R.string.internet_toast));
@@ -110,6 +121,7 @@ public class FavouriteVideos extends Fragment implements FavouritesActivity.OnFa
                             videoslist.addAll(body.getVideos());
                             videosbasepath=body.getUrl();
                             musicbasepath=body.getSongurl();
+                            totalcount=body.getTotalcount();
                             videosadapter.setVideobasepath(videosbasepath);
                             videosadapter.notifyDataSetChanged();
                             tv_nodata.setVisibility(View.GONE);
@@ -124,6 +136,11 @@ public class FavouriteVideos extends Fragment implements FavouritesActivity.OnFa
                 else {
                     Utils.callToast(getActivity(),"null response came");
                 }
+
+                if(videoslist.size()==0)
+                    tv_nodata.setVisibility(View.VISIBLE);
+                else
+                    tv_nodata.setVisibility(View.GONE);
             }
 
             @Override
@@ -136,7 +153,6 @@ public class FavouriteVideos extends Fragment implements FavouritesActivity.OnFa
 
     @Override
     public void onHashtagitemClick(ArrayList<VideoModel> discoverhashtagvideosList, int pos) {
-
         Intent intent=new Intent(getActivity(), PlayvideosCategorywise_Activity.class);
         intent.putParcelableArrayListExtra("videos",discoverhashtagvideosList);
         intent.putExtra("position",pos);

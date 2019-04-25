@@ -22,7 +22,7 @@ import android.widget.TextView;
 
 import com.app.hulchul.R;
 import com.app.hulchul.adapters.HashtagsGridAdapter;
-import com.app.hulchul.fragments.Me_Fragment;
+import com.app.hulchul.model.SignupResponse;
 import com.app.hulchul.model.VideoModel;
 import com.app.hulchul.model.VideosListingResponse;
 import com.app.hulchul.presenter.RetrofitApis;
@@ -64,6 +64,8 @@ public class SoundsSearchresultsActivity extends AppCompatActivity implements Vi
     ImageView iv_gotorecord;
     @BindView(R.id.tv_nodata)
     TextView tv_nodata;
+    @BindView(R.id.iv_favourite)
+    ImageView iv_favourite;
     private boolean isUploading=false;
 
     private String soundname,songid,videosbasepath,musicbasepath,userid="";
@@ -84,6 +86,7 @@ public class SoundsSearchresultsActivity extends AppCompatActivity implements Vi
     {
         soundname=getIntent().getStringExtra("soundname");
         songid=getIntent().getStringExtra("songid");
+
         connectionDetector=new ConnectionDetector(SoundsSearchresultsActivity.this);
         sessionManagement=new SessionManagement(SoundsSearchresultsActivity.this);
         if(sessionManagement.getValueFromPreference(SessionManagement.USERID)!=null)
@@ -91,7 +94,6 @@ public class SoundsSearchresultsActivity extends AppCompatActivity implements Vi
 
         tv_name.setText(soundname);
         tv_title.setText(soundname);
-
         back_btn.setOnClickListener(this);
         layout_favourites.setOnClickListener(this);
         iv_gotorecord.setOnClickListener(this);
@@ -137,10 +139,21 @@ public class SoundsSearchresultsActivity extends AppCompatActivity implements Vi
                 finish();
                 break;
             case R.id.layout_favourites:
+                if(sessionManagement.getValueFromPreference(SessionManagement.USERID)!=null)
+                {
+                    if (connectionDetector.isConnectingToInternet()) {
+                        addTofavourites(userid,"song", songid);
+                    } else
+                        Utils.callToast(SoundsSearchresultsActivity.this, getResources().getString(R.string.internet_toast));
+                }
+                else
+                    startActivity(new Intent(SoundsSearchresultsActivity.this,LoginLandingActivity.class));
+
                 break;
             case R.id.iv_gotorecord:
                 if(!isUploading) {
-                    if (checkingPermissionAreEnabledOrNot()) {
+                    if (checkingPermissionAreEnabledOrNot())
+                    {
                         if (sessionManagement.getBooleanValueFromPreference(SessionManagement.ISLOGIN))
                             startActivity(new Intent(SoundsSearchresultsActivity.this, MakingVideoActivity.class));
                         else
@@ -273,5 +286,29 @@ public class SoundsSearchresultsActivity extends AppCompatActivity implements Vi
                 }
                 break;
         }
+    }
+
+    private void addTofavourites(String userid, String type, String favouriteid){
+        Utils.showDialog(SoundsSearchresultsActivity.this);
+        Call<SignupResponse> call= RetrofitApis.Factory.createTemp(SoundsSearchresultsActivity.this).addFavourite(userid,type,favouriteid);
+        call.enqueue(new Callback<SignupResponse>() {
+            @Override
+            public void onResponse(Call<SignupResponse> call, Response<SignupResponse> response) {
+                Utils.dismissDialog();
+                SignupResponse body=response.body();
+                if(body.getStatus()==1){
+                    iv_favourite.setImageResource(R.mipmap.fav_a_r);
+                }
+                else {
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SignupResponse> call, Throwable t) {
+                Utils.dismissDialog();
+                Log.e("addfav onFailure",""+t.getMessage());
+            }
+        });
     }
 }

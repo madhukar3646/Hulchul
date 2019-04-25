@@ -216,6 +216,14 @@ public interface RetrofitApis {
     Call<VideosListingResponse> listFavouritesVideos(@Field("userId") String userid,@Field("type") String type,@Field("limit") String limit,@Field("offset") String offset);
 
     @FormUrlEncoded
+    @POST("listFavourites")
+    Call<HashtagSearchResponse> listFavouritesHashtags(@Field("userId") String userid, @Field("type") String type, @Field("limit") String limit, @Field("offset") String offset);
+
+    @FormUrlEncoded
+    @POST("listFavourites")
+    Call<Soundsearchresponse> listFavouritesSounds(@Field("userId") String userid, @Field("type") String type, @Field("limit") String limit, @Field("offset") String offset);
+
+    @FormUrlEncoded
     @POST("songCategoryList")
     Call<SoundsModuleResponse> songCategoryList(@Field("userId") String userid, @Field("limit") String limit, @Field("offset") String offset);
 
@@ -226,5 +234,10 @@ public interface RetrofitApis {
     @FormUrlEncoded
     @POST("songsByCategoryId")
     Call<ServerSoundsResponse> songsByCategoryId(@Field("limit") String limit, @Field("offset") String offset,@Field("categoryId") String categoryId);
+
+    @FormUrlEncoded
+    @POST("addFavourite")
+    Call<SignupResponse> addFavourite(@Field("userId") String userid, @Field("type") String type,@Field("favouriteId") String favouriteId);
+
 }
 

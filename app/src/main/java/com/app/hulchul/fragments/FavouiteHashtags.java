@@ -1,11 +1,12 @@
 package com.app.hulchul.fragments;
 
-import android.content.Context;
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,16 +14,24 @@ import android.widget.TextView;
 
 import com.app.hulchul.R;
 import com.app.hulchul.activities.FavouritesActivity;
+import com.app.hulchul.activities.HashtagSearchresultsActivity;
 import com.app.hulchul.adapters.HashtagSearchAdapter;
+import com.app.hulchul.model.HashtagSearchResponse;
 import com.app.hulchul.model.Hashtagsearchdata;
+import com.app.hulchul.presenter.RetrofitApis;
 import com.app.hulchul.utils.ConnectionDetector;
+import com.app.hulchul.utils.SessionManagement;
+import com.app.hulchul.utils.Utils;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class FavouiteHashtags extends Fragment implements FavouritesActivity.OnFavouritesFragmentSelected {
+public class FavouiteHashtags extends Fragment implements FavouritesActivity.OnFavouritesFragmentSelected,HashtagSearchAdapter.OnHashtagClickListener {
 
     @BindView(R.id.tv_nodata)
     TextView tv_nodata;
@@ -30,7 +39,10 @@ public class FavouiteHashtags extends Fragment implements FavouritesActivity.OnF
     RecyclerView rv_favouritehashtags;
     private HashtagSearchAdapter adapter;
     private ConnectionDetector connectionDetector;
+    private SessionManagement sessionManagement;
+    private String userid,videosbasepath,musicbasepath;
     private ArrayList<Hashtagsearchdata> hashtagsearchdataList=new ArrayList<>();
+    private int totalcount;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,20 +58,91 @@ public class FavouiteHashtags extends Fragment implements FavouritesActivity.OnF
     {
         tv_nodata.setVisibility(View.GONE);
         connectionDetector=new ConnectionDetector(getActivity());
+        sessionManagement=new SessionManagement(getActivity());
+        userid=sessionManagement.getValueFromPreference(SessionManagement.USERID);
         adapter=new HashtagSearchAdapter(getActivity(),hashtagsearchdataList);
+        adapter.setOnHashtagClickListener(this);
         rv_favouritehashtags.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
         rv_favouritehashtags.setAdapter(adapter);
+
+        rv_favouritehashtags.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager layoutManager = ((LinearLayoutManager)recyclerView.getLayoutManager());
+                int pos = layoutManager.findLastCompletelyVisibleItemPosition();
+                int numItems = recyclerView.getAdapter().getItemCount();
+                Log.e("pos"+pos,"numitems "+numItems);
+                if(pos>0 && totalcount!=numItems) {
+                    if ((pos + 1) >= numItems) {
+                        if (connectionDetector.isConnectingToInternet()) {
+                            favouriteHashtags("hashTag", "20", "" + numItems);
+                        } else
+                            Utils.callToast(getActivity(), getResources().getString(R.string.internet_toast));
+                    }
+                }
+            }
+        });
     }
 
     @Override
     public void onFavouriteFragmentSelected() {
-        hashtagsearchdataList.clear();
-        for (int i=0;i<30;i++)
-        {
-            Hashtagsearchdata model=new Hashtagsearchdata();
-            model.setHashTag("Krishna");
-            hashtagsearchdataList.add(model);
+        if(connectionDetector.isConnectingToInternet()) {
+            hashtagsearchdataList.clear();
+            favouriteHashtags("hashTag","20","0");
         }
-        adapter.notifyDataSetChanged();
+        else
+            Utils.callToast(getActivity(),getResources().getString(R.string.internet_toast));
+    }
+
+    public void favouriteHashtags(String type,String limit,String offset) {
+        Utils.showDialog(getActivity());
+        Call<HashtagSearchResponse> call= RetrofitApis.Factory.createTemp(getActivity()).listFavouritesHashtags(userid,type,limit,offset);
+        call.enqueue(new Callback<HashtagSearchResponse>() {
+            @Override
+            public void onResponse(Call<HashtagSearchResponse> call, Response<HashtagSearchResponse> response) {
+                Utils.dismissDialog();
+                HashtagSearchResponse body=response.body();
+                if(body!=null) {
+                    if (body.getStatus()==1) {
+                        if(body.getHashtagsdata()!=null && body.getHashtagsdata().size() > 0) {
+                            videosbasepath=body.getUrl();
+                            musicbasepath=body.getSongurl();
+                            totalcount=body.getTotalcount();
+                            hashtagsearchdataList.addAll(body.getHashtagsdata());
+                            tv_nodata.setVisibility(View.GONE);
+                        }
+                    } else {
+                        if(hashtagsearchdataList.size()==0) {
+                            tv_nodata.setVisibility(View.VISIBLE);
+                            Utils.callToast(getActivity(), body.getMessage());
+                        }
+                    }
+                }
+                else {
+                    Utils.callToast(getActivity(), "Null data came");
+                }
+
+                if(hashtagsearchdataList.size()==0)
+                    tv_nodata.setVisibility(View.VISIBLE);
+                else
+                    tv_nodata.setVisibility(View.GONE);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<HashtagSearchResponse> call, Throwable t) {
+                Utils.dismissDialog();
+                Log.e("searchuser onFailure",""+t.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void onHashtagClick(Hashtagsearchdata hashtagsearchdata) {
+        Intent intent=new Intent(getActivity(), HashtagSearchresultsActivity.class);
+        intent.putExtra("hashtag",hashtagsearchdata.getHashTag());
+        startActivity(intent);
     }
 }

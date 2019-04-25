@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.media.ThumbnailUtils;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -23,7 +21,7 @@ import android.widget.TextView;
 
 import com.app.hulchul.R;
 import com.app.hulchul.adapters.HashtagsGridAdapter;
-import com.app.hulchul.fragments.Me_Fragment;
+import com.app.hulchul.model.SignupResponse;
 import com.app.hulchul.model.VideoModel;
 import com.app.hulchul.model.VideosListingResponse;
 import com.app.hulchul.presenter.RetrofitApis;
@@ -63,6 +61,8 @@ public class HashtagSearchresultsActivity extends AppCompatActivity implements V
     ImageView iv_gotorecord;
     @BindView(R.id.tv_nodata)
     TextView tv_nodata;
+    @BindView(R.id.iv_favourite)
+    ImageView iv_favourite;
     private String hashtag,videosbasepath,musicbasepath,userid="";
     private HashtagsGridAdapter adapter;
     private ArrayList<VideoModel> discoverhashtagvideosList=new ArrayList<>();
@@ -172,6 +172,16 @@ public class HashtagSearchresultsActivity extends AppCompatActivity implements V
                 finish();
                 break;
             case R.id.layout_favourites:
+                if(sessionManagement.getValueFromPreference(SessionManagement.USERID)!=null)
+                {
+                    if (connectionDetector.isConnectingToInternet()) {
+                        addTofavourites(userid,"hashTag", hashtag);
+                    } else
+                        Utils.callToast(HashtagSearchresultsActivity.this, getResources().getString(R.string.internet_toast));
+                }
+                else
+                    startActivity(new Intent(HashtagSearchresultsActivity.this,LoginLandingActivity.class));
+
                 break;
             case R.id.iv_gotorecord:
                 if(!isUploading) {
@@ -272,4 +282,27 @@ public class HashtagSearchresultsActivity extends AppCompatActivity implements V
         }
     }
 
+    private void addTofavourites(String userid, String type, String favouriteid){
+        Utils.showDialog(HashtagSearchresultsActivity.this);
+        Call<SignupResponse> call= RetrofitApis.Factory.createTemp(HashtagSearchresultsActivity.this).addFavourite(userid,type,favouriteid);
+        call.enqueue(new Callback<SignupResponse>() {
+            @Override
+            public void onResponse(Call<SignupResponse> call, Response<SignupResponse> response) {
+                Utils.dismissDialog();
+                SignupResponse body=response.body();
+                if(body.getStatus()==1){
+                  iv_favourite.setImageResource(R.mipmap.fav_a_r);
+                }
+                else {
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SignupResponse> call, Throwable t) {
+                Utils.dismissDialog();
+                Log.e("addfav onFailure",""+t.getMessage());
+            }
+        });
+    }
 }
