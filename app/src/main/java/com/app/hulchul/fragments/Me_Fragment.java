@@ -23,6 +23,7 @@ import com.app.hulchul.R;
 import com.app.hulchul.activities.DraftsActivity;
 import com.app.hulchul.activities.EditProfileActivity;
 import com.app.hulchul.activities.FavouritesActivity;
+import com.app.hulchul.activities.FindFriendsActivity;
 import com.app.hulchul.activities.HashtagSearchresultsActivity;
 import com.app.hulchul.activities.LoginLandingActivity;
 import com.app.hulchul.activities.PlayvideosCategorywise_Activity;
@@ -202,8 +203,7 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Hashta
             case R.id.iv_addfriends:
                 if(sessionManagement.getBooleanValueFromPreference(SessionManagement.ISLOGIN))
                 {
-                    Intent intent=new Intent(getActivity(), CommonEmptyActivity.class);
-                    intent.putExtra("common","Add Friends");
+                    Intent intent=new Intent(getActivity(), FindFriendsActivity.class);
                     startActivity(intent);
                 }
                 else {

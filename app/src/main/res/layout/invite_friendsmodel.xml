@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <RelativeLayout
+        android:id="@+id/layout_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <ImageView
+            android:id="@+id/iv_profileimage"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:src="@mipmap/profile"
+            android:layout_centerVertical="true"
+            />
+
+        <LinearLayout
+            android:id="@+id/layout_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/iv_profileimage"
+            android:layout_toLeftOf="@+id/layout_followcontainer"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="vertical"
+            android:layout_centerVertical="true">
+
+            <TextView
+                android:id="@+id/tv_personname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Harikrishna"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/black"
+                />
+            <TextView
+                android:id="@+id/tv_personnumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+919848224480"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_followcontainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp"
+            android:layout_centerVertical="true">
+
+            <RelativeLayout
+                    android:id="@+id/layout_invite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_rectangle_primary"
+                    android:layout_gravity="center"
+                    android:visibility="visible">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" Invite "
+                        android:textColor="@android:color/white"
+                        android:layout_margin="5dp"/>
+                </RelativeLayout>
+            <RelativeLayout
+                    android:id="@+id/layout_invited"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:text=" Invited "
+                        android:textColor="@color/colorPrimary"
+                        android:padding="5dp"
+                        android:gravity="center"
+                        android:background="@drawable/border_primary"
+                        android:visibility="visible"/>
+
+                </RelativeLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/layout_container"
+        android:background="#1A000000"></View>
+
+</RelativeLayout>
