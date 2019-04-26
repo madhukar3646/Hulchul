@@ -466,6 +466,11 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Hashta
     @Override
     public void onHashtagitemClick(ArrayList<VideoModel> discoverhashtagvideosList, int pos) {
         Intent intent=new Intent(getActivity(), PlayvideosCategorywise_Activity.class);
+        if(isProfilevideos)
+            intent.putExtra("isFrom","profilevideos");
+        else
+            intent.putExtra("isFrom","likedvideos");
+        intent.putExtra("profileuserid",userid);
         intent.putParcelableArrayListExtra("videos",discoverhashtagvideosList);
         intent.putExtra("position",pos);
         intent.putExtra("videosbasepath",videosbasepath);

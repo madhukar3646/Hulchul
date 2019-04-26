@@ -26,6 +26,7 @@ import com.app.hulchul.utils.SessionManagement;
 import com.app.hulchul.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -139,10 +140,13 @@ public class Discover_fragment extends Fragment implements View.OnClickListener,
     public void onHashtagitemClick(ArrayList<VideoModel> discoverhashtagvideosList,int position) {
 
         Intent intent=new Intent(getActivity(), PlayvideosCategorywise_Activity.class);
+        intent.putExtra("isFrom","hashTag");
+        intent.putExtra("hashTag",discoverhashtagvideosList.get(position).getHashTag());
         intent.putParcelableArrayListExtra("videos",discoverhashtagvideosList);
         intent.putExtra("position",position);
         intent.putExtra("videosbasepath",videosbasepath);
         intent.putExtra("musicbasepath",musicbasepath);
         startActivity(intent);
     }
+
 }

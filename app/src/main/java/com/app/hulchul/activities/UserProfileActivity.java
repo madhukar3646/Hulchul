@@ -411,6 +411,11 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onHashtagitemClick(ArrayList<VideoModel> discoverhashtagvideosList, int pos) {
         Intent intent=new Intent(UserProfileActivity.this, PlayvideosCategorywise_Activity.class);
+        if(isProfilevideos)
+          intent.putExtra("isFrom","profilevideos");
+        else
+            intent.putExtra("isFrom","likedvideos");
+        intent.putExtra("profileuserid",othersuserid);
         intent.putParcelableArrayListExtra("videos",discoverhashtagvideosList);
         intent.putExtra("position",pos);
         intent.putExtra("videosbasepath",videosbasepath);

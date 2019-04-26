@@ -79,6 +79,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
             case R.id.layout_aboutus:
                 break;
             case R.id.layout_privacyandsafety:
+                startActivity(new Intent(SettingsActivity.this,PrivacyAndSafetyActivity.class));
                 break;
             case R.id.layout_helpcentre:
                 break;

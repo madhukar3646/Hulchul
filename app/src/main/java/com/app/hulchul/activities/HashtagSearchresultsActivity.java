@@ -204,6 +204,8 @@ public class HashtagSearchresultsActivity extends AppCompatActivity implements V
     public void onHashtagitemClick(ArrayList<VideoModel> discoverhashtagvideosList, int pos) {
 
         Intent intent=new Intent(HashtagSearchresultsActivity.this, PlayvideosCategorywise_Activity.class);
+        intent.putExtra("isFrom","hashTag");
+        intent.putExtra("hashTag",discoverhashtagvideosList.get(pos).getHashTag());
         intent.putParcelableArrayListExtra("videos",discoverhashtagvideosList);
         intent.putExtra("position",pos);
         intent.putExtra("videosbasepath",videosbasepath);

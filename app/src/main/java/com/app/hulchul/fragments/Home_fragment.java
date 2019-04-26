@@ -1,7 +1,10 @@
 package com.app.hulchul.fragments;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -12,6 +15,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
@@ -30,11 +34,11 @@ import com.app.hulchul.activities.CommentsActivity;
 import com.app.hulchul.activities.HashtagSearchresultsActivity;
 import com.app.hulchul.activities.LoginLandingActivity;
 import com.app.hulchul.activities.MainActivity;
-import com.app.hulchul.activities.SoundsSearchresultsActivity;
+import com.app.hulchul.activities.MakingVideoActivity;
 import com.app.hulchul.activities.UserProfileActivity;
 import com.app.hulchul.adapters.SimpleAdapter;
 import com.app.hulchul.adapters.SimplePlayerViewHolder;
-import com.app.hulchul.model.ServerSong;
+import com.app.hulchul.fileuploadservice.FileUploadService;
 import com.app.hulchul.model.SignupResponse;
 import com.app.hulchul.model.VideoModel;
 import com.app.hulchul.model.VideosListingResponse;
@@ -59,6 +63,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.app.Activity.RESULT_OK;
 
@@ -94,6 +100,8 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
     private SimplePlayerViewHolder holder;
     private String userid,videoid;
     private int position;
+    private int uploadpercentagelength;
+    private boolean isUploading=false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -393,6 +401,13 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
                 adapter.updateCommentsCount(holder,position,CommentsActivity.commentsCount);
             CommentsActivity.commentsCount=null;
         }
+
+        IntentFilter intentFilter = new IntentFilter("my.own.broadcast");
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(myLocalBroadcastReceiver, intentFilter);
+        if(!FileUploadService.isProcessing || uploadpercentagelength>6) {
+            isUploading=false;
+            uploadpercentagelength=0;
+        }
     }
 
     @Override
@@ -566,6 +581,23 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
                 }, 120);
     }
 
+    public boolean checkingVideorecordPermissionAreEnabledOrNot() {
+        int camera = ContextCompat.checkSelfPermission(getContext(), CAMERA);
+        int write = ContextCompat.checkSelfPermission(getContext(), WRITE_EXTERNAL_STORAGE);
+        int read = ContextCompat.checkSelfPermission(getContext(), RECORD_AUDIO);
+        return camera == PackageManager.PERMISSION_GRANTED && write == PackageManager.PERMISSION_GRANTED && read==PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestVideorecordPermission() {
+
+        ActivityCompat.requestPermissions(getActivity(), new String[]
+                {
+                        CAMERA,
+                        WRITE_EXTERNAL_STORAGE,
+                        RECORD_AUDIO
+                }, 200);
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
@@ -582,6 +614,25 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
                     }
                 } else {
                     requestMultiplePermission();
+                }
+                break;
+
+            case 200:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if(grantResults.length>=3)
+                    {
+                        if(checkingVideorecordPermissionAreEnabledOrNot())
+                        {
+                            if(sessionManagement.getBooleanValueFromPreference(SessionManagement.ISLOGIN))
+                                startActivity(new Intent(getActivity(),MakingVideoActivity.class));
+                            else
+                                startActivity(new Intent(getActivity(), LoginLandingActivity.class));
+                        }
+                        else
+                            requestVideorecordPermission();
+                    }
+                } else {
+                    requestVideorecordPermission();
                 }
                 break;
         }
@@ -633,5 +684,51 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
                 Log.e("addfav onFailure",""+t.getMessage());
             }
         });
+    }
+
+    @Override
+    public void onDubsmashClicked(VideoModel model) {
+        if(!isUploading) {
+            if (checkingVideorecordPermissionAreEnabledOrNot()) {
+                if (sessionManagement.getBooleanValueFromPreference(SessionManagement.ISLOGIN))
+                    startActivity(new Intent(getActivity(), MakingVideoActivity.class));
+                else
+                    startActivity(new Intent(getActivity(), LoginLandingActivity.class));
+            } else
+                requestVideorecordPermission();
+        }
+        else {
+            Utils.callToast(getActivity(),"Your previous video is uploading. Please wait!");
+        }
+    }
+
+    private BroadcastReceiver myLocalBroadcastReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            String result = intent.getStringExtra("result");
+            String path = intent.getStringExtra("videopath");
+            if(result.equalsIgnoreCase("101")) {
+                Utils.callToast(getActivity(),"Your video uploaded successfully");
+                isUploading=false;
+            }
+            else if(result.trim().length()>5)
+            {
+                isUploading=false;
+                uploadpercentagelength=0;
+                Utils.callToast(getActivity(),"Your file uploading failed. Please try again from drafts");
+            }
+            else {
+                isUploading=true;
+            }
+            uploadpercentagelength=result.length();
+        }
+    };
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(myLocalBroadcastReceiver);
     }
 }

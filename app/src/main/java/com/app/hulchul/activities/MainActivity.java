@@ -7,9 +7,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.media.MediaPlayer;
 import android.media.ThumbnailUtils;
-import android.os.Build;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
@@ -20,7 +18,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -160,25 +157,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         {
             setClickableFocus();
             iv_home.setImageResource(R.mipmap.home_activeicon);
-            tv_home.setTextColor(getResources().getColor(R.color.colorPrimary));
+            //tv_home.setTextColor(getResources().getColor(R.color.colorPrimary));
         }
         else if(this.fragment instanceof Discover_fragment)
         {
             setClickableFocus();
             iv_discover.setImageResource(R.mipmap.search_active);
-            tv_discover.setTextColor(getResources().getColor(R.color.colorPrimary));
+            //tv_discover.setTextColor(getResources().getColor(R.color.colorPrimary));
         }
         else if(this.fragment instanceof Notification_fragment)
         {
             setClickableFocus();
             iv_notification.setImageResource(R.mipmap.notification_active);
-            tv_notification.setTextColor(getResources().getColor(R.color.colorPrimary));
+            //tv_notification.setTextColor(getResources().getColor(R.color.colorPrimary));
         }
         else if(this.fragment instanceof Me_Fragment)
         {
             setClickableFocus();
             iv_me.setImageResource(R.mipmap.me_active);
-            tv_me.setTextColor(getResources().getColor(R.color.colorPrimary));
+            //tv_me.setTextColor(getResources().getColor(R.color.colorPrimary));
         }
     }
 
@@ -242,13 +239,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 changeFragment(new Home_fragment());
                 setClickableFocus();
                 iv_home.setImageResource(R.mipmap.home_activeicon);
-                tv_home.setTextColor(getResources().getColor(R.color.colorPrimary));
+                //tv_home.setTextColor(getResources().getColor(R.color.colorPrimary));
                 break;
             case R.id.layout_discover:
                 changeFragment(new Discover_fragment());
                 setClickableFocus();
                 iv_discover.setImageResource(R.mipmap.search_active);
-                tv_discover.setTextColor(getResources().getColor(R.color.colorPrimary));
+                //tv_discover.setTextColor(getResources().getColor(R.color.colorPrimary));
                 break;
             case R.id.layout_video:
                 if(!isUploading) {
@@ -271,7 +268,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 changeFragment(new Notification_fragment());
                 setClickableFocus();
                 iv_notification.setImageResource(R.mipmap.notification_active);
-                tv_notification.setTextColor(getResources().getColor(R.color.colorPrimary));
+                //tv_notification.setTextColor(getResources().getColor(R.color.colorPrimary));
                 break;
             case R.id.layout_me:
                 if(sessionManagement.getValueFromPreference(SessionManagement.USERID)!=null) {
@@ -279,7 +276,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         changeFragment(new Me_Fragment());
                         setClickableFocus();
                         iv_me.setImageResource(R.mipmap.me_active);
-                        tv_me.setTextColor(getResources().getColor(R.color.colorPrimary));
+                        //tv_me.setTextColor(getResources().getColor(R.color.colorPrimary));
                     } else {
                         requestFilePermission();
                     }
@@ -355,6 +352,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case 120:
+                if(fragment instanceof onFilePermissionListenerForFragment)
+                    fragment.onRequestPermissionsResult(requestCode,permissions,grantResults);
+                break;
+            case 200:
                 if(fragment instanceof onFilePermissionListenerForFragment)
                     fragment.onRequestPermissionsResult(requestCode,permissions,grantResults);
                 break;

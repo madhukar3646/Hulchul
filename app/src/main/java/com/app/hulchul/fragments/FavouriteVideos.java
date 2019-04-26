@@ -154,6 +154,7 @@ public class FavouriteVideos extends Fragment implements FavouritesActivity.OnFa
     @Override
     public void onHashtagitemClick(ArrayList<VideoModel> discoverhashtagvideosList, int pos) {
         Intent intent=new Intent(getActivity(), PlayvideosCategorywise_Activity.class);
+        intent.putExtra("isFrom","favouritevideos");
         intent.putParcelableArrayListExtra("videos",discoverhashtagvideosList);
         intent.putExtra("position",pos);
         intent.putExtra("videosbasepath",videosbasepath);

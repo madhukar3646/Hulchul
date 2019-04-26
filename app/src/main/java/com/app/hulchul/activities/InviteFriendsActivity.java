@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -15,8 +16,13 @@ import com.app.hulchul.model.ContactsModel;
 import com.app.hulchul.utils.ConnectionDetector;
 import com.app.hulchul.utils.SessionManagement;
 import com.app.hulchul.utils.Utils;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -77,6 +83,10 @@ public class InviteFriendsActivity extends AppCompatActivity {
             public void run() {
                 Utils.dismissDialog();
                 inviteFriendsAdapter.notifyDataSetChanged();
+                Type listType = new TypeToken<List<ContactsModel>>() {}.getType();
+                Gson gson = new Gson();
+                String json = gson.toJson(contactsModelArrayList, listType);
+                Log.e("contacts string",""+json);
             }
         });
     }

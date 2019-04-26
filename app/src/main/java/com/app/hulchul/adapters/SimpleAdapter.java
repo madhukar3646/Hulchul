@@ -103,7 +103,7 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> 
                 holder.iv_like.setImageResource(R.mipmap.heart);
         }
 
-        if(modelArrayList.get(position).getFavouritestatus()!=null || !modelArrayList.get(position).getFavouritestatus().equalsIgnoreCase("null"))
+        if(modelArrayList.get(position).getFavouritestatus()!=null)
         {
             if (modelArrayList.get(position).getFavouritestatus().equalsIgnoreCase("0"))
                 holder.iv_favourite.setImageResource(R.mipmap.fav_a_w);
@@ -199,6 +199,14 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> 
             public void onClick(View view) {
                if(videoActionsListener!=null)
                    videoActionsListener.onAbuseClicked();
+            }
+        });
+
+        holder.layout_dubvideo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               if(videoActionsListener!=null)
+                   videoActionsListener.onDubsmashClicked(modelArrayList.get(position));
             }
         });
     }
@@ -321,6 +329,7 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> 
         void onShareClicked(String videourl,SimplePlayerViewHolder holder,String videoid,int pos);
         void onAbuseClicked();
         void onHashtagclicked(String hashtag);
+        void onDubsmashClicked(VideoModel model);
     }
 
     private ArrayList<String> getHashtagslist(String tagsdata)

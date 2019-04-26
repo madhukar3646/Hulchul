@@ -210,6 +210,8 @@ public class SoundsSearchresultsActivity extends AppCompatActivity implements Vi
     @Override
     public void onHashtagitemClick(ArrayList<VideoModel> discoverhashtagvideosList, int pos) {
         Intent intent=new Intent(SoundsSearchresultsActivity.this, PlayvideosCategorywise_Activity.class);
+        intent.putExtra("isFrom","sounds");
+        intent.putExtra("songid",songid);
         intent.putParcelableArrayListExtra("videos",discoverhashtagvideosList);
         intent.putExtra("position",pos);
         intent.putExtra("videosbasepath",videosbasepath);

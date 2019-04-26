@@ -34,7 +34,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="50dp"
         >
 
         <RelativeLayout
@@ -143,12 +143,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_above="@+id/layout_abuse"
+            android:layout_alignParentBottom="true"
             android:layout_marginTop="5dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="20dp"
             android:layout_alignParentRight="true"
             >
-
 
             <LinearLayout
                 android:id="@+id/layout_favourites"
@@ -224,23 +224,37 @@
                     android:textSize="12sp"
                     android:layout_marginBottom="10dp"/>
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layout_abuse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="vertical"
+                android:layout_alignParentRight="true"
+                >
 
-        </LinearLayout>
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@mipmap/error"/>
 
-        <LinearLayout
-            android:id="@+id/layout_abuse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_above="@+id/layout_commentsandtags"
-            android:layout_margin="10dp"
-            android:layout_alignParentRight="true"
-            >
+            </LinearLayout>
 
-            <ImageView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:src="@mipmap/error"/>
+            <LinearLayout
+                android:id="@+id/layout_dubvideo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="vertical"
+                android:layout_alignParentRight="true"
+                >
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@mipmap/video_white"/>
+
+            </LinearLayout>
 
         </LinearLayout>
         <LinearLayout
@@ -301,6 +315,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@+id/layout_sidevertical"
             android:orientation="vertical"
             android:weightSum="2"
             android:paddingTop="10dp"

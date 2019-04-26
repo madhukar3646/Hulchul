@@ -23,7 +23,7 @@
     <LinearLayout
         android:id="@+id/layout_bottomicons"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:weightSum="5"
@@ -52,7 +52,8 @@
                 android:textColor="@android:color/white"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_gravity="center"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:singleLine="true"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/layout_discover"
@@ -73,12 +74,13 @@
                 android:id="@+id/tv_discover"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Discover"
+                android:text="Browse"
                 android:textSize="12sp"
                 android:textColor="@android:color/white"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_gravity="center"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:singleLine="true"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/layout_video"
@@ -104,7 +106,8 @@
                 android:textColor="@android:color/white"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_gravity="center"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:singleLine="true"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/layout_notification"
@@ -130,7 +133,8 @@
                 android:textColor="@android:color/white"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_gravity="center"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:singleLine="true"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/layout_me"
@@ -151,12 +155,13 @@
                 android:id="@+id/tv_me"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Me"
+                android:text="You"
                 android:textSize="12sp"
                 android:textColor="@android:color/white"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_gravity="center"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:singleLine="true"/>
         </LinearLayout>
     </LinearLayout>
 
