@@ -318,7 +318,7 @@
             android:layout_alignParentBottom="true"
             android:layout_toLeftOf="@+id/layout_sidevertical"
             android:orientation="vertical"
-            android:weightSum="2"
+            android:weightSum="3"
             android:paddingTop="10dp"
             >
 
@@ -408,6 +408,38 @@
                     android:id="@+id/rv_hashtagslist">
 
                 </android.support.v7.widget.RecyclerView>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/iv_musicicon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_margin="5dp"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/ic_launcher"/>
+                <TextView
+                    android:id="@+id/tv_musicscroll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/iv_musicicon"
+                    android:text="music scrolling dgdsg dsgs sdgsg sge gtegt sdewrqw okay"
+                    android:textColor="@android:color/white"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit ="marquee_forever"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"/>
 
             </RelativeLayout>
 
