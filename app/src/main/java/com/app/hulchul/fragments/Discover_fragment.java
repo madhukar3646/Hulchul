@@ -19,6 +19,8 @@ import com.app.hulchul.adapters.HashtagsthumnailsAdapter;
 import com.app.hulchul.adapters.TrendingHashtagsBannersAdapter;
 import com.app.hulchul.model.Discoverhashtags;
 import com.app.hulchul.model.Discoverresponse;
+import com.app.hulchul.model.Hashtagbanner;
+import com.app.hulchul.model.TrendingHashtagsBannersResponse;
 import com.app.hulchul.model.VideoModel;
 import com.app.hulchul.presenter.RetrofitApis;
 import com.app.hulchul.utils.ConnectionDetector;
@@ -47,6 +49,7 @@ public class Discover_fragment extends Fragment implements View.OnClickListener,
     private SessionManagement sessionManagement;
     private ConnectionDetector connectionDetector;
     private ArrayList<Discoverhashtags> discoverhashtagsList=new ArrayList<>();
+    private ArrayList<Hashtagbanner> hashtagbannersList=new ArrayList<Hashtagbanner>();
     private String userid="",videosbasepath,musicbasepath;
 
     @Override
@@ -68,7 +71,7 @@ public class Discover_fragment extends Fragment implements View.OnClickListener,
 
         layout_search.setOnClickListener(this);
         rv_trendinghashtags.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false));
-        adapter=new TrendingHashtagsBannersAdapter(getActivity());
+        adapter=new TrendingHashtagsBannersAdapter(getActivity(),hashtagbannersList);
         rv_trendinghashtags.setAdapter(adapter);
 
         rv_hashtagslistcontainer.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL, false));
@@ -78,9 +81,51 @@ public class Discover_fragment extends Fragment implements View.OnClickListener,
         rv_hashtagslistcontainer.setAdapter(hashtagsCategoriesAdapter);
 
         if(connectionDetector.isConnectingToInternet())
+        {
             getDiscoverhashtagsdata();
+            getHashTrandingBanners();
+
+        }
         else
             Utils.callToast(getActivity(),getResources().getString(R.string.internet_toast));
+    }
+
+    private void getHashTrandingBanners() {
+        hashtagbannersList.clear();
+//        Utils.showDialog(getActivity());
+        Call<TrendingHashtagsBannersResponse> call= RetrofitApis.Factory.createTemp(getActivity()).getTrendingTags();
+         call.enqueue(new Callback<TrendingHashtagsBannersResponse>() {
+             @Override
+             public void onResponse(Call<TrendingHashtagsBannersResponse> call, Response<TrendingHashtagsBannersResponse> response) {
+//                 Utils.dismissDialog();
+                 TrendingHashtagsBannersResponse body=response.body();
+                 if(body!=null) {
+                     if (body.getStatus()==0) {
+                         if(body.getHashtagbanners()!=null  && body.getHashtagbanners().size() > 0) {
+                             hashtagbannersList.addAll(body.getHashtagbanners());
+
+                         }
+                     } else {
+                         Utils.callToast(getActivity(), body.getMessage());
+                     }
+                 }
+                 else {
+                     Utils.callToast(getActivity(), "Null data came");
+                 }
+                 adapter.notifyDataSetChanged();
+                 if(adapter.getItemCount()>0)
+                 {
+                     rv_trendinghashtags.setVisibility(View.VISIBLE);
+                 }
+             }
+
+             @Override
+             public void onFailure(Call<TrendingHashtagsBannersResponse> call, Throwable t) {
+//                 Utils.dismissDialog();
+                 Log.e("hasTagBanner onFailure",""+t.getMessage());
+             }
+         });
+
     }
 
     @Override

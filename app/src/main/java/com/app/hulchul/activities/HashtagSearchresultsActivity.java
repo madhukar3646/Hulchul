@@ -28,6 +28,7 @@ import com.app.hulchul.presenter.RetrofitApis;
 import com.app.hulchul.utils.ConnectionDetector;
 import com.app.hulchul.utils.SessionManagement;
 import com.app.hulchul.utils.Utils;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -63,12 +64,14 @@ public class HashtagSearchresultsActivity extends AppCompatActivity implements V
     TextView tv_nodata;
     @BindView(R.id.iv_favourite)
     ImageView iv_favourite;
+    @BindView(R.id.tag_image)
+    ImageView tag_image;
     private String hashtag,videosbasepath,musicbasepath,userid="";
     private HashtagsGridAdapter adapter;
     private ArrayList<VideoModel> discoverhashtagvideosList=new ArrayList<>();
     private ConnectionDetector connectionDetector;
     private SessionManagement sessionManagement;
-    private boolean isUploading=false;
+    private boolean isUploading=false,isFaverate=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +84,11 @@ public class HashtagSearchresultsActivity extends AppCompatActivity implements V
     private void init()
     {
         hashtag=getIntent().getStringExtra("hashtag");
+           if(getIntent().hasExtra("image")) {
+               String imageUrl = getIntent().getStringExtra("image");
+               Picasso.with(this).load(imageUrl).error(R.drawable.hash_post).into(tag_image);
+           }
+
         connectionDetector=new ConnectionDetector(HashtagSearchresultsActivity.this);
         sessionManagement=new SessionManagement(HashtagSearchresultsActivity.this);
         if(sessionManagement.getValueFromPreference(SessionManagement.USERID)!=null)
@@ -143,11 +151,17 @@ public class HashtagSearchresultsActivity extends AppCompatActivity implements V
                             adapter.setVideobasepath(videosbasepath);
                             adapter.notifyDataSetChanged();
                             tv_nodata.setVisibility(View.GONE);
+
+
                         }
                     } else {
-                        if(discoverhashtagvideosList.size()==0) {
-                            tv_nodata.setVisibility(View.VISIBLE);
-                            Utils.callToast(HashtagSearchresultsActivity.this, body.getMessage());
+
+                    }
+
+                    if(body.getFavouriteStatus()!=null){
+                        if( body.getFavouriteStatus().equalsIgnoreCase("1")){
+                            iv_favourite.setImageResource(R.mipmap.fav_a_r);
+                            isFaverate=true;
                         }
                     }
                 }
@@ -294,6 +308,11 @@ public class HashtagSearchresultsActivity extends AppCompatActivity implements V
                 SignupResponse body=response.body();
                 if(body.getStatus()==1){
                   iv_favourite.setImageResource(R.mipmap.fav_a_r);
+                  if(isFaverate)
+                  {
+                      iv_favourite.setImageResource(R.mipmap.fav_a_w);
+                      isFaverate=false;
+                  }
                 }
                 else {
 

@@ -10,6 +10,7 @@ import com.app.hulchul.model.ProfilepicUpdateResponse;
 import com.app.hulchul.model.SearchUserResponse;
 import com.app.hulchul.model.SoundsModuleResponse;
 import com.app.hulchul.model.Soundsearchresponse;
+import com.app.hulchul.model.TrendingHashtagsBannersResponse;
 import com.app.hulchul.model.ViewProfileResponse;
 import com.app.hulchul.servicerequestmodels.ChangepasswordRequest;
 import com.app.hulchul.servicerequestmodels.CommentPostRequest;
@@ -160,9 +161,10 @@ public interface RetrofitApis {
 
     @POST("comments/likeComment/{commentId}")
     Call<CommentPostResponse> likeCommentService(@Path("commentId") String commentid, @Body UseridPostRequest useridpostrequest);
+     @FormUrlEncoded
 
-    @GET("listNotifications")
-    Call<NotificationsResponse> notificationsService();
+    @POST("listNotifications")
+    Call<NotificationsResponse> notificationsService(@Field("userId") String userId,@Field("limit") String limit,@Field("offset") String offset);
 
     @Multipart
     @POST("hprofilepic")
@@ -194,6 +196,9 @@ public interface RetrofitApis {
     @FormUrlEncoded
     @POST("search")
     Call<Discoverresponse> discoverService(@Field("userId") String userid);
+
+    @POST("trendingHashTag")
+    Call<TrendingHashtagsBannersResponse> getTrendingTags();
 
     @FormUrlEncoded
     @POST("videoBySong")

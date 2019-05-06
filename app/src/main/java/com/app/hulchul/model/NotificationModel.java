@@ -14,9 +14,34 @@ public class NotificationModel {
     @SerializedName("userId")
     @Expose
     private String userId;
+
+    @SerializedName("type")
+    @Expose
+    String type;
+
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
+
+    @SerializedName("video")
+    @Expose
+    private String video;
+
+    @SerializedName("photo")
+    @Expose
+    private String photo;
+
+    @SerializedName("fullName")
+    @Expose
+    private String fullName;
+
+    @SerializedName("comment")
+    @Expose
+    private String comment;
+
+
+
+
 
     public String getId() {
         return id;
@@ -48,5 +73,49 @@ public class NotificationModel {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getVideo() {
+        return video;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getComment() {
+        if(comment==null)
+            comment="";
+        else if(comment.equalsIgnoreCase("null"))
+            comment="";
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

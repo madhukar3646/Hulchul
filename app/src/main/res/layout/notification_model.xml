@@ -16,7 +16,9 @@
         android:layout_margin="10dp"
         android:src="@mipmap/sampleimage"
         app:civ_border_width="2dp"
-        app:civ_border_color="#e7d1ff"/>
+        app:civ_border_color="#e7d1ff"
+        android:layout_centerVertical="true"/>
+
 
     <LinearLayout
         android:id="@+id/layout_content"
@@ -26,13 +28,24 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
         android:orientation="horizontal"
-        android:layout_centerVertical="true">
+        android:layout_centerVertical="true"
+        android:gravity="center">
 
         <TextView
             android:id="@+id/tv_notification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="#Satya and Many other people liked your videos"
+            />
+        <ImageView
+            android:id="@+id/im_video_thumb"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="10dp"
+            android:scaleType="centerCrop"
+            android:layout_gravity="top|right"
+            android:src="@mipmap/sampleimage"
             />
     </LinearLayout>
     </RelativeLayout>

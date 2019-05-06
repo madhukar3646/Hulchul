@@ -17,6 +17,10 @@ public class NotificationsResponse {
     @Expose
     private List<NotificationModel> data = null;
 
+    @SerializedName("totalcount")
+    @Expose
+    private Integer totalcount;
+
     public String getMessage() {
         return message;
     }
@@ -39,5 +43,13 @@ public class NotificationsResponse {
 
     public void setData(List<NotificationModel> data) {
         this.data = data;
+    }
+
+    public Integer getTotalcount() {
+        return totalcount;
+    }
+
+    public void setTotalcount(Integer totalcount) {
+        this.totalcount = totalcount;
     }
 }

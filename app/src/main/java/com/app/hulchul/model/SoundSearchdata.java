@@ -19,10 +19,10 @@ public class SoundSearchdata {
     private String duration;
     @SerializedName("status")
     @Expose
-    private Object status;
+    private String status;
     @SerializedName("createAt")
     @Expose
-    private Object createAt;
+    private String createAt;
 
     public String getSongId() {
         return songId;
@@ -56,19 +56,19 @@ public class SoundSearchdata {
         this.duration = duration;
     }
 
-    public Object getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Object status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public Object getCreateAt() {
+    public String getCreateAt() {
         return createAt;
     }
 
-    public void setCreateAt(Object createAt) {
+    public void setCreateAt(String createAt) {
         this.createAt = createAt;
     }
 }

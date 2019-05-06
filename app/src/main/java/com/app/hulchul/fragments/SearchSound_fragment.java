@@ -129,6 +129,7 @@ public class SearchSound_fragment extends Fragment implements SearchActivity.OnS
         Intent intent=new Intent(getActivity(), SoundsSearchresultsActivity.class);
         intent.putExtra("soundname",soundSearchdata.getName());
         intent.putExtra("songid",soundSearchdata.getSongId());
+        intent.putExtra("status",soundSearchdata.getStatus());
         startActivity(intent);
     }
 }

@@ -86,7 +86,6 @@ public class PlayvideosCategorywise_Activity extends AppCompatActivity implement
 
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
-
         init();
     }
 

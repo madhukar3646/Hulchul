@@ -22,7 +22,7 @@ import java.util.StringTokenizer;
 
 import static com.app.hulchul.utils.ApiUrls.VIDEOSHAREBASEPATH;
 
-public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> implements HomeScreenHashtagsAdapter.OnHashtagClickListener {
+public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> implements HomeScreenHashtagsAdapter.OnHashtagClickListener{
 
     private ArrayList<VideoModel> modelArrayList;
     private Context context;
@@ -30,6 +30,7 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> 
     private VideoActionsListener videoActionsListener;
     private String videobasepath;
     private String audiobasepath;
+    public int position;
 
     public SimpleAdapter(Context context, ArrayList<VideoModel> modelArrayList)
     {
@@ -51,29 +52,32 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> 
     }
 
     @Override public void onBindViewHolder(final SimplePlayerViewHolder holder, final int position) {
-         holder.bind(Uri.parse(videobasepath+modelArrayList.get(position).getVideo()) /* FIXME use real data */);
-        if(modelArrayList.get(position).getSongfile()==null || modelArrayList.get(position).getSongfile().equalsIgnoreCase("null"))
+        this.position=position;
+        VideoModel videoModel=modelArrayList.get(position);
+        Log.e("video url is",videoModel.getVideo());
+        holder.bind(Uri.parse(videobasepath+videoModel.getVideo()) /* FIXME use real data */);
+        if(videoModel.getSongfile()==null || videoModel.getSongfile().equalsIgnoreCase("null"))
             holder.bindMusic(null);
         else
-            holder.bindMusic(audiobasepath+ modelArrayList.get(position).getSongfile());
+            holder.bindMusic(audiobasepath+ videoModel.getSongfile());
 
-        ArrayList<String> tagslist=getHashtagslist(modelArrayList.get(position).getHashTag());
+        ArrayList<String> tagslist=getHashtagslist(videoModel.getHashTag());
         HomeScreenHashtagsAdapter hashtagsAdapter=new HomeScreenHashtagsAdapter(context,tagslist);
         hashtagsAdapter.setOnHashtagClickListener(this);
         holder.rv_hashtagslist.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         holder.rv_hashtagslist.setAdapter(hashtagsAdapter);
 
-        Picasso.with(context).load(ApiUrls.PROFILEBASEPATH+modelArrayList.get(position).getPhoto()).placeholder(R.mipmap.placeholder)
+        Picasso.with(context).load(ApiUrls.PROFILEBASEPATH+videoModel.getPhoto()).placeholder(R.mipmap.placeholder)
                 .error(R.mipmap.placeholder)
                 .into(holder.profile_image);
-        if(modelArrayList.get(position).getFullName()!=null && !modelArrayList.get(position).getFullName().equalsIgnoreCase("null"))
+        if(videoModel.getFullName()!=null && !videoModel.getFullName().equalsIgnoreCase("null"))
             holder.tv_profilename.setText(modelArrayList.get(position).getFullName());
         else
-          holder.tv_profilename.setText("@User"+modelArrayList.get(position).getUserId().substring(modelArrayList.get(position).getUserId().length()-4));
+          holder.tv_profilename.setText("@User"+videoModel.getUserId().substring(videoModel.getUserId().length()-4));
 
-        if(modelArrayList.get(position).getComments()!=null && modelArrayList.get(position).getComments().size()>0)
+        if(videoModel.getComments()!=null && videoModel.getComments().size()>0)
         {
-            HomescreenCommentModel model=modelArrayList.get(position).getComments().get(0);
+            HomescreenCommentModel model=videoModel.getComments().get(0);
             String com_userid=model.getUserId();
             holder.latest1_commentfrom.setText("@user"+com_userid.substring(com_userid.length()-4));
             holder.latest1_comment.setText(model.getComment());
@@ -82,9 +86,9 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> 
             holder.latest1_commentfrom.setVisibility(View.GONE);
             holder.latest1_comment.setVisibility(View.GONE);
         }
-        if(modelArrayList.get(position).getComments()!=null && modelArrayList.get(position).getComments().size()>1)
+        if(videoModel.getComments()!=null && videoModel.getComments().size()>1)
         {
-            HomescreenCommentModel model=modelArrayList.get(position).getComments().get(1);
+            HomescreenCommentModel model=videoModel.getComments().get(1);
             String com_userid=model.getUserId();
             holder.latest2_commentfrom.setText("@user"+com_userid.substring(com_userid.length()-4));
             holder.latest2_comment.setText(model.getComment());
@@ -94,31 +98,31 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> 
             holder.latest2_comment.setVisibility(View.GONE);
         }
 
-        holder.tv_likescount.setText(modelArrayList.get(position).getLikes());
-        if(modelArrayList.get(position).getLikestatus()!=null)
+        holder.tv_likescount.setText(videoModel.getLikes());
+        if(videoModel.getLikestatus()!=null)
         {
-            if (modelArrayList.get(position).getLikestatus().equalsIgnoreCase("0"))
+            if (videoModel.getLikestatus().equalsIgnoreCase("0"))
                 holder.iv_like.setImageResource(R.mipmap.heart_white);
             else
                 holder.iv_like.setImageResource(R.mipmap.heart);
         }
 
-        if(modelArrayList.get(position).getFavouritestatus()!=null)
+        if(videoModel.getFavouritestatus()!=null)
         {
-            if (modelArrayList.get(position).getFavouritestatus().equalsIgnoreCase("0"))
+            if (videoModel.getFavouritestatus().equalsIgnoreCase("0"))
                 holder.iv_favourite.setImageResource(R.mipmap.fav_a_w);
             else
                 holder.iv_favourite.setImageResource(R.mipmap.fav_a_r);
         }
 
-        if((modelArrayList.get(position).getFollowersCount()==null || modelArrayList.get(position).getFollowersCount().equalsIgnoreCase("null")))
+        if((videoModel.getFollowersCount()==null || videoModel.getFollowersCount().equalsIgnoreCase("null")))
           holder.tv_profilelikescount.setText("0");
         else
-          holder.tv_profilelikescount.setText(modelArrayList.get(position).getFollowersCount());
+          holder.tv_profilelikescount.setText(videoModel.getFollowersCount());
 
-        if(modelArrayList.get(position).getFollwerstatus()!=null)
+        if(videoModel.getFollwerstatus()!=null)
         {
-            if (modelArrayList.get(position).getFollwerstatus().equalsIgnoreCase("0")) {
+            if (videoModel.getFollwerstatus().equalsIgnoreCase("0")) {
                 holder.iv_addfriend.setImageResource(R.mipmap.add_friendicon);
                 holder.iv_heart.setImageResource(R.mipmap.heart_white);
             } else {
@@ -127,12 +131,12 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> 
             }
         }
 
-        if(modelArrayList.get(position).getShareCount()==null || modelArrayList.get(position).getShareCount().equalsIgnoreCase("null"))
+        if(videoModel.getShareCount()==null || videoModel.getShareCount().equalsIgnoreCase("null"))
             holder.tv_sharescount.setText("0");
         else
-            holder.tv_sharescount.setText(modelArrayList.get(position).getShareCount());
+            holder.tv_sharescount.setText(videoModel.getShareCount());
 
-        if(modelArrayList.get(position).getCommentCount()==null || modelArrayList.get(position).getCommentCount().equalsIgnoreCase("null"))
+        if(videoModel.getCommentCount()==null || videoModel.getCommentCount().equalsIgnoreCase("null"))
             holder.tv_commentscount.setText("0");
         else
             holder.tv_commentscount.setText(modelArrayList.get(position).getCommentCount());
@@ -159,7 +163,7 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> 
             }
         });
 
-        holder.layout_like.setOnClickListener(new View.OnClickListener() {
+       holder.layout_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(videoActionsListener!=null && modelArrayList.get(position).getLikestatus()!=null)
@@ -179,10 +183,10 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> 
             }
         });
 
-        holder.layout_share.setOnClickListener(new View.OnClickListener() {
+       holder.layout_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*"http://testingmadesimple.org/training_app/uploads/userVideos/"*/
+                //*"http://testingmadesimple.org/training_app/uploads/userVideos/"*//*
                 if(videoActionsListener!=null)
                     videoActionsListener.onShareClicked(VIDEOSHAREBASEPATH + modelArrayList.get(position).getVideo(), holder, modelArrayList.get(position).getId(), position);
             }

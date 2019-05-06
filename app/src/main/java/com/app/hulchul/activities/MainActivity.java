@@ -265,9 +265,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.layout_notification:
-                changeFragment(new Notification_fragment());
-                setClickableFocus();
-                iv_notification.setImageResource(R.mipmap.notification_active);
+                if(sessionManagement.getValueFromPreference(SessionManagement.USERID)!=null) {
+                    if (checkingFilePermissions()) {
+                        changeFragment(new Notification_fragment());
+                        setClickableFocus();
+                        iv_notification.setImageResource(R.mipmap.notification_active);
+                        //tv_me.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    } else {
+                        requestFilePermission();
+                    }
+                }  else {
+                    startActivity(new Intent(MainActivity.this, LoginLandingActivity.class));
+                }
+
+
                 //tv_notification.setTextColor(getResources().getColor(R.color.colorPrimary));
                 break;
             case R.id.layout_me:

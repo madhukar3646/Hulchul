@@ -145,6 +145,7 @@ public class FavouriteSounds extends Fragment implements FavouritesActivity.OnFa
         Intent intent=new Intent(getActivity(), SoundsSearchresultsActivity.class);
         intent.putExtra("soundname",soundSearchdata.getName());
         intent.putExtra("songid",soundSearchdata.getSongId());
+        intent.putExtra("status",soundSearchdata.getStatus());
         startActivity(intent);
     }
 }

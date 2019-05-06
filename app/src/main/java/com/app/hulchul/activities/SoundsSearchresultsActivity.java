@@ -68,11 +68,12 @@ public class SoundsSearchresultsActivity extends AppCompatActivity implements Vi
     ImageView iv_favourite;
     private boolean isUploading=false;
 
-    private String soundname,songid,videosbasepath,musicbasepath,userid="";
+    private String soundname,songid,videosbasepath,musicbasepath,userid="",status;
     private HashtagsGridAdapter adapter;
     private ArrayList<VideoModel> discoverhashtagvideosList=new ArrayList<>();
     private ConnectionDetector connectionDetector;
     private SessionManagement sessionManagement;
+    private boolean isFavorite=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +87,13 @@ public class SoundsSearchresultsActivity extends AppCompatActivity implements Vi
     {
         soundname=getIntent().getStringExtra("soundname");
         songid=getIntent().getStringExtra("songid");
+        if(getIntent().hasExtra("status"))
+        {
+            status=getIntent().getStringExtra("status");
+            if(status!=null)
+            if(status.equalsIgnoreCase("1"))
+                iv_favourite.setImageResource(R.mipmap.fav_a_r);
+        }
 
         connectionDetector=new ConnectionDetector(SoundsSearchresultsActivity.this);
         sessionManagement=new SessionManagement(SoundsSearchresultsActivity.this);
@@ -186,11 +194,22 @@ public class SoundsSearchresultsActivity extends AppCompatActivity implements Vi
                             adapter.setVideobasepath(videosbasepath);
                             adapter.notifyDataSetChanged();
                             tv_nodata.setVisibility(View.GONE);
+
+
                         }
                     } else {
                         if(discoverhashtagvideosList.size()==0) {
+
+
                             tv_nodata.setVisibility(View.VISIBLE);
                             Utils.callToast(SoundsSearchresultsActivity.this, body.getMessage());
+                        }
+                    }
+
+                    if(body.getFavouriteStatus()!=null){
+                        if( body.getFavouriteStatus().equalsIgnoreCase("1")){
+                            iv_favourite.setImageResource(R.mipmap.fav_a_r);
+                            isFavorite=true;
                         }
                     }
                 }
@@ -300,6 +319,10 @@ public class SoundsSearchresultsActivity extends AppCompatActivity implements Vi
                 SignupResponse body=response.body();
                 if(body.getStatus()==1){
                     iv_favourite.setImageResource(R.mipmap.fav_a_r);
+                    if(isFavorite){
+                        iv_favourite.setImageResource(R.mipmap.fav_a_w);
+                        isFavorite=false;
+                    }
                 }
                 else {
 

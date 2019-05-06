@@ -361,7 +361,7 @@ public class SelectSoundsActivity extends AppCompatActivity implements View.OnCl
         if(connectionDetector.isConnectingToInternet())
         {
             if(sessionManagement.getValueFromPreference(SessionManagement.USERID)!=null)
-              addTofavourites(sessionManagement.getValueFromPreference(SessionManagement.USERID),"song",song.getSongId(),pos);
+                addTofavourites(sessionManagement.getValueFromPreference(SessionManagement.USERID),"song",song.getSongId(),pos);
             else
                 startActivity(new Intent(SelectSoundsActivity.this,LoginLandingActivity.class));
         }

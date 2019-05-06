@@ -1,9 +1,12 @@
 package com.app.hulchul.adapters;
 
+import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -80,6 +83,8 @@ public class SimplePlayerViewHolder extends RecyclerView.ViewHolder implements T
     ImageView iv_favourite;
     @BindView(R.id.layout_dubvideo)
     LinearLayout layout_dubvideo;
+    @BindView(R.id.layout_doubletap)
+    RelativeLayout layout_doubletap;
 
     SimpleExoPlayerViewHelper helper;
     Uri mediaUri;

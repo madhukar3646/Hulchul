@@ -166,6 +166,7 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
                 }
             }
         });
+        //container.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), container,adapter));
     }
 
     @Override

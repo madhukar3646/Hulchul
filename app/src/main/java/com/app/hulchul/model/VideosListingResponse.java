@@ -27,6 +27,10 @@ public class VideosListingResponse {
     @Expose
     private String songurl;
 
+    @SerializedName("FavouriteStatus")
+    @Expose
+    String favouriteStatus;
+
     public String getMessage() {
         return message;
     }
@@ -73,5 +77,13 @@ public class VideosListingResponse {
 
     public void setTotalcount(Integer totalcount) {
         this.totalcount = totalcount;
+    }
+
+    public String getFavouriteStatus() {
+        return favouriteStatus;
+    }
+
+    public void setFavouriteStatus(String favouriteStatus) {
+        this.favouriteStatus = favouriteStatus;
     }
 }

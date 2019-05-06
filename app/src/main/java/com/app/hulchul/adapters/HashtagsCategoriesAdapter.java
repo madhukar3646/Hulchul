@@ -87,7 +87,6 @@ public class HashtagsCategoriesAdapter extends RecyclerView.Adapter<HashtagsCate
         holder.layout_viewall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if(onHashtagViewAllListener!=null)
                   onHashtagViewAllListener.onHashtagViewAll(discoverhashtagsList.get(position));
             }
