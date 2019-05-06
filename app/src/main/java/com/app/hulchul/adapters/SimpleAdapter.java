@@ -13,6 +13,7 @@ import com.app.hulchul.R;
 import com.app.hulchul.model.HomescreenCommentModel;
 import com.app.hulchul.model.VideoModel;
 import com.app.hulchul.utils.ApiUrls;
+import com.app.hulchul.utils.RecyclerviewTapListeners;
 import com.app.hulchul.utils.SessionManagement;
 import com.app.hulchul.utils.Utils;
 import com.squareup.picasso.Picasso;
@@ -22,7 +23,7 @@ import java.util.StringTokenizer;
 
 import static com.app.hulchul.utils.ApiUrls.VIDEOSHAREBASEPATH;
 
-public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> implements HomeScreenHashtagsAdapter.OnHashtagClickListener{
+public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> implements HomeScreenHashtagsAdapter.OnHashtagClickListener, RecyclerviewTapListeners {
 
     private ArrayList<VideoModel> modelArrayList;
     private Context context;
@@ -321,6 +322,24 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> 
     public void onHashtagclicked(String hashtag) {
        if(videoActionsListener!=null)
            videoActionsListener.onHashtagclicked(hashtag);
+    }
+
+    @Override
+    public void onDoubletap(SimplePlayerViewHolder holder, int position) {
+        if(videoActionsListener!=null && modelArrayList.get(position).getLikestatus()!=null)
+        {
+            videoActionsListener.onLikeClicked(holder,modelArrayList.get(position).getId(),position);
+        }
+    }
+
+    @Override
+    public void onLongClick(SimplePlayerViewHolder holder, int position) {
+
+    }
+
+    @Override
+    public void onClick(SimplePlayerViewHolder holder, int position) {
+
     }
 
     public interface VideoActionsListener

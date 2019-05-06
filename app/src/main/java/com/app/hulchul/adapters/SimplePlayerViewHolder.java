@@ -265,4 +265,6 @@ public class SimplePlayerViewHolder extends RecyclerView.ViewHolder implements T
       play();
       Log.e("on completed","on completed");
     }
+
+
 }

@@ -44,6 +44,7 @@ import com.app.hulchul.model.VideoModel;
 import com.app.hulchul.model.VideosListingResponse;
 import com.app.hulchul.presenter.RetrofitApis;
 import com.app.hulchul.utils.ConnectionDetector;
+import com.app.hulchul.utils.RecyclerTouchListener;
 import com.app.hulchul.utils.SessionManagement;
 import com.app.hulchul.utils.Utils;
 
@@ -166,7 +167,7 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
                 }
             }
         });
-        //container.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), container,adapter));
+        container.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), container,adapter));
     }
 
     @Override
