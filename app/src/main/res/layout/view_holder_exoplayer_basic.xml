@@ -147,7 +147,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="10dp"
             android:layout_alignParentRight="true"
             >
 
@@ -241,7 +241,7 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/layout_dubvideo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -251,11 +251,22 @@
                 >
 
                 <ImageView
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:src="@mipmap/video_white"/>
+                    android:id="@+id/iv_musicgif"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/soundgificon"
+                    />
 
-            </LinearLayout>
+                <de.hdodenhof.circleimageview.CircleImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/iv_musicprofile"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@mipmap/sampleimage"
+                    android:layout_centerInParent="true"
+                    app:civ_border_color="@android:color/transparent"/>
+
+            </RelativeLayout>
 
         </LinearLayout>
         <LinearLayout
@@ -413,7 +424,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="80dp"
+                android:layout_marginBottom="10dp"
                 android:layout_weight="1"
                 android:layout_gravity="center_vertical"
                 android:visibility="visible">
@@ -434,12 +446,13 @@
                     android:textColor="@android:color/white"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"
+                    android:singleLine="true"
                     android:ellipsize="marquee"
                     android:marqueeRepeatLimit ="marquee_forever"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:scrollHorizontally="true"
-                    android:singleLine="true"/>
+                    />
 
             </RelativeLayout>
 

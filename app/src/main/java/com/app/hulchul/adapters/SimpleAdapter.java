@@ -1,6 +1,8 @@
 package com.app.hulchul.adapters;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,14 +10,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.app.hulchul.R;
+import com.app.hulchul.activities.LoginLandingActivity;
+import com.app.hulchul.activities.SettingsActivity;
 import com.app.hulchul.model.HomescreenCommentModel;
 import com.app.hulchul.model.VideoModel;
 import com.app.hulchul.utils.ApiUrls;
 import com.app.hulchul.utils.RecyclerviewTapListeners;
 import com.app.hulchul.utils.SessionManagement;
 import com.app.hulchul.utils.Utils;
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -71,6 +82,24 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> 
         Picasso.with(context).load(ApiUrls.PROFILEBASEPATH+videoModel.getPhoto()).placeholder(R.mipmap.placeholder)
                 .error(R.mipmap.placeholder)
                 .into(holder.profile_image);
+
+        Glide.with(context).load(R.drawable.soundgificon).placeholder(R.mipmap.placeholder)
+                .error(R.mipmap.placeholder)
+                .into(holder.iv_musicgif);
+
+        Picasso.with(context).load(ApiUrls.PROFILEBASEPATH+videoModel.getPhoto()).placeholder(R.mipmap.placeholder)
+                .error(R.mipmap.placeholder)
+                .into(holder.iv_musicprofile);
+
+        RotateAnimation rotate = new RotateAnimation(
+                0, 360,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f
+        );
+        rotate.setDuration(4000);
+        rotate.setRepeatCount(Animation.INFINITE);
+        holder.iv_musicprofile.startAnimation(rotate);
+
         if(videoModel.getFullName()!=null && !videoModel.getFullName().equalsIgnoreCase("null"))
             holder.tv_profilename.setText(modelArrayList.get(position).getFullName());
         else
@@ -80,7 +109,10 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> 
         {
             HomescreenCommentModel model=videoModel.getComments().get(0);
             String com_userid=model.getUserId();
-            holder.latest1_commentfrom.setText("@user"+com_userid.substring(com_userid.length()-4));
+            if(videoModel.getFullName()!=null && !videoModel.getFullName().equalsIgnoreCase("null"))
+                holder.latest1_commentfrom.setText("@"+videoModel.getFullName());
+            else
+               holder.latest1_commentfrom.setText("@user"+com_userid.substring(com_userid.length()-4));
             holder.latest1_comment.setText(model.getComment());
         }
         else {
@@ -91,7 +123,10 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> 
         {
             HomescreenCommentModel model=videoModel.getComments().get(1);
             String com_userid=model.getUserId();
-            holder.latest2_commentfrom.setText("@user"+com_userid.substring(com_userid.length()-4));
+            if(videoModel.getFullName()!=null && !videoModel.getFullName().equalsIgnoreCase("null"))
+                holder.latest2_commentfrom.setText("@"+videoModel.getFullName());
+            else
+              holder.latest2_commentfrom.setText("@user"+com_userid.substring(com_userid.length()-4));
             holder.latest2_comment.setText(model.getComment());
         }
         else {
@@ -334,7 +369,7 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> 
 
     @Override
     public void onLongClick(SimplePlayerViewHolder holder, int position) {
-
+        displayLongclickDialog(holder,position);
     }
 
     @Override
@@ -366,5 +401,53 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> 
         }
 
         return tagslist;
+    }
+
+    private void displayLongclickDialog(SimplePlayerViewHolder holder,int position)
+    {
+        final Dialog dialog=new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.transparenthomescreendialog);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCancelable(true);
+
+        RelativeLayout layout_save=(RelativeLayout)dialog.findViewById(R.id.layout_save);
+        RelativeLayout layout_addtofavourites=(RelativeLayout)dialog.findViewById(R.id.layout_addtofavourites);
+        RelativeLayout layout_notinterested=(RelativeLayout)dialog.findViewById(R.id.layout_notinterested);
+
+        layout_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(videoActionsListener!=null) {
+                    dialog.dismiss();
+                    videoActionsListener.onShareClicked(VIDEOSHAREBASEPATH + modelArrayList.get(position).getVideo(), holder, modelArrayList.get(position).getId(), position);
+                }
+            }
+        });
+
+        layout_addtofavourites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(videoActionsListener!=null)
+                {
+                    dialog.dismiss();
+                    videoActionsListener.onFavouriteClicked(holder,modelArrayList.get(position).getId(),position);
+                }
+            }
+        });
+
+        layout_notinterested.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(videoActionsListener!=null) {
+                    dialog.dismiss();
+                    videoActionsListener.onAbuseClicked();
+                }
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
     }
 }

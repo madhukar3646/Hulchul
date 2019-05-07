@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -82,16 +83,22 @@ public class SimplePlayerViewHolder extends RecyclerView.ViewHolder implements T
     @BindView(R.id.iv_favourite)
     ImageView iv_favourite;
     @BindView(R.id.layout_dubvideo)
-    LinearLayout layout_dubvideo;
+    RelativeLayout layout_dubvideo;
     @BindView(R.id.layout_doubletap)
     RelativeLayout layout_doubletap;
+    @BindView(R.id.tv_musicscroll)
+    TextView tv_musicscroll;
+    @BindView(R.id.iv_musicgif)
+    ImageView iv_musicgif;
+    @BindView(R.id.iv_musicprofile)
+    CircleImageView iv_musicprofile;
 
     SimpleExoPlayerViewHelper helper;
     Uri mediaUri;
     boolean isPlay=true;
-    private MediaPlayer musicplayer;
+    public MediaPlayer musicplayer;
     private String musicpath;
-    private int musicposition=0;
+    public int musicposition=0;
 
     @BindView(R.id.rv_hashtagslist)
     RecyclerView rv_hashtagslist;
@@ -99,6 +106,7 @@ public class SimplePlayerViewHolder extends RecyclerView.ViewHolder implements T
     public SimplePlayerViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this,itemView);
+        tv_musicscroll.setSelected(true);
 
         card.setOnClickListener(new View.OnClickListener() {
             @Override
