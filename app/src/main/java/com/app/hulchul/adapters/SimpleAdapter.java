@@ -11,9 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -66,6 +69,7 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> 
     @Override public void onBindViewHolder(final SimplePlayerViewHolder holder, final int position) {
         this.position=position;
         VideoModel videoModel=modelArrayList.get(position);
+        holder.iv_likeanim.setVisibility(View.GONE);
         Log.e("video url is",videoModel.getVideo());
         holder.bind(Uri.parse(videobasepath+videoModel.getVideo()) /* FIXME use real data */);
         if(videoModel.getSongfile()==null || videoModel.getSongfile().equalsIgnoreCase("null"))
@@ -363,6 +367,9 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> 
     public void onDoubletap(SimplePlayerViewHolder holder, int position) {
         if(videoActionsListener!=null && modelArrayList.get(position).getLikestatus()!=null)
         {
+            holder.iv_likeanim.setVisibility(View.VISIBLE);
+            moveUp(holder.iv_likeanim);
+            //fadeOutAndHideImage(holder.iv_likeanim);
             videoActionsListener.onLikeClicked(holder,modelArrayList.get(position).getId(),position);
         }
     }
@@ -449,5 +456,47 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> 
         dialog.show();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+    }
+
+    private void fadeOutAndHideImage(final ImageView img)
+    {
+        Animation fadeOut = new AlphaAnimation(1, 0);
+        fadeOut.setInterpolator(new AccelerateInterpolator());
+        fadeOut.setDuration(1000);
+
+        fadeOut.setAnimationListener(new Animation.AnimationListener()
+        {
+            public void onAnimationEnd(Animation animation)
+            {
+                img.setVisibility(View.GONE);
+            }
+            public void onAnimationRepeat(Animation animation) {}
+            public void onAnimationStart(Animation animation) {}
+        });
+
+        img.startAnimation(fadeOut);
+    }
+
+    public void moveUp(final ImageView img){
+        Animation animation1 =
+                AnimationUtils.loadAnimation(context, R.anim.move_top);
+        img.startAnimation(animation1);
+        animation1.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                img.clearAnimation();
+                fadeOutAndHideImage(img);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
     }
 }

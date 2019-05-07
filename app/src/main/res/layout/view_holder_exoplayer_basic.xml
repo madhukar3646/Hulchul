@@ -245,7 +245,9 @@
                 android:id="@+id/layout_dubvideo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:orientation="vertical"
                 android:layout_alignParentRight="true"
                 >
@@ -457,6 +459,14 @@
             </RelativeLayout>
 
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_likeanim"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/heart"
+            android:visibility="gone"/>
     </RelativeLayout>
 
 </RelativeLayout>

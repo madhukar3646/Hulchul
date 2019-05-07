@@ -92,6 +92,8 @@ public class SimplePlayerViewHolder extends RecyclerView.ViewHolder implements T
     ImageView iv_musicgif;
     @BindView(R.id.iv_musicprofile)
     CircleImageView iv_musicprofile;
+    @BindView(R.id.iv_likeanim)
+    ImageView iv_likeanim;
 
     SimpleExoPlayerViewHelper helper;
     Uri mediaUri;
