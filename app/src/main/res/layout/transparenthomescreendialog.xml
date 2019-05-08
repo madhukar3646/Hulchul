@@ -34,7 +34,7 @@
                 android:id="@+id/iv_save"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@mipmap/ic_launcher"
+                android:src="@mipmap/save_round"
                 android:layout_centerHorizontal="true"/>
 
             <TextView
@@ -62,7 +62,7 @@
                 android:id="@+id/iv_addtofavourite"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@mipmap/ic_launcher"
+                android:src="@mipmap/fav_round"
                 android:layout_centerHorizontal="true"/>
 
             <TextView
@@ -89,7 +89,7 @@
                 android:id="@+id/iv_abuse"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@mipmap/ic_launcher"
+                android:src="@mipmap/abuse_round"
                 android:layout_centerHorizontal="true"/>
 
             <TextView

@@ -12,6 +12,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.app.hulchul.R;
 import com.app.hulchul.model.EffectsModel;
+import com.app.hulchul.utils.ApiUrls;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -27,6 +29,10 @@ public class VideoEffectsAdapter extends RecyclerView.Adapter<VideoEffectsAdapte
     private int width,height;
     private ArrayList<EffectsModel> effectsModelArrayList;
     private onEffectClickListener onEffectClickListener;
+    private int effectThumbnails[]={R.drawable.normal,R.drawable.bilateral,R.drawable.box_blur,R.drawable.bulge_distortion,
+                                    R.drawable.cga_color_space,R.drawable.gaussian_blur,R.drawable.glay_scale,R.drawable.invert,
+                                    R.drawable.lookup_table,R.drawable.monochrome,R.drawable.overlay,R.drawable.sepia,R.drawable.sharpen,
+                                    R.drawable.sphere_refraction,R.drawable.tone_curve,R.drawable.tone,R.drawable.vignette,R.drawable.weak_pixelin_clusion,R.drawable.filter_group};
 
     public VideoEffectsAdapter(Context context,ArrayList<EffectsModel> effectsModelArrayList)
     {
@@ -56,6 +62,10 @@ public class VideoEffectsAdapter extends RecyclerView.Adapter<VideoEffectsAdapte
     {
         final VideoEffectsAdapter.MyViewHolder myViewHolder=holder;
         EffectsModel model=effectsModelArrayList.get(position);
+        Picasso.with(context).load(effectThumbnails[position]).placeholder(R.mipmap.placeholder)
+                .error(R.mipmap.placeholder)
+                .into(holder.iv_filterimage);
+
         holder.tv_filtername.setText(model.getFiltername().toString());
         if(model.isSelected())
             holder.layout_filtercontainer.setBackgroundResource(R.drawable.border_primary);

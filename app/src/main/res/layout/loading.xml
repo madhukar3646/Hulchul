@@ -2,9 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/transparent"
-    android:gravity="center"
-    >
+    android:gravity="center">
     <ProgressBar
         android:indeterminate="true"
         style="?android:attr/progressBarStyleLarge"
@@ -12,5 +12,18 @@
         android:layout_height="40dp"
         android:layout_centerInParent="true"
         android:indeterminateDrawable="@drawable/custom_loader"
+        android:visibility="gone"
+        />
+    <com.zl.reik.dilatingdotsprogressbar.DilatingDotsProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:radius="5dp"
+        android:color="#8C2323"
+        app:dd_numDots="3"
+        app:dd_scaleMultiplier="1.5"
+        app:dd_animationDuration="500"
+        app:dd_horizontalSpacing="4dp"
+        android:layout_centerInParent="true"
         />
 </RelativeLayout>

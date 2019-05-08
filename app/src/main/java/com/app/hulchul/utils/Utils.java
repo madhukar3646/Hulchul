@@ -11,24 +11,31 @@ import android.widget.Toast;
 
 import com.app.hulchul.CommonEmptyActivity;
 import com.app.hulchul.R;
+import com.zl.reik.dilatingdotsprogressbar.DilatingDotsProgressBar;
 
 public class Utils {
 
     public static Dialog dialog;
+    public static DilatingDotsProgressBar mDilatingDotsProgressBar;
     public static void showDialog(Context context)
     {
         dialog = new Dialog(context,
                 android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
         dialog.setContentView(R.layout.loading);
+        mDilatingDotsProgressBar = (DilatingDotsProgressBar)dialog.findViewById(R.id.progress);
+        mDilatingDotsProgressBar.showNow();
         dialog.setCancelable(false);
         dialog.show();
     }
 
     public static void dismissDialog()
     {
+        if(mDilatingDotsProgressBar!=null)
+          mDilatingDotsProgressBar.hide();
         if(dialog!=null)
             dialog.dismiss();
     }
+
     public static void callToast(Context context,String msg)
     {
         Toast.makeText(context,msg,Toast.LENGTH_SHORT).show();

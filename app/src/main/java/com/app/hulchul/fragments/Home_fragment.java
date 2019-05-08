@@ -81,6 +81,7 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
     TextView tv_nofollowtext;
     private Dialog dialog;
     private boolean isRecommended=false;
+    private int totalcount=-1;
 
     /*String urls[]={"http://testingmadesimple.org/samplevideo.mp4",
             "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
@@ -157,13 +158,16 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
                 Log.e("pos"+pos,"numitems "+numItems);
                 if((pos+1)>=numItems)
                 {
-                    if (connectionDetector.isConnectingToInternet()) {
-                        if(isRecommended)
-                          setRecommendedContainer("10", ""+numItems);
-                        else
-                            setDataTrendingToContainer("10",""+numItems);
-                    } else
-                        Utils.callToast(getActivity(), getResources().getString(R.string.internet_toast));
+                    if(numItems<totalcount) {
+                        if (connectionDetector.isConnectingToInternet()) {
+                            if (isRecommended)
+                                setRecommendedContainer("10", "" + numItems);
+                            else
+                                setDataTrendingToContainer("10", "" + numItems);
+                        } else
+                            Utils.callToast(getActivity(), getResources().getString(R.string.internet_toast));
+                    }
+
                 }
             }
         });
@@ -182,6 +186,7 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
                     if (connectionDetector.isConnectingToInternet()) {
                         isRecommended = true;
                         modelArrayList.clear();
+                        totalcount=-1;
                         setRecommendedContainer("10", "0");
                     } else
                         Utils.callToast(getActivity(), getResources().getString(R.string.internet_toast));
@@ -197,6 +202,7 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
                 if (connectionDetector.isConnectingToInternet()) {
                     isRecommended = false;
                     modelArrayList.clear();
+                    totalcount=-1;
                     setDataTrendingToContainer("10", "0");
                 } else
                     Utils.callToast(getActivity(), getResources().getString(R.string.internet_toast));
@@ -228,13 +234,15 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
                         if(modelArrayList.size()==0) {
                             tv_nofollowtext.setVisibility(View.VISIBLE);
                             Utils.callToast(getActivity(), body.getMessage());
-                            Utils.dismissDialog();
                         }
                     }
+                    if(body.getTotalcount()!=null)
+                      totalcount=body.getTotalcount();
+                    else
+                        totalcount=-1;
                     adapter.notifyDataSetChanged();
                 }
                 else {
-                    Utils.dismissDialog();
                     Utils.callToast(getActivity(),"null response came");
                     adapter.notifyDataSetChanged();
                 }
@@ -271,6 +279,7 @@ public class Home_fragment extends Fragment implements View.OnClickListener,Simp
                         if(modelArrayList.size()==0)
                             Utils.callToast(getActivity(), body.getMessage());
                     }
+                    totalcount=body.getTotalcount();
                     adapter.notifyDataSetChanged();
                 }
                 else {
