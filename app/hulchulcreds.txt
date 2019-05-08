@@ -6,3 +6,6 @@ password: androidteam
 Hulchul app fb integration login creds:
  Mobile:9908128827
  password:Postesting
+
+ Hulchul Fcm Server key: AAAA2i8cYCo:APA91bFpN5TXLVwfDLohV9M4Cyah2Wa9KVHyIFiBkohHw5tjmJd6ajTyT2_VjQD4hjr8_KmxbLw51GEw12xss-GGZrV4BXmAXzqZUnZ5BQFyabOZv3S_m0-nwSglwtPt_fH9d4SEuPUT
+ Hulchul FCM legacy server key: AIzaSyCSMmVAohQgZnbVI3F3I-inQH-dgJroT6A

@@ -307,11 +307,14 @@ public class HashtagSearchresultsActivity extends AppCompatActivity implements V
                 Utils.dismissDialog();
                 SignupResponse body=response.body();
                 if(body.getStatus()==1){
-                  iv_favourite.setImageResource(R.mipmap.fav_a_r);
                   if(isFaverate)
                   {
                       iv_favourite.setImageResource(R.mipmap.fav_a_w);
                       isFaverate=false;
+                  }
+                  else {
+                      iv_favourite.setImageResource(R.mipmap.fav_a_r);
+                      isFaverate=true;
                   }
                 }
                 else {

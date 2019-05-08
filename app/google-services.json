@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "937093259306",
+    "firebase_url": "https://hulchul-1551246023432.firebaseio.com",
+    "project_id": "hulchul-1551246023432",
+    "storage_bucket": "hulchul-1551246023432.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:937093259306:android:c8f057c261c29965",
+        "android_client_info": {
+          "package_name": "com.app.hulchul"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "937093259306-97h9ro5slp927kh183s8qgs0cf8b4ckn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByDMhhv6a2ZX_VvCZhGXlvDuvGdUiqmSw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "937093259306-97h9ro5slp927kh183s8qgs0cf8b4ckn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "937093259306-msq430635a6783la18s7d8lpnhshbvid.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "possibillion.tiktok"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

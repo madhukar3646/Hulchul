@@ -243,6 +243,5 @@ public interface RetrofitApis {
     @FormUrlEncoded
     @POST("addFavourite")
     Call<SignupResponse> addFavourite(@Field("userId") String userid, @Field("type") String type,@Field("favouriteId") String favouriteId);
-
 }
 

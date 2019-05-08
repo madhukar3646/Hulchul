@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.media.ThumbnailUtils;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,6 +19,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -27,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.hulchul.R;
 import com.app.hulchul.fileuploadservice.FileUploadService;
@@ -37,6 +40,10 @@ import com.app.hulchul.fragments.Notification_fragment;
 import com.app.hulchul.utils.SessionManagement;
 import com.app.hulchul.utils.Utils;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -114,6 +121,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void init()
     {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.e("firebase", "getInstanceId failed "+task.getException());
+                            return;
+                        }
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+                        storeRegIdInPref(token);
+                    }
+                });
+
         layout_uploadinglayout.setVisibility(View.GONE);
        /* Glide.with(this)
                 .load(R.drawable.gif_loading)
@@ -451,4 +472,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             backpressclicks=0;
         }
     };
+
+    private void storeRegIdInPref(String token) {
+        Log.e("device token ","is "+token);
+        SessionManagement sessionManagement=new SessionManagement(getApplicationContext());
+        sessionManagement.setValuetoPreference(SessionManagement.DEVICETOKEN,token);
+    }
 }

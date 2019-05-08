@@ -289,4 +289,7 @@
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="addtofav">Add to \n Favourites</string>
     <string name="notinterested">Not \n Interested</string>
+
+    <string name="fcm_message">Hulchul</string>
+    <string name="default_notification_channel_id">101</string>
 </resources>

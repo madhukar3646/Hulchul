@@ -369,7 +369,6 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> 
         {
             holder.iv_likeanim.setVisibility(View.VISIBLE);
             moveUp(holder.iv_likeanim);
-            //fadeOutAndHideImage(holder.iv_likeanim);
             videoActionsListener.onLikeClicked(holder,modelArrayList.get(position).getId(),position);
         }
     }
