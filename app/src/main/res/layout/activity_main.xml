@@ -96,7 +96,7 @@
                 android:layout_height="25dp"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:src="@mipmap/addvideowhite_icon" />
+                android:src="@mipmap/video_white" />
             <TextView
                 android:id="@+id/tv_video"
                 android:layout_width="wrap_content"

@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.app.hulchul.R;
 import com.app.hulchul.adapters.InviteFriendsAdapter;
@@ -27,12 +29,16 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class InviteFriendsActivity extends AppCompatActivity {
+public class InviteFriendsActivity extends AppCompatActivity implements View.OnClickListener {
 
     @BindView(R.id.back_btn)
     ImageView back_btn;
     @BindView(R.id.rv_list)
     RecyclerView rv_list;
+    @BindView(R.id.layout_invite)
+    RelativeLayout layout_invite;
+    @BindView(R.id.tv_select_deselect)
+    TextView tv_select_deselect;
     private ConnectionDetector connectionDetector;
     private SessionManagement sessionManagement;
     private InviteFriendsAdapter inviteFriendsAdapter;
@@ -51,17 +57,13 @@ public class InviteFriendsActivity extends AppCompatActivity {
     {
        connectionDetector=new ConnectionDetector(InviteFriendsActivity.this);
        sessionManagement=new SessionManagement(InviteFriendsActivity.this);
-       back_btn.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               finish();
-           }
-       });
+       back_btn.setOnClickListener(this);
+       layout_invite.setOnClickListener(this);
+       tv_select_deselect.setOnClickListener(this);
 
        rv_list.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
        inviteFriendsAdapter=new InviteFriendsAdapter(InviteFriendsActivity.this,contactsModelArrayList);
        rv_list.setAdapter(inviteFriendsAdapter);
-
        showContacts();
     }
 
@@ -127,5 +129,39 @@ public class InviteFriendsActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         displayContacts();
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId())
+        {
+            case R.id.back_btn:
+                finish();
+                break;
+            case R.id.layout_invite:
+                ArrayList<ContactsModel> invitesList=inviteFriendsAdapter.getSelectedInvites();
+                if(invitesList.size()>0)
+                {
+                    for(int i=0;i<invitesList.size();i++)
+                        Log.e("invited",invitesList.get(i).getName());
+                }
+                else {
+                    Utils.callToast(InviteFriendsActivity.this,"Please select contacts and invite");
+                }
+                break;
+
+            case R.id.tv_select_deselect:
+                if(tv_select_deselect.getText().toString().equalsIgnoreCase("Select All"))
+                {
+                    tv_select_deselect.setText("Unselect All");
+                    inviteFriendsAdapter.selectAll();
+                }
+                else {
+                   tv_select_deselect.setText("Select All");
+                   inviteFriendsAdapter.unselectAll();
+                }
+                break;
+        }
     }
 }

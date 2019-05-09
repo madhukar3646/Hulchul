@@ -56,37 +56,38 @@
             android:layout_centerVertical="true">
 
             <RelativeLayout
-                    android:id="@+id/layout_invite"
+                android:id="@+id/layout_follow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_rectangle_primary"
+                android:layout_gravity="center"
+                android:visibility="visible">
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:visibility="visible">
-                    <CheckBox
-                        android:id="@+id/checkbox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:clickable="false"/>
-                </RelativeLayout>
+                    android:text=" Follow "
+                    android:textColor="@android:color/white"
+                    android:layout_margin="5dp"/>
+            </RelativeLayout>
             <RelativeLayout
-                    android:id="@+id/layout_invited"
+                android:id="@+id/layout_following"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                >
+
+                <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:visibility="gone"
-                    >
+                    android:layout_height="40dp"
+                    android:text=" Following "
+                    android:textColor="@color/colorPrimary"
+                    android:padding="5dp"
+                    android:gravity="center"
+                    android:background="@drawable/border_primary"
+                    android:visibility="visible"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:text=" Invited "
-                        android:textColor="@color/colorPrimary"
-                        android:padding="5dp"
-                        android:gravity="center"
-                        android:background="@drawable/border_primary"
-                        android:visibility="visible"/>
-
-                </RelativeLayout>
+            </RelativeLayout>
 
         </RelativeLayout>
 

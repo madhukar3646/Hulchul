@@ -3,6 +3,7 @@ package com.app.hulchul.model;
 public class ContactsModel {
 
     String name,number,id;
+    boolean selected=false;
 
     public String getName() {
         return name;
@@ -26,5 +27,13 @@ public class ContactsModel {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }

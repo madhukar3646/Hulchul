@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.app.hulchul.R;
-import com.app.hulchul.adapters.InviteFriendsAdapter;
+import com.app.hulchul.adapters.FindContactsAdapter;
 import com.app.hulchul.model.ContactsModel;
 import com.app.hulchul.utils.ConnectionDetector;
 import com.app.hulchul.utils.SessionManagement;
@@ -30,7 +30,7 @@ public class FindContactsActivity extends AppCompatActivity {
     RecyclerView rv_list;
     private ConnectionDetector connectionDetector;
     private SessionManagement sessionManagement;
-    private InviteFriendsAdapter inviteFriendsAdapter;
+    private FindContactsAdapter findContactsAdapter;
     private ArrayList<ContactsModel> contactsModelArrayList=new ArrayList<>();
     private HashMap<String,String> filterContacts_hmap;
 
@@ -54,8 +54,8 @@ public class FindContactsActivity extends AppCompatActivity {
         });
 
         rv_list.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
-        inviteFriendsAdapter=new InviteFriendsAdapter(FindContactsActivity.this,contactsModelArrayList);
-        rv_list.setAdapter(inviteFriendsAdapter);
+        findContactsAdapter=new FindContactsAdapter(FindContactsActivity.this,contactsModelArrayList);
+        rv_list.setAdapter(findContactsAdapter);
 
         showContacts();
     }
@@ -77,7 +77,7 @@ public class FindContactsActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Utils.dismissDialog();
-                inviteFriendsAdapter.notifyDataSetChanged();
+                findContactsAdapter.notifyDataSetChanged();
             }
         });
     }
