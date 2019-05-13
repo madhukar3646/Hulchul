@@ -36,6 +36,7 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -48,6 +49,8 @@ import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Path;
+import retrofit2.http.Streaming;
+import retrofit2.http.Url;
 
 /**
  * Created by madhu on 8/2/2018.
@@ -243,5 +246,9 @@ public interface RetrofitApis {
     @FormUrlEncoded
     @POST("addFavourite")
     Call<SignupResponse> addFavourite(@Field("userId") String userid, @Field("type") String type,@Field("favouriteId") String favouriteId);
+
+    @Streaming
+    @GET
+    Call<ResponseBody> downloadFileWithDynamicUrlSync(@Url String fileUrl);
 }
 

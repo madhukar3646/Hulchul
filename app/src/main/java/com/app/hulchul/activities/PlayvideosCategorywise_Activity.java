@@ -1,5 +1,6 @@
 package com.app.hulchul.activities;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
@@ -42,14 +44,18 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import im.ene.toro.widget.Container;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -456,10 +462,9 @@ public class PlayvideosCategorywise_Activity extends AppCompatActivity implement
 
     public void startDownloadAndSharing()
     {
-        showProgress();
         new Thread(new Runnable() {
             public void run() {
-                downloadFile(videoServerUrl);
+                downloadFile(videoServerUrl,getVideoDownloadSharepath());
             }
         }).start();
     }
@@ -488,67 +493,100 @@ public class PlayvideosCategorywise_Activity extends AppCompatActivity implement
         startActivityForResult(Intent.createChooser(share, "Share Video!"),100);
     }
 
-    void downloadFile(String serverFileUrl){
-        try {
-            URL url = new URL(serverFileUrl);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+    public void downloadFile(String videoServerUrl,String path){
 
-            urlConnection.setRequestMethod("GET");
-            urlConnection.setDoOutput(true);
+        RetrofitApis.Factory.createTemp(PlayvideosCategorywise_Activity.this).downloadFileWithDynamicUrlSync(videoServerUrl).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, final Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    new AsyncTask<Void, Integer, String>() {
+                        ProgressDialog progressDialog=new ProgressDialog(PlayvideosCategorywise_Activity.this);
+                        @Override
+                        protected void onPreExecute() {
+                            super.onPreExecute();
+                            progressDialog.show();
+                        }
 
-            //connect
-            urlConnection.connect();
+                        @Override
+                        protected void onPostExecute(String s) {
+                            super.onPostExecute(s);
+                            Utils.callToast(PlayvideosCategorywise_Activity.this,"Saved successfully");
+                            progressDialog.dismiss();
+                            shareVideo(path);
+                        }
 
-            File file = new File(getVideoDownloadSharepath());
+                        @Override
+                        protected void onProgressUpdate(Integer... values) {
+                            super.onProgressUpdate(values);
+                            progressDialog.setProgress(values[0]);
+                        }
 
-            FileOutputStream fileOutput = new FileOutputStream(file);
 
-            //Stream used for reading the data from the internet
-            InputStream inputStream = urlConnection.getInputStream();
+                        @Override
+                        protected String doInBackground(Void... voids) {
+                            ResponseBody body=response.body();
+                            try {
+                                // todo change the file location/name according to your needs
+                                File futureStudioIconFile = new File(path);
 
-            //this is the total size of the file which we are downloading
-            //create a buffer...
-            byte[] buffer = new byte[1024];
-            int bufferLength = 0;
+                                InputStream inputStream = null;
+                                OutputStream outputStream = null;
 
-            while ( (bufferLength = inputStream.read(buffer)) > 0 ) {
-                fileOutput.write(buffer, 0, bufferLength);
-            }
-            //close the output stream when complete //
-            fileOutput.close();
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    dialog.dismiss();
-                    shareVideo(getVideoDownloadSharepath());
+                                try {
+                                    byte[] fileReader = new byte[4096];
+
+                                    long fileSize = body.contentLength();
+                                    long fileSizeDownloaded = 0;
+
+                                    inputStream = body.byteStream();
+                                    int available= inputStream.available();
+                                    outputStream = new FileOutputStream(futureStudioIconFile);
+                                    int size=0;
+                                    while (true) {
+                                        int read = inputStream.read(fileReader);
+                                        size++;
+
+                                        if (read == -1) {
+                                            Log.e("bytes "+available,""+size*4096);
+                                            break;
+                                        }
+
+                                        outputStream.write(fileReader, 0, read);
+
+                                        if(fileSizeDownloaded>0&&fileSize>0)
+                                            publishProgress((int)(fileSizeDownloaded*100/fileSize));
+                                        Log.e("failed","download failed");
+                                    }
+
+                                    outputStream.flush();
+
+                                    return futureStudioIconFile.getAbsolutePath();
+                                } catch (IOException e) {
+                                    return null;
+                                } finally {
+                                    if (inputStream != null) {
+                                        inputStream.close();
+                                    }
+
+                                    if (outputStream != null) {
+                                        outputStream.close();
+                                    }
+                                }
+                            } catch (IOException e) {
+                                return null;
+                            }
+                        }
+                    }.execute();
+                } else {
+                    Log.e("failed", "server contact failed");
                 }
-            });
+            }
 
-        } catch (final MalformedURLException e) {
-            showError("Error : MalformedURLException " + e);
-            e.printStackTrace();
-        } catch (final IOException e) {
-            showError("Error : IOException " + e);
-            e.printStackTrace();
-        }
-        catch (final Exception e) {
-            showError("Error : Please check your internet connection " + e);
-        }
-    }
-
-    void showError(final String err){
-       runOnUiThread(new Runnable() {
-            public void run() {
-                Toast.makeText(PlayvideosCategorywise_Activity.this, err, Toast.LENGTH_LONG).show();
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utils.callToast(PlayvideosCategorywise_Activity.this,"failed");
             }
         });
-    }
-
-    void showProgress(){
-        dialog = new Dialog(PlayvideosCategorywise_Activity.this,
-                android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
-        dialog.setContentView(R.layout.progressdialog_update);
-        dialog.setCancelable(false);
-        dialog.show();
     }
 
     public String getVideoDownloadSharepath()
@@ -559,7 +597,7 @@ public class PlayvideosCategorywise_Activity extends AppCompatActivity implement
         if(!dir.exists())
             dir.mkdirs();
 
-        File file = new File(dir, "hulchulshares" + ".mp4");
+        File file = new File(dir, "hulchulshares"+new SimpleDateFormat("yyyyMM_dd-HHmmss").format(new Date())+".mp4");
         return file.getAbsolutePath();
     }
 

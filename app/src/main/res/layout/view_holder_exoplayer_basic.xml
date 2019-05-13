@@ -444,7 +444,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/iv_musicicon"
-                    android:text="music scrolling dgdsg dsgs sdgsg sge gtegt sdewrqw okay"
+                    android:text="Song name will come soon once updated from server side"
                     android:textColor="@android:color/white"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"
