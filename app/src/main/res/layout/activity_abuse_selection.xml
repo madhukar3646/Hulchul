@@ -22,13 +22,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="Rate this Video"
             android:layout_gravity="center_vertical"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"
             android:textColor="#fff"
-            android:padding="5dp"
             android:gravity="center"
+            android:layout_marginLeft="10dp"
             />
 
     </LinearLayout>
@@ -51,20 +51,23 @@
             android:layout_gravity="center"
             android:gravity="center"
             />
-        <android.support.v7.widget.AppCompatRatingBar
-            android:id="@+id/rating_bar"
-            android:layout_width="wrap_content"
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:numStars="5"
-            android:rating="0"
-            android:max="5"
-            android:layout_margin="8dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:max="50"
+            android:progressDrawable="@drawable/custom_seekbar"
+            android:thumb="@drawable/custom_thumb"
             />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@android:color/darker_gray"
+            android:layout_marginTop="10dp"
             />
         <TextView
             android:layout_width="wrap_content"

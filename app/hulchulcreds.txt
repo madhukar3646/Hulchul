@@ -7,5 +7,9 @@ Hulchul app fb integration login creds:
  Mobile:9908128827
  password:Postesting
 
- Hulchul Fcm Server key: AAAA2i8cYCo:APA91bFpN5TXLVwfDLohV9M4Cyah2Wa9KVHyIFiBkohHw5tjmJd6ajTyT2_VjQD4hjr8_KmxbLw51GEw12xss-GGZrV4BXmAXzqZUnZ5BQFyabOZv3S_m0-nwSglwtPt_fH9d4SEuPUT
- Hulchul FCM legacy server key: AIzaSyCSMmVAohQgZnbVI3F3I-inQH-dgJroT6A
+ Hulchul Fcm Server key: AAAAdv-6DNw:APA91bGP1JGSiQD8dgI5VVCsEfKZHbwAVb39v3-4OdIW7Axhyvx7sGHwQ5_aDz4CVqR-QMgZhAUSVeyz8EGHeIgIT3X2xAennRVdnI4eMCB__5siv-Ih1B4VwomSigtgUzzUvp_D7ZTU
+ Hulchul FCM legacy server key: AIzaSyA3b8D2el3kFkQA7bYrb-rUGMFXD3lzbyA
+
+ New billing email for google+ and google places and firebase push notifications for Zip News app
+ hulchulapp@gmail.com
+ password: Hyderabad@2019

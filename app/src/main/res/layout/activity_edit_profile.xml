@@ -257,7 +257,7 @@
                     android:maxLength="100"
                     android:maxLines="3"
                     android:background="@android:color/transparent"
-                    android:textAppearance="?android:attr/textAppearanceSmall"/>
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
             </RelativeLayout>
             <View

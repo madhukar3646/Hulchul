@@ -14,6 +14,15 @@
         app:resize_mode="fill"
         app:surface_type="texture_view"
         app:use_controller="false"
+        android:visibility="visible"
+        />
+
+    <ImageView
+        android:id="@+id/iv_thumb"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:visibility="visible"
         />
 
     <RelativeLayout
@@ -38,107 +47,6 @@
         android:layout_marginBottom="50dp"
         >
 
-        <RelativeLayout
-            android:id="@+id/layout_profilecontainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp">
-
-            <LinearLayout
-                android:id="@+id/layout_profile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/round_blacktransparent"
-                android:layout_alignParentRight="true"
-                >
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_toLeftOf="@+id/layout_profileimage"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="10dp"
-                    >
-
-                    <TextView
-                        android:id="@+id/tv_profilename"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@android:color/white"
-                        android:text="Harshini k"
-                        android:textSize="12sp"
-                        android:layout_gravity="center"
-                        />
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="2dp"
-                        android:layout_gravity="center"
-                        android:gravity="center">
-                        <ImageView
-                            android:id="@+id/iv_heart"
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:src="@mipmap/heart"
-                            android:layout_centerVertical="true"
-                            />
-
-                        <TextView
-                            android:id="@+id/tv_profilelikescount"
-                            android:layout_toRightOf="@+id/iv_heart"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@android:color/white"
-                            android:text="0"
-                            android:textSize="12sp"
-                            android:layout_marginLeft="5dp"
-                            android:layout_centerVertical="true"
-                            />
-                    </RelativeLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layout_profileimage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:orientation="vertical">
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        xmlns:app="http://schemas.android.com/apk/res-auto"
-                        android:id="@+id/profile_image"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@mipmap/sampleimage"
-                        app:civ_border_width="2dp"
-                        android:padding="5dp"
-                        app:civ_border_color="@color/colorPrimary"/>
-
-                    <ImageView
-                        android:id="@+id/iv_addfriend"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:padding="5dp"
-                        android:src="@mipmap/add_friendicon"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginTop="-30dp"
-                        android:layout_marginLeft="-5dp"
-                        />
-                </LinearLayout>
-            </LinearLayout>
-        </RelativeLayout>
-
         <LinearLayout
             android:id="@+id/layout_sidevertical"
             android:layout_width="wrap_content"
@@ -162,27 +70,13 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:src="@mipmap/fav_a_w"
-                    android:layout_marginTop="10dp"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/layout_like"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_margin="5dp">
-                <ImageView
-                    android:id="@+id/iv_like"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@mipmap/heart_white"
-                    android:layout_marginTop="10dp"/>
+                   />
                 <TextView
-                    android:id="@+id/tv_likescount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0"
-                    android:textColor="@android:color/white"
+                    android:text=""
                     android:layout_gravity="center"
+                    android:textColor="@android:color/white"
                     android:textSize="12sp"/>
             </LinearLayout>
             <LinearLayout
@@ -223,7 +117,7 @@
                     android:layout_gravity="center"
                     android:textColor="@android:color/white"
                     android:textSize="12sp"
-                    android:layout_marginBottom="10dp"/>
+                    />
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/layout_abuse"
@@ -233,95 +127,31 @@
                 android:orientation="vertical"
                 android:layout_alignParentRight="true"
                 >
-
                 <ImageView
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:src="@mipmap/error"/>
-
+                    android:src="@mipmap/error"
+                    />
             </LinearLayout>
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/layout_dubvideo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
+                android:layout_margin="5dp"
                 android:orientation="vertical"
                 android:layout_alignParentRight="true"
                 >
-
-                <ImageView
-                    android:id="@+id/iv_musicgif"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/soundgificon"
-                    />
-
                 <de.hdodenhof.circleimageview.CircleImageView
                     xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/iv_musicprofile"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:id="@+id/profile_image"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:src="@mipmap/sampleimage"
-                    android:layout_centerInParent="true"
-                    app:civ_border_color="@android:color/transparent"/>
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="@color/colorPrimary"/>
+            </LinearLayout>
 
-            </RelativeLayout>
-
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/layout_commentinput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:orientation="horizontal"
-            android:weightSum="5"
-            android:background="@android:drawable/screen_background_dark_transparent"
-            android:visibility="gone">
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:layout_margin="10dp"
-                android:background="@drawable/round_rect_white"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                >
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:textColor="@android:color/black"
-                    android:layout_centerVertical="true"
-                    android:hint="Say Something"
-                    android:background="@android:color/transparent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"/>
-
-            </RelativeLayout>
-            <RelativeLayout
-                android:id="@+id/layout_sendcomment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/round_rect_primary"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginRight="10dp"
-                >
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@mipmap/right_arrow_white"
-                    android:layout_centerInParent="true"/>
-
-            </RelativeLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -331,82 +161,38 @@
             android:layout_alignParentBottom="true"
             android:layout_toLeftOf="@+id/layout_sidevertical"
             android:orientation="vertical"
-            android:weightSum="3"
+            android:weightSum="2"
             android:paddingTop="10dp"
             >
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="50dp"
+                android:layout_marginBottom="10dp"
                 android:layout_weight="1"
-                >
+                android:layout_gravity="center_vertical"
+                android:visibility="visible">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/tv_musicscroll"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:weightSum="2"
+                    android:text=""
+                    android:textColor="@android:color/white"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:clickable="false">
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:singleLine="true"
+                    />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_weight="1"
-                        android:layout_marginRight="50dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/latest1_commentfrom"
-                            android:text="Satya"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@android:color/white"
-                            android:singleLine="true"
-                            android:textStyle="bold"
-                            />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/latest1_comment"
-                            android:text="Awesome"
-                            android:layout_marginLeft="5dp"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@android:color/white"
-                            android:singleLine="true"
-                            />
-                    </LinearLayout>
+            </RelativeLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_weight="1"
-                        android:layout_marginRight="50dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/latest2_commentfrom"
-                            android:text="Satya"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@android:color/white"
-                            android:singleLine="true"
-                            android:textStyle="bold"
-                            />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/latest2_comment"
-                            android:text="Super performance"
-                            android:layout_marginLeft="5dp"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@android:color/white"
-                            android:singleLine="true"
-                            />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -421,40 +207,6 @@
                     android:id="@+id/rv_hashtagslist">
 
                 </android.support.v7.widget.RecyclerView>
-
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="80dp"
-                android:layout_marginBottom="10dp"
-                android:layout_weight="1"
-                android:layout_gravity="center_vertical"
-                android:visibility="visible">
-
-                <ImageView
-                    android:id="@+id/iv_musicicon"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_margin="5dp"
-                    android:layout_centerVertical="true"
-                    android:src="@mipmap/music_white"/>
-                <TextView
-                    android:id="@+id/tv_musicscroll"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/iv_musicicon"
-                    android:text="Song name will come soon once updated from server side"
-                    android:textColor="@android:color/white"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
-                    android:singleLine="true"
-                    android:ellipsize="marquee"
-                    android:marqueeRepeatLimit ="marquee_forever"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:scrollHorizontally="true"
-                    />
 
             </RelativeLayout>
 

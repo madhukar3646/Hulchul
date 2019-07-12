@@ -9,13 +9,13 @@
         android:layout_height="match_parent"
        >
 
-        <com.app.hulchul.utils.PortraitFrameLayout
+        <com.app.zippnews.utils.PortraitFrameLayout
             android:id="@+id/wrap_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             >
-        </com.app.hulchul.utils.PortraitFrameLayout>
+        </com.app.zippnews.utils.PortraitFrameLayout>
     </RelativeLayout>
 
     <RelativeLayout
@@ -64,21 +64,24 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@mipmap/timer_off"
-            android:layout_margin="10dp"/>
+            android:layout_margin="10dp"
+            android:visibility="gone"/>
 
         <ImageView
             android:id="@+id/iv_timerselection"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@mipmap/set_seconds"
-            android:layout_margin="10dp"/>
+            android:layout_margin="10dp"
+            android:visibility="gone"/>
 
         <ImageView
             android:id="@+id/iv_startshooting"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@mipmap/start_timer"
-            android:layout_margin="10dp"/>
+            android:layout_margin="10dp"
+            android:visibility="gone"/>
     </LinearLayout>
 
     <LinearLayout
@@ -89,7 +92,8 @@
         android:orientation="horizontal"
         android:background="@android:drawable/screen_background_dark_transparent"
         android:weightSum="3"
-        android:paddingBottom="2dp">
+        android:paddingBottom="2dp"
+        android:visibility="gone">
         <LinearLayout
             android:id="@+id/layout_selectsound"
             android:layout_width="0dp"
@@ -202,8 +206,8 @@
         android:id="@+id/layout_record"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:layout_above="@+id/layout_bottomicons"
+        android:layout_margin="50dp"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         >
 
@@ -222,7 +226,7 @@
         android:layout_marginTop="10dp"
         android:layout_alignParentBottom="true"
         android:background="@android:color/white"
-        android:visibility="visible"
+        android:visibility="gone"
         >
 
         <RelativeLayout

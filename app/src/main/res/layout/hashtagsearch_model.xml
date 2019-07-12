@@ -11,8 +11,8 @@
         >
         <ImageView
             android:id="@+id/song_image"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_margin="10dp"
             android:src="@drawable/hash_post"
             android:layout_centerVertical="true"
@@ -54,7 +54,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_margin="10dp"
-            android:layout_centerVertical="true">
+            android:layout_centerVertical="true"
+            android:visibility="gone">
 
             <RelativeLayout
                 android:id="@+id/layout_viewicon"

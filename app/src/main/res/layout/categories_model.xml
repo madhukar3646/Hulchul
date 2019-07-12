@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="56dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/tv_categoryname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Telangana"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_margin="10dp"
+            android:textColor="@android:color/white"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:gravity="center"/>
+        <TextView
+            android:id="@+id/tv_categorynamebold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Telangana"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_margin="10dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:visibility="visible"
+            android:layout_gravity="center"
+            android:gravity="center"/>
+        <View
+            android:id="@+id/viewline"
+            android:layout_width="2dp"
+            android:layout_height="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center"
+            android:background="@android:color/white">
+        </View>
+    </LinearLayout>
+</LinearLayout>

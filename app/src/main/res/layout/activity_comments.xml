@@ -84,7 +84,7 @@
                 android:layout_margin="10dp"
                 android:background="@drawable/round_rect_white"
                 >
-                <com.app.hulchul.utils.KeyboardEditText
+                <com.app.zippnews.utils.KeyboardEditText
                     android:id="@+id/et_replycommentinput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
                     android:layout_marginRight="10dp"
                     android:padding="2dp"
                     >
-                </com.app.hulchul.utils.KeyboardEditText>
+                </com.app.zippnews.utils.KeyboardEditText>
 
             </RelativeLayout>
             <RelativeLayout

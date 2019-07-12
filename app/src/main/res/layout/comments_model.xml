@@ -11,7 +11,7 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_margin="10dp"
-        android:src="@mipmap/sampleimage"
+        android:src="@mipmap/app_iconrounded"
         app:civ_border_width="2dp"
         app:civ_border_color="#e7d1ff"/>
     
@@ -64,9 +64,19 @@
             android:layout_marginTop="5dp">
 
             <TextView
+                android:id="@+id/tv_parentusername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:text="# hello boss"
+                android:textColor="@color/colorPrimary"
+                />
+
+            <TextView
                 android:id="@+id/tv_replycomment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_parentusername"
                 android:layout_marginLeft="15dp"
                 android:text="oidk io oifhwd jahdfioad whqw qwuihqw ieh "/>
         </RelativeLayout>

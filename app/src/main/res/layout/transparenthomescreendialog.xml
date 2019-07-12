@@ -62,7 +62,7 @@
                 android:id="@+id/iv_addtofavourite"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@mipmap/fav_round"
+                android:src="@mipmap/fav_a_r"
                 android:layout_centerHorizontal="true"/>
 
             <TextView

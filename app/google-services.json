@@ -1,42 +1,43 @@
 {
   "project_info": {
-    "project_number": "937093259306",
-    "firebase_url": "https://hulchul-1551246023432.firebaseio.com",
-    "project_id": "hulchul-1551246023432",
-    "storage_bucket": "hulchul-1551246023432.appspot.com"
+    "project_number": "511096523996",
+    "firebase_url": "https://zipp-news.firebaseio.com",
+    "project_id": "zipp-news",
+    "storage_bucket": "zipp-news.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:937093259306:android:c8f057c261c29965",
+        "mobilesdk_app_id": "1:511096523996:android:042450195f7993f2",
         "android_client_info": {
-          "package_name": "com.app.hulchul"
+          "package_name": "com.app.zippnews"
         }
       },
       "oauth_client": [
         {
-          "client_id": "937093259306-97h9ro5slp927kh183s8qgs0cf8b4ckn.apps.googleusercontent.com",
+          "client_id": "511096523996-a8nhf5ilp312p0a241ua4600j5e2m69u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.zippnews",
+            "certificate_hash": "30e136aad44195f0f1e563c160dcdcd78b12a733"
+          }
+        },
+        {
+          "client_id": "511096523996-vo0nka1vnbupn67km8ubtstikm6meh2v.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyByDMhhv6a2ZX_VvCZhGXlvDuvGdUiqmSw"
+          "current_key": "AIzaSyBnpZKkZKtheuTtaD3TdXUQqZbbZ0xNByg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "937093259306-97h9ro5slp927kh183s8qgs0cf8b4ckn.apps.googleusercontent.com",
+              "client_id": "511096523996-vo0nka1vnbupn67km8ubtstikm6meh2v.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "937093259306-msq430635a6783la18s7d8lpnhshbvid.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "possibillion.tiktok"
-              }
             }
           ]
         }

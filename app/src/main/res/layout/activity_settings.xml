@@ -55,7 +55,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
@@ -88,6 +89,7 @@
                     android:layout_height="1dp"
                     android:background="#1A000000"
                     android:layout_marginTop="5dp"
+                    android:visibility="gone"
                     >
                 </View>
             </LinearLayout>
@@ -140,7 +142,8 @@
                 android:id="@+id/layout_privacyandsafety"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -178,6 +181,7 @@
                     android:layout_height="1dp"
                     android:background="#1A000000"
                     android:layout_marginTop="5dp"
+                    android:visibility="gone"
                     >
                 </View>
             </LinearLayout>

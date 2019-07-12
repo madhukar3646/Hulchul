@@ -1,9 +1,8 @@
 apply plugin: 'com.android.application'
-
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.app.hulchul"
+        applicationId "com.app.zippnews"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
@@ -23,7 +22,9 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
-
+ext {
+    latest_release = '3.6.2.2804' // TODO check above for latest version
+}
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.0.0'
@@ -46,8 +47,9 @@ dependencies {
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.+'
 
     //exo player dependencies
-    implementation 'im.ene.toro3:toro:3.0.0-beta1'
-    implementation 'com.google.android.exoplayer:exoplayer:r2.4.3'
+    implementation "im.ene.toro3:toro:${latest_release}"
+    implementation "im.ene.toro3:toro-ext-exoplayer:${latest_release}"
+    implementation 'com.google.android.exoplayer:exoplayer:2.7.3'
     //exo player dependencies
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
     implementation 'com.twitter.sdk.android:twitter-core:3.1.1'
@@ -67,6 +69,14 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:17.1.0'
     implementation 'com.google.firebase:firebase-iid:16.2.0'
     implementation 'com.github.justzak:dilatingdotsprogressbar:1.0.1'
+
+    implementation 'com.google.android.gms:play-services-location:15.0.1'
+    implementation 'com.google.android.gms:play-services-places:15.0.1'
+
+    //amazon s3
+    implementation ('com.amazonaws:aws-android-sdk-mobile-client:2.6.7@aar') { transitive = true }
+    implementation 'com.amazonaws:aws-android-sdk-s3:2.6.+'
+    implementation 'com.amazonaws:aws-android-sdk-cognito:2.6.+'
 }
 apply plugin: 'com.google.gms.google-services'
 com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true

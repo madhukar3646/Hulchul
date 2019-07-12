@@ -46,7 +46,8 @@
             android:id="@+id/layout_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/border_primary">
+            android:background="@drawable/border_primary"
+            android:visibility="gone">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -153,7 +154,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
-                            android:hint="title with #Hashtag and @Friends"
+                            android:hint="#Hashtags separated by commas and #"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
                             android:inputType="textMultiLine"
@@ -162,67 +163,13 @@
                     </RelativeLayout>
                 </RelativeLayout>
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:weightSum="2"
-                android:orientation="horizontal">
 
                 <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="#dddddd">
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true">
-                        <TextView
-                            android:id="@+id/tv_sub_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Who can view my video"
-                            />
-
-                        <RelativeLayout
-                            android:id="@+id/layout_public"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/tv_sub_title"
-                            android:background="@drawable/round_rect_gray"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginTop="10dp">
-
-                            <TextView
-                                android:id="@+id/tv_public"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text=" Public "
-                                android:textColor="@android:color/white"
-                                />
-
-                            <ImageView
-                                android:layout_width="10dp"
-                                android:layout_height="10dp"
-                                android:layout_marginRight="5dp"
-                                android:layout_centerVertical="true"
-                                android:layout_toRightOf="@+id/tv_public"
-                                android:src="@mipmap/right_arrow_white"/>
-                        </RelativeLayout>
-                    </RelativeLayout>
-
-                </RelativeLayout>
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="#f5f6f9">
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:visibility="gone"
+                    >
 
                         <TextView
                             android:id="@+id/tv_sub_titletoogle"
@@ -230,104 +177,110 @@
                             android:layout_height="wrap_content"
                             android:text="Comments On/Off"
                             android:textColor="@color/colorPrimary"
+                            android:layout_centerVertical="true"
                             />
 
                         <Switch
                             android:id="@+id/switchButton"
                             android:layout_width="wrap_content"
                             android:checked="false"
-                            android:layout_marginTop="10dp"
                             android:layout_height="wrap_content"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:background="@android:color/white"
+                            android:layout_toRightOf="@+id/tv_sub_titletoogle"
+                            android:layout_marginLeft="20dp"
                             android:layout_centerVertical="true"
-                            android:layout_marginRight="5dp"
-                            android:layout_below="@+id/tv_sub_titletoogle"
-                            android:layout_centerHorizontal="true"
                             />
 
-                    </RelativeLayout>
-
                 </RelativeLayout>
-            </LinearLayout>
 
+            <TextView
+                android:id="@+id/tv_newstitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="News Title:"
+                android:textColor="@android:color/black"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                />
+
+               <RelativeLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginLeft="10dp"
+                   android:layout_marginRight="10dp"
+                   android:layout_marginTop="10dp"
+                   android:background="@drawable/border_lightblack">
+
+                   <EditText
+                       android:id="@+id/et_newstitle"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:background="@android:color/transparent"
+                       android:hint="Enter News Title"
+                       android:focusable="true"
+                       android:focusableInTouchMode="true"
+                       android:inputType="textMultiLine"
+                       android:maxLength="100"
+                       android:layout_margin="5dp"
+                       />
+               </RelativeLayout>
+             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enter area of News:"
+                android:textColor="@android:color/black"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                 android:visibility="gone"
+                />
+            <RelativeLayout
+                android:id="@+id/layout_choosearea"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/border_lightblack"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tv_newsarea"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:hint="Enter Place of News"
+                    android:layout_margin="10dp"
+                    />
+            </RelativeLayout>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:textColor="@color/colorPrimary"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold"
-                android:text="Share in social media"
-                android:layout_gravity="center"
-                android:visibility="gone"/>
+                android:text="Select Category"
+                android:textColor="@android:color/black"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:orientation="horizontal"
-                android:weightSum="5"
-                android:visibility="gone">
-
-                <RelativeLayout
-                    android:layout_width="0dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/rounded_rectangle_">
+                <Spinner
+                    android:id="@+id/spinner_categories"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
-
-                    <ImageView
-                        android:id="@+id/iv_whatsapp"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/whatsapp_post"
-                        android:layout_centerInParent="true"/>
-
-                </RelativeLayout>
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                    <ImageView
-                        android:id="@+id/iv_facebook"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/fb_post"
-                        android:layout_centerInParent="true"/>
-                </RelativeLayout>
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                    <ImageView
-                        android:id="@+id/iv_twitter"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/twiiter_post"
-                        android:layout_centerInParent="true"/>
-                </RelativeLayout>
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                    <ImageView
-                        android:id="@+id/iv_instagram"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/instagram_post"
-                        android:layout_centerInParent="true"/>
-                </RelativeLayout>
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                    <ImageView
-                        android:id="@+id/iv_gmail"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/google_post"
-                        android:layout_centerInParent="true"/>
-                </RelativeLayout>
-            </LinearLayout>
+                    android:layout_centerVertical="true"
+                    android:layout_margin="10dp"
+                    />
+            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 

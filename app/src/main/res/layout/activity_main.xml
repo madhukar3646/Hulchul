@@ -17,7 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
-
     </FrameLayout>
 
     <LinearLayout
@@ -34,7 +33,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_weight="1"
-            android:layout_gravity="bottom">
+            android:layout_gravity="center">
 
             <ImageView
                 android:id="@+id/iv_home"
@@ -43,17 +42,6 @@
                 android:src="@mipmap/home_activeicon"
                 android:layout_gravity="center"
                 android:gravity="center"/>
-            <TextView
-                android:id="@+id/tv_home"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Home"
-                android:textSize="12sp"
-                android:textColor="@android:color/white"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:singleLine="true"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/layout_discover"
@@ -61,7 +49,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_weight="1"
-            android:layout_gravity="bottom">
+            android:layout_gravity="center">
 
             <ImageView
                 android:id="@+id/iv_discover"
@@ -70,17 +58,7 @@
                 android:src="@mipmap/search_normal"
                 android:layout_gravity="center"
                 android:gravity="center"/>
-            <TextView
-                android:id="@+id/tv_discover"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Browse"
-                android:textSize="12sp"
-                android:textColor="@android:color/white"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:singleLine="true"/>
+
         </LinearLayout>
         <LinearLayout
             android:id="@+id/layout_video"
@@ -88,26 +66,15 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_weight="1"
-            android:layout_gravity="bottom">
+            android:layout_gravity="center">
 
             <ImageView
                 android:id="@+id/iv_video"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:src="@mipmap/video_white" />
-            <TextView
-                android:id="@+id/tv_video"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Video"
-                android:textSize="12sp"
-                android:textColor="@android:color/white"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:singleLine="true"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/layout_notification"
@@ -115,7 +82,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_weight="1"
-            android:layout_gravity="bottom">
+            android:layout_gravity="center">
 
             <ImageView
                 android:id="@+id/iv_notification"
@@ -124,17 +91,6 @@
                 android:src="@mipmap/notification_normal"
                 android:layout_gravity="center"
                 android:gravity="center"/>
-            <TextView
-                android:id="@+id/tv_notification"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Notification"
-                android:textSize="12sp"
-                android:textColor="@android:color/white"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:singleLine="true"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/layout_me"
@@ -142,7 +98,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_weight="1"
-            android:layout_gravity="bottom">
+            android:layout_gravity="center">
 
             <ImageView
                 android:id="@+id/iv_me"
@@ -151,17 +107,6 @@
                 android:src="@mipmap/me_normal"
                 android:layout_gravity="center"
                 android:gravity="center"/>
-            <TextView
-                android:id="@+id/tv_me"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="You"
-                android:textSize="12sp"
-                android:textColor="@android:color/white"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:singleLine="true"/>
         </LinearLayout>
     </LinearLayout>
 

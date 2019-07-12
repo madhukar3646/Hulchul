@@ -13,32 +13,28 @@
         <RelativeLayout
             android:id="@+id/layout_titlebar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary">
+            android:layout_height="56dp"
+            android:background="@drawable/toolbargradient">
             <LinearLayout
                 android:id="@+id/layout_toolbaricons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_centerVertical="true">
 
-                <ImageView
-                    android:id="@+id/iv_favourite"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@mipmap/fav_n_w"
-                    android:padding="10dp"/>
                 <ImageView
                     android:id="@+id/iv_addfriends"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@mipmap/add_friends"
-                    android:padding="10dp"/>
+                    android:padding="10dp"
+                    android:visibility="gone"/>
                 <ImageView
                     android:id="@+id/iv_menuburger"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@mipmap/menu_burger"
+                    android:src="@mipmap/settings"
                     android:padding="10dp"/>
             </LinearLayout>
             <RelativeLayout
@@ -77,186 +73,77 @@
                 android:focusable="true">
 
                 <LinearLayout
+                    android:id="@+id/layout_profileimage"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginTop="10dp">
+                    android:layout_height="200dp"
+                    android:gravity="center"
+                    android:background="@mipmap/bg_profile"
+                    android:orientation="vertical"
+                    >
 
+                    <RelativeLayout
+                        android:id="@+id/layout_profilecircle"
+                        android:layout_width="110dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        >
                         <de.hdodenhof.circleimageview.CircleImageView
                             xmlns:app="http://schemas.android.com/apk/res-auto"
                             android:id="@+id/profile_image"
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:src="@mipmap/profile"
                             app:civ_border_width="2dp"
-                            android:layout_gravity="center"
-                            app:civ_border_color="@color/colorPrimary"/>
+                            app:civ_border_color="#ffffff"
+                            />
 
-                        <TextView
-                            android:id="@+id/tv_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=""
-                            android:textColor="@android:color/black"
-                            android:textStyle="bold"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:layout_gravity="center"
-                            android:layout_margin="10dp"/>
-
-                        <RelativeLayout
-                            android:id="@+id/layout_editprofile"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/rounded_rectangle_primary"
-                            android:layout_gravity="center">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text=" Edit Profile "
-                                android:textColor="@android:color/white"
-                                android:layout_margin="5dp"/>
-                        </RelativeLayout>
-
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="0dp"
+                        <ImageView
+                            android:id="@+id/iv_editprofile"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@mipmap/edit"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginTop="5dp"
+                            />
+                    </RelativeLayout>
+                    <TextView
+                        android:id="@+id/tv_name"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginLeft="10dp">
+                        android:text=""
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textColor="@android:color/white"
+                        android:layout_margin="10dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="10dp">
-                            <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:src="@mipmap/following"
-                                android:layout_gravity="center_vertical"/>
-                            <TextView
-                                android:id="@+id/tv_following"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="0 Following"
-                                android:layout_marginLeft="10dp"
-                                android:layout_gravity="center_vertical"
-                                android:textColor="@color/textcolorblackalpha"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="15dp">
-                            <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:src="@mipmap/fans"
-                                android:layout_gravity="center_vertical"/>
-                            <TextView
-                                android:id="@+id/tv_followers"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="0 Followers"
-                                android:textColor="@color/textcolorblackalpha"
-                                android:layout_marginLeft="10dp"
-                                android:layout_gravity="center_vertical"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="15dp">
-                            <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:src="@mipmap/hearts_red"
-                                android:layout_gravity="center_vertical"/>
-                            <TextView
-                                android:id="@+id/tv_hearts"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="0 Hearts"
-                                android:layout_marginLeft="10dp"
-                                android:layout_gravity="center_vertical"
-                                android:textColor="@color/textcolorblackalpha"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="15dp"
-                            android:visibility="gone">
-                            <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:src="@mipmap/fans"
-                                android:layout_gravity="center_vertical"/>
-                            <TextView
-                                android:id="@+id/tv_friends"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="5 Friends"
-                                android:textColor="@color/textcolorblackalpha"
-                                android:layout_marginLeft="10dp"
-                                android:layout_gravity="center_vertical"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="15dp">
-                            <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:src="@mipmap/videos"
-                                android:layout_gravity="center_vertical"/>
-                            <TextView
-                                android:id="@+id/tv_videos"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="0 Videos"
-                                android:layout_marginLeft="10dp"
-                                android:layout_gravity="center_vertical"
-                                android:textColor="@color/textcolorblackalpha"/>
-                        </LinearLayout>
-                        <LinearLayout
-                            android:id="@+id/layout_drafts"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="15dp"
-                            android:background="@drawable/round_rect_gray">
-                            <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:src="@mipmap/videos"
-                                android:layout_gravity="center_vertical"/>
-                            <TextView
-                                android:id="@+id/tv_drafts"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="0 Drafts"
-                                android:layout_marginLeft="10dp"
-                                android:layout_gravity="center_vertical"
-                                android:textColor="@color/textcolorblackalpha"
-                                />
-                        </LinearLayout>
-
-                    </LinearLayout>
-
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/layout_drafts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/round_rect_primary"
+                    >
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@mipmap/video_white"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="5dp"/>
+                    <TextView
+                        android:id="@+id/tv_drafts"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0 Drafts"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@android:color/white"
+                        />
                 </LinearLayout>
                 <View
                     android:layout_width="match_parent"
@@ -278,7 +165,7 @@
                     android:id="@+id/tv_biodata"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Bio data"
+                    android:text="No bio data yet."
                     android:layout_margin="10dp"
                     android:layout_gravity="center_vertical"
                     android:textSize="12sp"
@@ -331,13 +218,13 @@
                             android:id="@+id/iv_myhearts"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:src="@mipmap/hearts_gray"/>
+                            android:src="@mipmap/bookmark_normal"/>
 
                         <TextView
                             android:id="@+id/tv_myhearts"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Hearts"
+                            android:text="Bookmarks"
                             android:layout_marginLeft="10dp"
                             android:textAppearance="?android:attr/textAppearanceSmall"/>
                     </LinearLayout>
