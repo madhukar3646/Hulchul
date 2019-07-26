@@ -146,8 +146,8 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         et_name.setText(name);
         et_biodata.setText(biaodata);
 
-        Picasso.with(EditProfileActivity.this).load(ApiUrls.PROFILEBASEPATH+profilepicurl).placeholder(R.mipmap.placeholder)
-                .error(R.mipmap.placeholder)
+        Picasso.with(EditProfileActivity.this).load(ApiUrls.PROFILEBASEPATH+profilepicurl).placeholder(R.mipmap.profile)
+                .error(R.mipmap.profile)
                 .into(profile_image);
 
        back_btn.setOnClickListener(this);

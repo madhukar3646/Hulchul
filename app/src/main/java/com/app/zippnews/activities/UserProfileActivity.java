@@ -269,8 +269,8 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             viewdata.setBioData(biodata);
         }
 
-        Picasso.with(UserProfileActivity.this).load(ApiUrls.PROFILEBASEPATH+viewdata.getPhoto()).placeholder(R.mipmap.placeholder)
-                .error(R.mipmap.placeholder)
+        Picasso.with(UserProfileActivity.this).load(ApiUrls.PROFILEBASEPATH+viewdata.getPhoto()).placeholder(R.mipmap.profile)
+                .error(R.mipmap.profile)
                 .into(profile_image);
 
         this.viewdata=viewdata;
