@@ -452,9 +452,11 @@ public class Home_fragment extends Fragment implements SimpleAdapter.VideoAction
                     if (response.isSuccessful()) {
                         new AsyncTask<Void, Integer, String>() {
                             ProgressDialog progressDialog=new ProgressDialog(getActivity());
+
                             @Override
                             protected void onPreExecute() {
                                 super.onPreExecute();
+                                progressDialog.setMessage("Downloading to Share...");
                                progressDialog.show();
                             }
 

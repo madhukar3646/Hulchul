@@ -67,11 +67,11 @@ public class ChangepasswordActivity extends AppCompatActivity implements View.On
        else if(newpassword.length()==0)
            Utils.callToast(ChangepasswordActivity.this,"Please enter new password");
        else if(newpassword.length()<6)
-           Utils.callToast(ChangepasswordActivity.this,"Enter atleast 6 digits new password");
+           Utils.callToast(ChangepasswordActivity.this,"Enter at least 6 characters as new password");
        else if(confirmpwd.length()==0)
            Utils.callToast(ChangepasswordActivity.this,"Please enter confirm password");
        else if(!newpassword.equals(confirmpwd))
-           Utils.callToast(ChangepasswordActivity.this,"New and confirm passwords doesn't matched");
+           Utils.callToast(ChangepasswordActivity.this,"New and Confirm passwords doesn't matched");
        else if(connectionDetector.isConnectingToInternet())
        {
            ChangepasswordRequest request=new ChangepasswordRequest();
