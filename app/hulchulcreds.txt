@@ -13,3 +13,17 @@ Hulchul app fb integration login creds:
  New billing email for google+ and google places and firebase push notifications for Zip News app
  hulchulapp@gmail.com
  password: Hyderabad@2019
+
+
+ Testing 2 users sample creds:
+ 7382521200
+ password:123456
+
+ 8688167832
+ password: 123456
+
+ Admin Credentials:
+ hulchulapp@gmail.com
+ 123456
+ http://206.189.142.145/posts
+

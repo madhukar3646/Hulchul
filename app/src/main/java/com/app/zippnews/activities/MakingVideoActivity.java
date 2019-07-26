@@ -105,7 +105,7 @@ public class MakingVideoActivity extends AppCompatActivity implements View.OnCli
     private Effects[] effects;
     private MediaPlayer musicplayer;
     private String musicpath,songid;
-    private long duration=60000;
+    private long duration=30000;
 
     private ArrayList<EffectsModel> effectsModelArrayList=new ArrayList<>();
     private ArrayList<FiltersModel> filtersModelArrayList=new ArrayList<>();

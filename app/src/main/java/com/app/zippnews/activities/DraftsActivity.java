@@ -70,7 +70,7 @@ public class DraftsActivity extends AppCompatActivity implements View.OnClickLis
         adapter.notifyDataSetChanged();
         DraftModel model;
         String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() +
-                "/Hulchuldrafts";
+                "/"+getResources().getString(R.string.app_name)+"drafts";
         File dir = new File(file_path);
         if(dir.exists())
         {

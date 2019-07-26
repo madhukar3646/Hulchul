@@ -99,6 +99,7 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Hashta
     private String userid="",videosbasepath,musicbasepath;
     private ArrayList<VideoModel> profilevideoslist=new ArrayList<>();
     private ArrayList<VideoModel> likedvideoslist=new ArrayList<>();
+    private boolean isRefreshWant=false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -134,7 +135,6 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Hashta
         likedadapter=new HashtagsGridAdapter(getContext(),likedvideoslist);
         likedadapter.setOnHashtagItemClickListener(this);
         setClickableFocus(true);
-        tv_drafts.setText("Drafts Videos ("+getDraftsCount()+")");
         if(connectionDetector.isConnectingToInternet()) {
             viewProfile(sessionManagement.getValueFromPreference(SessionManagement.USERID));
         }
@@ -167,6 +167,23 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Hashta
                 }
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        tv_drafts.setText("Drafts Videos ("+getDraftsCount()+")");
+        if(connectionDetector.isConnectingToInternet())
+        {
+            if(isRefreshWant)
+            {
+                likedvideoslist.clear();
+                likedadapter.notifyDataSetChanged();
+                setfavouriteVideosDataToContainer("20","0");
+            }
+        }
+        else
+            Utils.callToast(getActivity(), getResources().getString(R.string.internet_toast));
     }
 
     @Override
@@ -273,7 +290,7 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Hashta
     {
         int draftscount=0;
         String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() +
-                "/Hulchuldrafts";
+                "/"+getResources().getString(R.string.app_name)+"drafts";
         File dir = new File(file_path);
         if(dir.exists())
         {
@@ -409,6 +426,7 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Hashta
                             Utils.callToast(getActivity(), body.getMessage());
                         }
                     }
+                    isRefreshWant=false;
                 }
                 else {
                     Utils.callToast(getActivity(),"null response came");
@@ -434,6 +452,7 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Hashta
                 if(body!=null) {
                     if (body.getStatus() == 0) {
                         profilevideoslist.remove(position);
+                        tv_myvideos.setText("Your Videos ("+profilevideoslist.size()+")");
                         profileadapter.notifyDataSetChanged();
                     } else {
 
@@ -457,8 +476,10 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Hashta
         Intent intent=new Intent(getActivity(), PlayvideosCategorywise_Activity.class);
         if(isProfilevideos)
             intent.putExtra("isFrom","profilevideos");
-        else
-            intent.putExtra("isFrom","favouritevideos");
+        else {
+            isRefreshWant=true;
+            intent.putExtra("isFrom", "favouritevideos");
+        }
         intent.putExtra("profileuserid",userid);
         intent.putParcelableArrayListExtra("videos",discoverhashtagvideosList);
         intent.putExtra("position",pos);
