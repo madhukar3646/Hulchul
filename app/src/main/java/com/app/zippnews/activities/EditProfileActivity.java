@@ -94,6 +94,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
     private ConnectionDetector connectionDetector;
     private SessionManagement sessionManagement;
+    public static final int PROFILE_UPDATED=200;
 
     GoogleSignInClient mGoogleSignInClient;
     private final int RC_SIGN_IN=101;
@@ -106,6 +107,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     private CallbackManager mFacebookCallbackManager;
     private LoginManager mLoginManager;
     private AccessTokenTracker mAccessTokenTracker;
+    private boolean isFieldsUpdated=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,7 +168,14 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         switch (view.getId())
         {
             case R.id.back_btn:
-                finish();
+                if(isFieldsUpdated)
+                {
+                    Intent intent=new Intent();
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+                else
+                   finish();
                 break;
             case R.id.layout_changepwd:
                 startActivity(new Intent(EditProfileActivity.this,ChangepasswordActivity.class));
@@ -438,6 +447,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                 ProfilepicUpdateResponse body=response.body();
                 if(body!=null) {
                     if (body.getStatus()==0) {
+                        isFieldsUpdated=true;
                         Utils.callToast(EditProfileActivity.this, body.getMessage());
                     } else {
                         Utils.callToast(EditProfileActivity.this, body.getMessage());
@@ -468,11 +478,11 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                 ProfilepicUpdateResponse body=response.body();
                 if(body!=null) {
                     if (body.getStatus()==0) {
+                        isFieldsUpdated=true;
                         Utils.callToast(EditProfileActivity.this, body.getMessage());
-                        Intent intent=new Intent(EditProfileActivity.this,MainActivity.class);
-                        startActivity(intent);
+                        Intent intent=new Intent();
+                        setResult(RESULT_OK, intent);
                         finish();
-                        finishAffinity();
                     } else {
                         Utils.callToast(EditProfileActivity.this, body.getMessage());
                     }

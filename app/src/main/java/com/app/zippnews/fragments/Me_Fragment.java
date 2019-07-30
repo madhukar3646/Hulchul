@@ -50,6 +50,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.app.Activity.RESULT_OK;
+
 public class Me_Fragment extends Fragment implements View.OnClickListener,HashtagsGridAdapter.OnHashtagItemClickListener,HashtagsGridAdapter.OnItemLongClickListener{
 
     @BindView(R.id.iv_addfriends)
@@ -136,7 +138,7 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Hashta
         likedadapter.setOnHashtagItemClickListener(this);
         setClickableFocus(true);
         if(connectionDetector.isConnectingToInternet()) {
-            viewProfile(sessionManagement.getValueFromPreference(SessionManagement.USERID));
+            viewProfile(sessionManagement.getValueFromPreference(SessionManagement.USERID),true);
         }
         else
             Utils.callToast(getActivity(),getResources().getString(R.string.internet_toast));
@@ -230,7 +232,7 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Hashta
                     editprofile.putExtra("biodata",viewdata.getBioData());
                     editprofile.putExtra("profilephoto",viewdata.getPhoto());
                 }
-                startActivity(editprofile);
+                startActivityForResult(editprofile, EditProfileActivity.PROFILE_UPDATED);
                 break;
             case R.id.layout_yourvideos:
                 setClickableFocus(true);
@@ -302,7 +304,7 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Hashta
        return draftscount;
     }
 
-    private void viewProfile(String userid){
+    private void viewProfile(String userid,boolean isUpdateVideosAlso){
         Utils.showDialog(getActivity());
         Call<ViewProfileResponse> call= RetrofitApis.Factory.create(getActivity()).viewProfile(sessionManagement.getValueFromPreference(SessionManagement.USER_TOKEN),userid,userid);
         call.enqueue(new Callback<ViewProfileResponse>() {
@@ -314,7 +316,8 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Hashta
                     if (body.getStatus()==0) {
                        if(body.getData()!=null)
                            updateFields(body.getData());
-                       setProfilevideosDataToContainer("20","0");
+                       if(isUpdateVideosAlso)
+                         setProfilevideosDataToContainer("20","0");
                     } else {
                         Utils.callToast(getActivity(), body.getMessage());
                     }
@@ -528,5 +531,22 @@ public class Me_Fragment extends Fragment implements View.OnClickListener,Hashta
     @Override
     public void onItemLongClick(VideoModel videoModel,int position) {
        displayDeleteDialog(videoModel.getId(),position);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==RESULT_OK)
+        {
+          if(requestCode==EditProfileActivity.PROFILE_UPDATED)
+          {
+              if(connectionDetector.isConnectingToInternet()) {
+                  viewProfile(sessionManagement.getValueFromPreference(SessionManagement.USERID),false);
+              }
+              else
+                  Utils.callToast(getActivity(),getResources().getString(R.string.internet_toast));
+
+          }
+        }
     }
 }

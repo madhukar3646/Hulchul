@@ -25,7 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AbuseSelectionActivity extends AppCompatActivity implements TagsAdapter.OnTagSelectionListener{
+public class AbuseSelectionActivity extends AppCompatActivity{
 
     @BindView(R.id.iv_back)
     ImageView iv_back;
@@ -83,16 +83,17 @@ public class AbuseSelectionActivity extends AppCompatActivity implements TagsAda
             strings.add(abusereasons[i]);
         }
         tagsAdapter=new TagsAdapter(AbuseSelectionActivity.this,strings);
-        tagsAdapter.setListener(this);
         rv_tags.setAdapter(tagsAdapter);
 
         tv_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                abusecontent=tagsAdapter.getSelectedTags();
+                Log.e("abuse content","is "+abusecontent);
                 if(ratingcount<=0)
                     Utils.callToast(AbuseSelectionActivity.this,"Please give your rating.");
-                else if(abusecontent==null)
-                    Utils.callToast(AbuseSelectionActivity.this,"Please select reason.");
+                else if(abusecontent==null || abusecontent.trim().length()==0)
+                    Utils.callToast(AbuseSelectionActivity.this,"Please select the feedback from the list and try again.");
                else {
                     if(connectionDetector.isConnectingToInternet())
                     {
@@ -110,11 +111,6 @@ public class AbuseSelectionActivity extends AppCompatActivity implements TagsAda
                 finish();
             }
         });
-    }
-
-    @Override
-    public void onCategorySelected(String category) {
-           abusecontent=category;
     }
 
     private void reportVideo(String userid,String videoid,String rating,String report){

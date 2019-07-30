@@ -238,9 +238,9 @@ public class VideoPosting_Activity extends AppCompatActivity implements View.OnC
         {
             hashes=hashes+"#"+arr[i].trim()+",";
         }
-        if(hashes.length()>2)
-            hashtags=hashes.substring(2,hashes.length()-1);
-
+        hashes=hashes.substring(0,hashes.length()-1);
+        if(hashes.length()>1)
+            hashtags=hashes;
         return hashtags;
     }
 

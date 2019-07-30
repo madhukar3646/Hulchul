@@ -279,6 +279,11 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
             layout_continuedumny.setVisibility(View.GONE);
             layout_continue.setVisibility(View.VISIBLE);
         }
+        else
+        {
+            layout_continuedumny.setVisibility(View.VISIBLE);
+            layout_continue.setVisibility(View.GONE);
+        }
     }
 
     @Override

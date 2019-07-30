@@ -12,23 +12,21 @@ import android.widget.TextView;
 
 import com.app.zippnews.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
 
     Context context;
     List<String> categoriesModelArrayList;
-    private OnTagSelectionListener listener;
-    int selected=-1;
-
-
-    public void setListener(OnTagSelectionListener listener) {
-        this.listener = listener;
-    }
+    ArrayList<Boolean> booleanArrayList=new ArrayList<>();
 
     public TagsAdapter(Context context, List<String> reviewList) {
         this.context=context;
         this.categoriesModelArrayList = reviewList;
+        booleanArrayList.clear();
+        for (int i=0;i<reviewList.size();i++)
+            booleanArrayList.add(false);
     }
 
     @NonNull
@@ -43,7 +41,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int pos) {
         final String model=categoriesModelArrayList.get(pos);
         viewHolder.tag.setText(model);
-        if(selected==pos)
+        if(booleanArrayList.get(pos))
         {
            viewHolder.tag.setTextColor(Color.parseColor("#ffffff"));
            viewHolder.tag.setSelected(true);
@@ -54,22 +52,13 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(listener!=null){
-                    listener.onCategorySelected(model);
-                }
-                selected=pos;
-                Log.e("position",""+pos);
+                if(booleanArrayList.get(pos))
+                    booleanArrayList.set(pos,false);
+                else
+                    booleanArrayList.set(pos,true);
                 notifyDataSetChanged();
             }
         });
-    }
-
-    public void setSelected(int selected) {
-        this.selected = selected;
-    }
-
-    public int getSelected() {
-        return selected;
     }
 
     @Override
@@ -86,9 +75,17 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
             tag=(TextView) itemView.findViewById(R.id.tag);
         }
     }
-public interface OnTagSelectionListener{
 
-        void onCategorySelected(String category);
-}
-
+    public String getSelectedTags()
+    {
+        String selectedtags="";
+        for(int i=0;i<booleanArrayList.size();i++)
+        {
+            if(booleanArrayList.get(i))
+                selectedtags=selectedtags+" "+categoriesModelArrayList.get(i)+",";
+        }
+        if(selectedtags.length()>1)
+        selectedtags=selectedtags.substring(0,selectedtags.length()-1);
+        return selectedtags;
+    }
 }

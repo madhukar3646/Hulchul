@@ -22,7 +22,10 @@ import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
+
 import com.app.zippnews.R;
 import com.app.zippnews.adapters.SimpleAdapter;
 import com.app.zippnews.adapters.SimplePlayerViewHolder;
@@ -63,6 +66,8 @@ public class PlayvideosCategorywise_Activity extends AppCompatActivity implement
 
     @BindView(R.id.player_container)
     Container container;
+    @BindView(R.id.tv_nodata)
+    TextView tv_nodata;
     SimpleAdapter adapter;
     LinearLayoutManager layoutManager;
     private ArrayList<VideoModel> modelArrayList=new ArrayList<>();
@@ -228,10 +233,13 @@ public class PlayvideosCategorywise_Activity extends AppCompatActivity implement
                             adapter.setBasepaths(body.getUrl(), body.getSongurl());
                         }
                     } else {
-                        if(modelArrayList.size()==0)
-                            Utils.callToast(PlayvideosCategorywise_Activity.this, body.getMessage());
+                            //Utils.callToast(PlayvideosCategorywise_Activity.this, body.getMessage());
                     }
                     adapter.notifyDataSetChanged();
+                    if(modelArrayList.size()==0)
+                        tv_nodata.setVisibility(View.VISIBLE);
+                    else
+                        tv_nodata.setVisibility(View.GONE);
                 }
                 else {
                     adapter.notifyDataSetChanged();
@@ -267,6 +275,10 @@ public class PlayvideosCategorywise_Activity extends AppCompatActivity implement
                     } else {
                            // Utils.callToast(PlayvideosCategorywise_Activity.this, body.getMessage());
                     }
+                    if(modelArrayList.size()==0)
+                        tv_nodata.setVisibility(View.VISIBLE);
+                    else
+                        tv_nodata.setVisibility(View.GONE);
                 }
                 else {
                     Utils.callToast(PlayvideosCategorywise_Activity.this,"null response came");
@@ -300,6 +312,10 @@ public class PlayvideosCategorywise_Activity extends AppCompatActivity implement
                     } else {
                             //Utils.callToast(PlayvideosCategorywise_Activity.this, body.getMessage());
                     }
+                    if(modelArrayList.size()==0)
+                        tv_nodata.setVisibility(View.VISIBLE);
+                    else
+                        tv_nodata.setVisibility(View.GONE);
                 }
                 else {
                     Utils.callToast(PlayvideosCategorywise_Activity.this,"null response came");
@@ -331,8 +347,12 @@ public class PlayvideosCategorywise_Activity extends AppCompatActivity implement
                             adapter.notifyDataSetChanged();
                         }
                     } else {
-                            Utils.callToast(PlayvideosCategorywise_Activity.this, body.getMessage());
+                           // Utils.callToast(PlayvideosCategorywise_Activity.this, body.getMessage());
                     }
+                    if(modelArrayList.size()==0)
+                        tv_nodata.setVisibility(View.VISIBLE);
+                    else
+                        tv_nodata.setVisibility(View.GONE);
                 }
                 else {
                     Utils.callToast(PlayvideosCategorywise_Activity.this,"null response came");
@@ -366,6 +386,10 @@ public class PlayvideosCategorywise_Activity extends AppCompatActivity implement
                     } else {
                            // Utils.callToast(PlayvideosCategorywise_Activity.this, body.getMessage());
                     }
+                    if(modelArrayList.size()==0)
+                        tv_nodata.setVisibility(View.VISIBLE);
+                    else
+                        tv_nodata.setVisibility(View.GONE);
                 }
                 else {
                     Utils.callToast(PlayvideosCategorywise_Activity.this,"null response came");

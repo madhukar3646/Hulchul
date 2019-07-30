@@ -106,8 +106,8 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
             }
         });
 
-        Picasso.with(context).load(ApiUrls.PROFILEBASEPATH+model.getPhoto()).placeholder(R.mipmap.app_icon)
-                .error(R.mipmap.app_icon)
+        Picasso.with(context).load(ApiUrls.PROFILEBASEPATH+model.getPhoto()).placeholder(R.mipmap.profile)
+                .error(R.mipmap.profile)
                 .into(holder.profile_image);
     }
 

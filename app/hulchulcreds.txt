@@ -1,5 +1,4 @@
 Hulchul app gmail,facebook,twitter login credentials:
-
 hulchul2019@gmail.com
 password: androidteam
 
@@ -13,7 +12,6 @@ Hulchul app fb integration login creds:
  New billing email for google+ and google places and firebase push notifications for Zip News app
  hulchulapp@gmail.com
  password: Hyderabad@2019
-
 
  Testing 2 users sample creds:
  7382521200
