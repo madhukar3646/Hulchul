@@ -2,6 +2,7 @@ package com.app.zippnews.activities;
 import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -81,6 +82,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Dialog dialog;
     private ConnectionDetector connectionDetector;
     private SessionManagement sessionManagement;
+    private boolean isFromcomments=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,13 +94,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void init()
     {
+        try {
+            isFromcomments=getIntent().getBooleanExtra(Utils.ISFROMCOMMENTS,false);
+        }
+        catch (Exception e){}
+
         connectionDetector=new ConnectionDetector(LoginActivity.this);
         sessionManagement=new SessionManagement(LoginActivity.this);
       iv_backbtn.setOnClickListener(this);
       layout_continue.setOnClickListener(this);
       tv_forgotpwd.setOnClickListener(this);
         tv_loginwith.setOnClickListener(this);
-      country_layout.setOnClickListener(this);
+      //country_layout.setOnClickListener(this);
         tv_loginwith.setText("Mobile Number");
         layout_mobilenumber.setVisibility(View.GONE);
         layout_email.setVisibility(View.VISIBLE);
@@ -107,10 +114,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         layout_continue.setVisibility(View.GONE);
 
         parseCountriesData();
-        country_zipcode="+"+getCountryZipCode(getResources().getConfiguration().locale.getCountry());
+       /* country_zipcode="+"+getCountryZipCode(getResources().getConfiguration().locale.getCountry());
         if(country_zipcode==null)
             country_zipcode="+91";
-        tv_countrydata.setText(country_zipcode);
+        tv_countrydata.setText(country_zipcode);*/
 
         et_mobile.addTextChangedListener(new TextWatcher() {
             @Override
@@ -220,7 +227,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                break;
            case R.id.tv_forgotpwd:
-               startActivity(new Intent(LoginActivity.this,ForgotPasswordActivity.class));
+               if(isFromcomments)
+               {
+                   Intent login=new Intent(LoginActivity.this,ForgotPasswordActivity.class);
+                   login.putExtra(Utils.ISFROMCOMMENTS,true);
+                   startActivityForResult(login,Utils.FROMCOMMENTS);
+               }
+               else
+                 startActivity(new Intent(LoginActivity.this,ForgotPasswordActivity.class));
                break;
            case R.id.tv_loginwith:
                et_email.setText("");
@@ -409,10 +423,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         sessionManagement.setValuetoPreference(SessionManagement.USER_TOKEN,data.getAuthKey());
         sessionManagement.setBooleanValuetoPreference(SessionManagement.IS_SOCIALLOGIN,false);
         sessionManagement.setPushStatus(data.getData().getPushStatus());
-        Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-        startActivity(intent);
-        finish();
-        finishAffinity();
+        if(isFromcomments)
+        {
+            Intent intent=new Intent();
+            setResult(RESULT_OK, intent);
+            finish();
+        }
+        else {
+            Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+            startActivity(intent);
+            finish();
+            finishAffinity();
+        }
     }
 
     @Override
@@ -424,5 +446,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void OnErrorResponse(String error) {
         Utils.dismissDialog();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==RESULT_OK)
+        {
+            if(requestCode==Utils.FROMCOMMENTS)
+            {
+                Intent intent=new Intent();
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        }
     }
 }

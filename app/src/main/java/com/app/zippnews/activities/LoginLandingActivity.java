@@ -99,6 +99,8 @@ public class LoginLandingActivity extends AppCompatActivity implements View.OnCl
     private ConnectionDetector connectionDetector;
     private SessionManagement sessionManagement;
 
+    private boolean isFromcomments=false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,6 +132,10 @@ public class LoginLandingActivity extends AppCompatActivity implements View.OnCl
     {
         connectionDetector=new ConnectionDetector(LoginLandingActivity.this);
         sessionManagement=new SessionManagement(LoginLandingActivity.this);
+        try {
+            isFromcomments=getIntent().getBooleanExtra(Utils.ISFROMCOMMENTS,false);
+        }
+        catch (Exception e){}
 
         tv_privacypolicy.setText("By signing up, you confirm that you agree to our Terms of Use and have read and understood our Privacy Policy");
         singleTextView(tv_privacypolicy,"By signing up, you confirm that you agree to ","Terms of Use"," and have read and understood our ","Privacy Policy");
@@ -195,14 +201,33 @@ public class LoginLandingActivity extends AppCompatActivity implements View.OnCl
                 finish();
                 break;
             case R.id.iv_mobile:
-                Intent intent=new Intent(LoginLandingActivity.this,SignUpActivity.class);
-                intent.putExtra("isfrom","mobile");
-                startActivity(intent);
+                if(isFromcomments)
+                {
+                    Intent intent = new Intent(LoginLandingActivity.this, SignUpActivity.class);
+                    intent.putExtra(Utils.ISFROMCOMMENTS,true);
+                    intent.putExtra("isfrom", "mobile");
+                    startActivity(intent);
+                }
+                else {
+                    Intent intent = new Intent(LoginLandingActivity.this, SignUpActivity.class);
+                    intent.putExtra("isfrom", "mobile");
+                    startActivity(intent);
+                }
                 break;
             case R.id.iv_email:
-                Intent email=new Intent(LoginLandingActivity.this,SignUpActivity.class);
-                email.putExtra("isfrom","email");
-                startActivity(email);
+                if(isFromcomments)
+                {
+                    Intent email=new Intent(LoginLandingActivity.this,SignUpActivity.class);
+                    email.putExtra(Utils.ISFROMCOMMENTS,true);
+                    email.putExtra("isfrom","email");
+                    startActivity(email);
+                }
+                else {
+                    Intent email=new Intent(LoginLandingActivity.this,SignUpActivity.class);
+                    email.putExtra("isfrom","email");
+                    startActivity(email);
+                }
+
                 break;
             case R.id.iv_fb:
                 //face book code
@@ -242,7 +267,15 @@ public class LoginLandingActivity extends AppCompatActivity implements View.OnCl
 
                 break;
             case R.id.layout_login:
-                startActivity(new Intent(LoginLandingActivity.this,LoginActivity.class));
+                if(isFromcomments)
+                {
+                    Intent login=new Intent(LoginLandingActivity.this,LoginActivity.class);
+                    login.putExtra(Utils.ISFROMCOMMENTS,true);
+                    startActivityForResult(login,Utils.FROMCOMMENTS);
+                }
+                else {
+                    startActivity(new Intent(LoginLandingActivity.this,LoginActivity.class));
+                }
                 break;
         }
     }
@@ -290,10 +323,18 @@ public class LoginLandingActivity extends AppCompatActivity implements View.OnCl
 
     private void gotoHome()
     {
-        Intent intent=new Intent(LoginLandingActivity.this,MainActivity.class);
-        startActivity(intent);
-        finish();
-        finishAffinity();
+        if(isFromcomments)
+        {
+            Intent intent=new Intent();
+            setResult(RESULT_OK, intent);
+            finish();
+        }
+        else {
+            Intent intent=new Intent(LoginLandingActivity.this,MainActivity.class);
+            startActivity(intent);
+            finish();
+            finishAffinity();
+        }
     }
 
     private void goToCommonScreen(String data)
@@ -401,6 +442,16 @@ public class LoginLandingActivity extends AppCompatActivity implements View.OnCl
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if(resultCode==RESULT_OK)
+        {
+            if(requestCode==Utils.FROMCOMMENTS)
+            {
+                Intent intent=new Intent();
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        }
+
         if (requestCode == RC_SIGN_IN) {
             // The Task returned from this call is always completed, no need to attach
             // a listener.

@@ -3,6 +3,7 @@ package com.app.zippnews.activities;
 import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -86,6 +87,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     private ConnectionDetector connectionDetector;
     private SessionManagement sessionManagement;
+    private boolean isFromcomments=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,13 +99,18 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     private void init()
     {
+        try {
+            isFromcomments=getIntent().getBooleanExtra(Utils.ISFROMCOMMENTS,false);
+        }
+        catch (Exception e){}
+
         connectionDetector=new ConnectionDetector(SignUpActivity.this);
         sessionManagement=new SessionManagement(SignUpActivity.this);
         layout_continuedumny.setVisibility(View.VISIBLE);
         layout_continue.setVisibility(View.GONE);
         iv_backbtn.setOnClickListener(this);
         layout_continue.setOnClickListener(this);
-        country_layout.setOnClickListener(this);
+        //country_layout.setOnClickListener(this);
         tv_privacypolicy.setText("By signing up, you confirm that you agree to our Terms of Use and have read and understood our Privacy Policy");
         singleTextView(tv_privacypolicy,"By signing up, you confirm that you agree to ","Terms of Use"," and have read and understood our ","Privacy Policy");
         isFrom=getIntent().getStringExtra("isfrom");
@@ -429,16 +436,36 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
           sessionManagement.setValuetoPreference(SessionManagement.USER_TOKEN,data.getAuthKey());
         Utils.dismissDialog();
         if(isFrom.equalsIgnoreCase("email")) {
-            Intent intent=new Intent(SignUpActivity.this, OtpActivity.class);
-            intent.putExtra("isfrom","email");
-            intent.putExtra("input",et_email.getText().toString());
-            startActivity(intent);
+            if(isFromcomments)
+            {
+                Intent intent = new Intent(SignUpActivity.this, OtpActivity.class);
+                intent.putExtra(Utils.ISFROMCOMMENTS,true);
+                intent.putExtra("isfrom", "email");
+                intent.putExtra("input", et_email.getText().toString());
+                startActivity(intent);
+            }
+            else {
+                Intent intent = new Intent(SignUpActivity.this, OtpActivity.class);
+                intent.putExtra("isfrom", "email");
+                intent.putExtra("input", et_email.getText().toString());
+                startActivity(intent);
+            }
         }
         else {
-            Intent intent=new Intent(SignUpActivity.this, OtpActivity.class);
-            intent.putExtra("isfrom","mobile");
-            intent.putExtra("input",et_mobile.getText().toString());
-            startActivity(intent);
+            if(isFromcomments)
+            {
+                Intent intent = new Intent(SignUpActivity.this, OtpActivity.class);
+                intent.putExtra(Utils.ISFROMCOMMENTS,true);
+                intent.putExtra("isfrom", "mobile");
+                intent.putExtra("input", et_mobile.getText().toString());
+                startActivity(intent);
+            }
+            else {
+                Intent intent = new Intent(SignUpActivity.this, OtpActivity.class);
+                intent.putExtra("isfrom", "mobile");
+                intent.putExtra("input", et_mobile.getText().toString());
+                startActivity(intent);
+            }
         }
     }
 
@@ -452,5 +479,19 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     public void OnErrorResponse(String error) {
         Utils.dismissDialog();
         Log.e("Signup service",error);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==RESULT_OK)
+        {
+            if(requestCode==Utils.FROMCOMMENTS)
+            {
+                Intent intent=new Intent();
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        }
     }
 }

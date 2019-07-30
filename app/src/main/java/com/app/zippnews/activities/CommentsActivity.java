@@ -2,6 +2,7 @@ package com.app.zippnews.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -115,16 +116,18 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
                 if(userid!=null)
                   validatereplyComment(commentid);
                 else{
-                    startActivity(new Intent(CommentsActivity.this,LoginLandingActivity.class));
-                    finish();
+                    goToLoginLandingPage();
+                    /*startActivity(new Intent(CommentsActivity.this,LoginLandingActivity.class));
+                    finish();*/
                 }
                 break;
             case R.id.layout_sendcomment:
                 if(userid!=null)
                    validatePostComment();
                 else{
-                    startActivity(new Intent(CommentsActivity.this,LoginLandingActivity.class));
-                    finish();
+                    /*startActivity(new Intent(CommentsActivity.this,LoginLandingActivity.class));
+                    finish();*/
+                    goToLoginLandingPage();
                 }
                 break;
         }
@@ -197,8 +200,9 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
         if(userid!=null)
             validatelikeComment(model.getId());
         else{
-            startActivity(new Intent(CommentsActivity.this,LoginLandingActivity.class));
-            finish();
+           /* startActivity(new Intent(CommentsActivity.this,LoginLandingActivity.class));
+            finish();*/
+            goToLoginLandingPage();
         }
     }
 
@@ -343,5 +347,24 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
                 Log.e("replyComment onFailure",""+t.getMessage());
             }
         });
+    }
+
+    private void goToLoginLandingPage()
+    {
+        Intent intent=new Intent(CommentsActivity.this,LoginLandingActivity.class);
+        intent.putExtra(Utils.ISFROMCOMMENTS,true);
+        startActivityForResult(intent,Utils.FROMCOMMENTS);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==RESULT_OK)
+        {
+            if(requestCode==Utils.FROMCOMMENTS)
+            {
+
+            }
+        }
     }
 }

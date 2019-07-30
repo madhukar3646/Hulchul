@@ -3,6 +3,7 @@ package com.app.zippnews.activities;
 import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -89,6 +90,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
 
     private ConnectionDetector connectionDetector;
     private SessionManagement sessionManagement;
+    private boolean isFromcomments=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +102,11 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
 
     private void init()
     {
+        try {
+            isFromcomments=getIntent().getBooleanExtra(Utils.ISFROMCOMMENTS,false);
+        }
+        catch (Exception e){}
+
         connectionDetector=new ConnectionDetector(ForgotPasswordActivity.this);
         sessionManagement=new SessionManagement(ForgotPasswordActivity.this);
 
@@ -107,7 +114,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         layout_continue.setOnClickListener(this);
       iv_email.setOnClickListener(this);
       iv_mobile.setOnClickListener(this);
-        country_layout.setOnClickListener(this);
+        //country_layout.setOnClickListener(this);
 
       layout_mobilenumber.setVisibility(View.VISIBLE);
       layout_email.setVisibility(View.GONE);
@@ -115,10 +122,10 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         isFrom="mobile";
 
         parseCountriesData();
-        country_zipcode="+"+getCountryZipCode(getResources().getConfiguration().locale.getCountry());
+       /* country_zipcode="+"+getCountryZipCode(getResources().getConfiguration().locale.getCountry());
         if(country_zipcode==null)
             country_zipcode="+91";
-        tv_countrydata.setText(country_zipcode);
+        tv_countrydata.setText(country_zipcode);*/
 
         layout_continuedumny.setVisibility(View.VISIBLE);
         layout_continue.setVisibility(View.GONE);
@@ -418,16 +425,50 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         if(data.getAuthKey()!=null && data.getAuthKey().trim().length()>0 && !data.getAuthKey().equalsIgnoreCase("null"))
             sessionManagement.setValuetoPreference(SessionManagement.USER_TOKEN,data.getAuthKey());
         if(isFrom.equalsIgnoreCase("email")) {
-            Intent intent=new Intent(ForgotPasswordActivity.this, OtpActivity.class);
-            intent.putExtra("isfrom","email");
-            intent.putExtra("input",et_email.getText().toString());
-            startActivity(intent);
+            if(isFromcomments)
+            {
+                Intent intent=new Intent(ForgotPasswordActivity.this,OtpActivity.class);
+                intent.putExtra("isfrom", "email");
+                intent.putExtra("input", et_email.getText().toString());
+                intent.putExtra(Utils.ISFROMCOMMENTS,true);
+                startActivityForResult(intent,Utils.FROMCOMMENTS);
+            }
+            else {
+                Intent intent = new Intent(ForgotPasswordActivity.this, OtpActivity.class);
+                intent.putExtra("isfrom", "email");
+                intent.putExtra("input", et_email.getText().toString());
+                startActivity(intent);
+            }
         }
         else {
-            Intent intent=new Intent(ForgotPasswordActivity.this, OtpActivity.class);
-            intent.putExtra("isfrom","mobile");
-            intent.putExtra("input",et_mobile.getText().toString());
-            startActivity(intent);
+            if(isFromcomments)
+            {
+                Intent intent=new Intent(ForgotPasswordActivity.this,OtpActivity.class);
+                intent.putExtra("isfrom", "mobile");
+                intent.putExtra("input", et_mobile.getText().toString());
+                intent.putExtra(Utils.ISFROMCOMMENTS,true);
+                startActivityForResult(intent,Utils.FROMCOMMENTS);
+            }
+            else {
+                Intent intent = new Intent(ForgotPasswordActivity.this, OtpActivity.class);
+                intent.putExtra("isfrom", "mobile");
+                intent.putExtra("input", et_mobile.getText().toString());
+                startActivity(intent);
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==RESULT_OK)
+        {
+            if(requestCode==Utils.FROMCOMMENTS)
+            {
+                Intent intent=new Intent();
+                setResult(RESULT_OK, intent);
+                finish();
+            }
         }
     }
 }

@@ -82,15 +82,15 @@ public class ChangePhoneNumberActivity extends AppCompatActivity implements View
         sessionManagement=new SessionManagement(ChangePhoneNumberActivity.this);
         iv_backbtn.setOnClickListener(this);
         layout_continue.setOnClickListener(this);
-        country_layout.setOnClickListener(this);
+        //country_layout.setOnClickListener(this);
         layout_continuedumny.setVisibility(View.VISIBLE);
         layout_continue.setVisibility(View.GONE);
 
         parseCountriesData();
-        country_zipcode="+"+getCountryZipCode(getResources().getConfiguration().locale.getCountry());
+        /*country_zipcode="+"+getCountryZipCode(getResources().getConfiguration().locale.getCountry());
         if(country_zipcode==null)
             country_zipcode="+91";
-        tv_countrydata.setText(country_zipcode);
+        tv_countrydata.setText(country_zipcode);*/
 
         et_mobile.addTextChangedListener(new TextWatcher() {
             @Override

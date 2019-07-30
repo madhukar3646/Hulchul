@@ -15,6 +15,8 @@ import com.zl.reik.dilatingdotsprogressbar.DilatingDotsProgressBar;
 public class Utils {
 
     public static Dialog dialog;
+    public static final int FROMCOMMENTS=2000;
+    public static final String ISFROMCOMMENTS="isFromComments";
     public static DilatingDotsProgressBar mDilatingDotsProgressBar;
     public static void showDialog(Context context)
     {

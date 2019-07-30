@@ -37,6 +37,7 @@ public class CreatePasswordActivity extends AppCompatActivity implements View.On
     private ConnectionDetector connectionDetector;
     private SessionManagement sessionManagement;
     private String xapikey;
+    private boolean isFromcomments=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,11 @@ public class CreatePasswordActivity extends AppCompatActivity implements View.On
 
     private void init()
     {
+        try {
+            isFromcomments=getIntent().getBooleanExtra(Utils.ISFROMCOMMENTS,false);
+        }
+        catch (Exception e){}
+
         connectionDetector=new ConnectionDetector(CreatePasswordActivity.this);
         sessionManagement=new SessionManagement(CreatePasswordActivity.this);
         xapikey=getIntent().getStringExtra("xapikey");
@@ -160,9 +166,17 @@ public class CreatePasswordActivity extends AppCompatActivity implements View.On
           sessionManagement.setPushStatus(data.getData().getPushStatus());
         if(data.getAuthKey()!=null && data.getAuthKey().trim().length()>0)
             sessionManagement.setValuetoPreference(SessionManagement.USER_TOKEN,data.getAuthKey());*/
-        startActivity(new Intent(CreatePasswordActivity.this,MainActivity.class));
-        finish();
-        finishAffinity();
+       if(isFromcomments)
+       {
+           Intent intent=new Intent();
+           setResult(RESULT_OK, intent);
+           finish();
+       }
+       else {
+           startActivity(new Intent(CreatePasswordActivity.this, MainActivity.class));
+           finish();
+           finishAffinity();
+       }
     }
 
     @Override

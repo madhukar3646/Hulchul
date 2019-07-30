@@ -2,6 +2,7 @@ package com.app.zippnews.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -81,6 +82,7 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
 
     private ConnectionDetector connectionDetector;
     private SessionManagement sessionManagement;
+    private boolean isFromcomments=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +94,11 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
 
     private void init()
     {
+        try {
+            isFromcomments=getIntent().getBooleanExtra(Utils.ISFROMCOMMENTS,false);
+        }
+        catch (Exception e){}
+
         connectionDetector=new ConnectionDetector(OtpActivity.this);
         sessionManagement=new SessionManagement(OtpActivity.this);
 
@@ -367,9 +374,18 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
         if(data.getAuthKey()!=null && data.getAuthKey().trim().length()>0 && !data.getAuthKey().equalsIgnoreCase("null"))
             sessionManagement.setValuetoPreference(SessionManagement.USER_TOKEN,data.getAuthKey());
         Utils.dismissDialog();
-        Intent intent=new Intent(OtpActivity.this,CreatePasswordActivity.class);
-        intent.putExtra("xapikey",data.getAuthKey());
-        startActivity(intent);
+        if(isFromcomments)
+        {
+            Intent intent=new Intent(OtpActivity.this,CreatePasswordActivity.class);
+            intent.putExtra("xapikey",data.getAuthKey());
+            intent.putExtra(Utils.ISFROMCOMMENTS,true);
+            startActivityForResult(intent,Utils.FROMCOMMENTS);
+        }
+        else {
+            Intent intent=new Intent(OtpActivity.this,CreatePasswordActivity.class);
+            intent.putExtra("xapikey",data.getAuthKey());
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -381,5 +397,19 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
     @Override
     public void OnErrorResponse(String error) {
         Utils.dismissDialog();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==RESULT_OK)
+        {
+            if(requestCode==Utils.FROMCOMMENTS)
+            {
+                Intent intent=new Intent();
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        }
     }
 }
