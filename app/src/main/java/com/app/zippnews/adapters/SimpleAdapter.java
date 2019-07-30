@@ -64,11 +64,11 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimplePlayerViewHolder> 
         Log.e("video id",""+videoModel.getId());
         holder.iv_thumb.setVisibility(View.VISIBLE);
 
-        Picasso.with(context).load(ApiUrls.PROFILEBASEPATH+videoModel.getPhoto()).placeholder(R.mipmap.app_icon)
-                .error(R.mipmap.app_icon)
+        Picasso.with(context).load(ApiUrls.PROFILEBASEPATH+videoModel.getPhoto()).placeholder(R.mipmap.profile)
+                .error(R.mipmap.profile)
                 .into(holder.profile_image);
 
-        Picasso.with(context).load(ApiUrls.VIDEOTHUMBNAIL+getThumbnailpath(videoModel.getVideo())).error(R.mipmap.app_icon).placeholder(R.mipmap.app_icon).into(holder.iv_thumb);
+        Picasso.with(context).load(ApiUrls.VIDEOTHUMBNAIL+getThumbnailpath(videoModel.getVideo())).error(R.drawable.zippy_screen).placeholder(R.drawable.zippy_screen).into(holder.iv_thumb);
         holder.iv_likeanim.setVisibility(View.GONE);
         Log.e("video url is",videoModel.getVideo());
         /*if(position==0)
